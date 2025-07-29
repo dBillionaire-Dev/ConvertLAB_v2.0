@@ -154,7 +154,7 @@ export function BloodCalculator() {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="indices" className="w-full">
-          <TabsList className="grid w-full h-14 md:grid-cols-4 grid-cols-2">
+          <TabsList className="grid w-full h-18 md:grid-cols-4 grid-cols-2">
             <TabsTrigger value="indices">Blood Indices</TabsTrigger>
             <TabsTrigger value="bilirubin">Bilirubin</TabsTrigger>
             <TabsTrigger value="pcv">PCV Converter</TabsTrigger>
