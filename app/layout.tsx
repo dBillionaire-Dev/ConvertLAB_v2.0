@@ -6,7 +6,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "ConvertLab CCU - Medical Unit Converter",
+  title: "ConvertLab CCU",
   description:
     "A comprehensive medical and laboratory unit converter PWA for healthcare professionals. Calculate BMI, convert lab units, and more.",
   keywords: "medical converter, laboratory units, BMI calculator, PWA, healthcare tools",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: "/icon-192x192.png",
+    icon: "/icons/favicon.png",
     apple: "/icon-192x192.png",
   },
   
