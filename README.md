@@ -1,6 +1,6 @@
 # ConvertLAB v2.0
 
-ConvertLAB is a web application for converting various medical, laboratory, and health-related units — including BMI, LDL, chemical units, temperature, weight, and more. This version (v2.0) features a modern frontend built with Next.js, TypeScript, and Tailwind CSS, designed for a smooth, responsive user experience.
+ConvertLAB is a progresive web application for converting various medical, laboratory, and health-related units, including BMI, LDL, chemical units, temperature, weight, and more. This version (v2.0) features a modern frontend built with Next.js, TypeScript, and Tailwind CSS, designed for a smooth, responsive user experience.
 
 ---
 
