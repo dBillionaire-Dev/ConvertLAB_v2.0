@@ -4,13 +4,13 @@ ConvertLAB is a progresive web application for converting various medical, labor
 
 ---
 
-## 🚀 Live Demo
+## Live Demo
 
 [ConvertLAB v2.0 Live](https://convertlab-eta.vercel.app/)
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 - **Next.js** (App Router) — for page routing, server rendering where needed, and fast frontend performance  
 - **TypeScript** — static typing for safer, more maintainable code  
@@ -20,7 +20,7 @@ ConvertLAB is a progresive web application for converting various medical, labor
 
 ---
 
-## ⚙ Features
+## Features
 
 - Unit conversion for various lab/health metrics (e.g. chemical, weight, temperature, LDL, BMI)  
 - Responsive layout — mobile & desktop friendly  
@@ -30,7 +30,7 @@ ConvertLAB is a progresive web application for converting various medical, labor
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 
@@ -48,7 +48,7 @@ tsconfig.json          ── TypeScript configuration
 
 ---
 
-## 🛠 Installation & Setup
+## Installation & Setup
 
 ```bash
 git clone https://github.com/dBillionaire-Dev/ConvertLAB_v2.0.git
@@ -72,7 +72,7 @@ Visit `http://localhost:3000` (or whatever port your setup uses) to view.
 
 ---
 
-## ✅ How to Use
+## How to Use
 
 1. From the home page, select the conversion or calculator tool you want (e.g. BMI, temperature, chemical units, etc.).
 2. Input the value(s) to convert.
@@ -80,7 +80,7 @@ Visit `http://localhost:3000` (or whatever port your setup uses) to view.
 
 ---
 
-## 🔧 Future Improvements (Ideas)
+## Future Improvements (Ideas)
 
 * Add theme toggle (dark/light mode)
 * Add more unit types (e.g. more chemical units, more complex lab metrics)
@@ -90,17 +90,12 @@ Visit `http://localhost:3000` (or whatever port your setup uses) to view.
 
 ---
 
-## 🎯 Author
+## Author
 
 **dBillionaire-Dev**
 
 ---
 
-## 📞 Contact
+## Contact
 
-For issues or feature requests, open a GitHub issue in this repo or contact me via email / social profiles.
-
-```
-
-contentReference[oaicite:0]{index=0}
-```
+For issues or feature requests, open a GitHub issue in this repo or contact me via email / social profile
