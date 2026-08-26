@@ -1,0 +1,98 @@
+import { describe, expect, it } from "vitest"
+import { bmiCalculator, bsaCalculator, idealBodyWeightCalculator, bmrCalculator } from "./clinical"
+
+describe("bmiCalculator", () => {
+  it("computes a normal BMI", () => {
+    const result = bmiCalculator.calculate({ weight: 70, weightUnit: "kg", height: 175, heightUnit: "cm" })
+    expect(result.value).toBeCloseTo(22.9, 1)
+  })
+
+  it("classifies underweight, normal, overweight, and obese", () => {
+    const under = bmiCalculator.calculate({ weight: 45, weightUnit: "kg", height: 175, heightUnit: "cm" })
+    const normal = bmiCalculator.calculate({ weight: 70, weightUnit: "kg", height: 175, heightUnit: "cm" })
+    const over = bmiCalculator.calculate({ weight: 85, weightUnit: "kg", height: 175, heightUnit: "cm" })
+    const obese = bmiCalculator.calculate({ weight: 100, weightUnit: "kg", height: 175, heightUnit: "cm" })
+    expect(under.secondary?.[0].value).toBe("Underweight")
+    expect(normal.secondary?.[0].value).toBe("Normal weight")
+    expect(over.secondary?.[0].value).toBe("Overweight")
+    expect(obese.secondary?.[0].value).toBe("Obesity")
+  })
+
+  it("handles pound and inch units", () => {
+    const result = bmiCalculator.calculate({ weight: 154, weightUnit: "lb", height: 68.9, heightUnit: "in" })
+    expect(result.value).toBeCloseTo(22.9, 0)
+  })
+
+  it("throws for zero or negative weight/height", () => {
+    expect(() => bmiCalculator.calculate({ weight: 0, weightUnit: "kg", height: 175, heightUnit: "cm" })).toThrow()
+    expect(() => bmiCalculator.calculate({ weight: -70, weightUnit: "kg", height: 175, heightUnit: "cm" })).toThrow()
+    expect(() => bmiCalculator.calculate({ weight: 70, weightUnit: "kg", height: 0, heightUnit: "cm" })).toThrow()
+  })
+
+  it("throws for missing required inputs", () => {
+    expect(() => bmiCalculator.calculate({ weightUnit: "kg", height: 175, heightUnit: "cm" })).toThrow()
+  })
+
+  it("handles decimal values", () => {
+    const result = bmiCalculator.calculate({ weight: 68.4, weightUnit: "kg", height: 172.3, heightUnit: "cm" })
+    expect(result.value).toBeGreaterThan(0)
+  })
+})
+
+describe("bsaCalculator", () => {
+  it("computes BSA using the Mosteller formula", () => {
+    const result = bsaCalculator.calculate({ height: 180, weight: 80 })
+    expect(result.value).toBeCloseTo(Math.sqrt((180 * 80) / 3600), 2)
+  })
+
+  it("throws for zero or negative inputs", () => {
+    expect(() => bsaCalculator.calculate({ height: 0, weight: 80 })).toThrow()
+    expect(() => bsaCalculator.calculate({ height: 180, weight: -1 })).toThrow()
+  })
+
+  it("throws for missing inputs", () => {
+    expect(() => bsaCalculator.calculate({ height: 180 })).toThrow()
+  })
+})
+
+describe("idealBodyWeightCalculator", () => {
+  it("computes IBW for a male at exactly 5 feet (60 in)", () => {
+    const result = idealBodyWeightCalculator.calculate({ sex: "male", height: 152.4 })
+    expect(result.value).toBeCloseTo(50, 0)
+  })
+
+  it("computes IBW for a female", () => {
+    const result = idealBodyWeightCalculator.calculate({ sex: "female", height: 165 })
+    expect(result.value).toBeGreaterThan(0)
+  })
+
+  it("warns when height is below the formula's defined range", () => {
+    const result = idealBodyWeightCalculator.calculate({ sex: "male", height: 140 })
+    expect(result.warnings?.length).toBeGreaterThan(0)
+  })
+
+  it("throws for zero/negative height", () => {
+    expect(() => idealBodyWeightCalculator.calculate({ sex: "male", height: 0 })).toThrow()
+  })
+})
+
+describe("bmrCalculator", () => {
+  it("computes BMR for a male using Mifflin-St Jeor", () => {
+    const result = bmrCalculator.calculate({ sex: "male", weight: 70, height: 175, age: 30 })
+    expect(result.value).toBeCloseTo(10 * 70 + 6.25 * 175 - 5 * 30 + 5, 0)
+  })
+
+  it("computes BMR for a female using Mifflin-St Jeor", () => {
+    const result = bmrCalculator.calculate({ sex: "female", weight: 60, height: 165, age: 25 })
+    expect(result.value).toBeCloseTo(10 * 60 + 6.25 * 165 - 5 * 25 - 161, 0)
+  })
+
+  it("throws for zero/negative weight or height", () => {
+    expect(() => bmrCalculator.calculate({ sex: "male", weight: 0, height: 175, age: 30 })).toThrow()
+    expect(() => bmrCalculator.calculate({ sex: "male", weight: 70, height: -1, age: 30 })).toThrow()
+  })
+
+  it("throws for missing inputs", () => {
+    expect(() => bmrCalculator.calculate({ sex: "male", weight: 70, height: 175 })).toThrow()
+  })
+})

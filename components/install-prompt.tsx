@@ -73,7 +73,7 @@ export function InstallPrompt() {
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <h3 className="text-sm font-semibold text-gray-900 mb-1">Install ConvertLab CCU</h3>
-          <p className="text-xs text-gray-600 mb-3">Install this app for quick access to medical unit conversions</p>
+          <p className="text-xs text-gray-600 mb-3">Install this app for quick access and offline unit conversions</p>
           <div className="flex space-x-2">
             <Button size="sm" onClick={handleInstallClick} className="flex items-center">
               <Download className="h-4 w-4 mr-1" />

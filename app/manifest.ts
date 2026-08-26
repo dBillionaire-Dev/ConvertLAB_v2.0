@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ConvertLab CCU - Medical Unit Converter",
+    name: "ConvertLab CCU",
     short_name: "ConvertLab CCU",
     description: "A comprehensive medical and laboratory unit converter for healthcare professionals",
     start_url: "/",

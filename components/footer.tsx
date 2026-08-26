@@ -12,7 +12,7 @@ export function Footer() {
             <Code className="h-4 w-4" />
             <span>Developed by</span>
             <Link
-              href="https://nexdbillionairedev.vercel.app/"
+              href="https://nex.is-a.dev/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-400 hover:text-blue-300 transition-colors font-medium"
