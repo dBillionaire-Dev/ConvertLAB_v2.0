@@ -1,0 +1,61 @@
+"use client"
+
+import { PageContainer } from "@/components/page-container"
+import { AppearanceRadioGroup } from "@/components/theme-toggle"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/hooks/use-toast"
+import { clearHistory } from "@/lib/history/db"
+
+export default function SettingsPage() {
+  const { toast } = useToast()
+
+  return (
+    <PageContainer title="Settings" description="Appearance and local data preferences.">
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Appearance</CardTitle>
+            <CardDescription>Choose how ConvertLAB looks on this device.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AppearanceRadioGroup />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Local Data</CardTitle>
+            <CardDescription>
+              Favorites, recently used tools, and calculation history are stored only on this device, nothing is
+              sent to a server.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={async () => {
+                await clearHistory()
+                toast({ description: "Calculation history cleared." })
+              }}
+            >
+              Clear calculation history
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                localStorage.removeItem("convertlab:favorites")
+                localStorage.removeItem("convertlab:recently-used")
+                toast({ description: "Favorites and recently-used tools cleared." })
+              }}
+            >
+              Clear favorites & recently used
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </PageContainer>
+  )
+}
