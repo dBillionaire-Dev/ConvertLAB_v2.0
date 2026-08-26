@@ -7,9 +7,10 @@ export function generateStaticParams() {
   return calculators.map((c) => ({ category: c.category, id: c.id }))
 }
 
-export default function CalculatorPage({ params }: { params: { category: string; id: string } }) {
-  const definition = getCalculatorById(params.id)
-  if (!definition || definition.category !== params.category) notFound()
+export default async function CalculatorPage({ params }: { params: Promise<{ category: string; id: string }> }) {
+  const { category, id } = await params
+  const definition = getCalculatorById(id)
+  if (!definition || definition.category !== category) notFound()
 
   return (
     <PageContainer>

@@ -10,11 +10,24 @@ export function generateStaticParams() {
   return calculatorCategories.map((c) => ({ category: c.id }))
 }
 
-export default function CalculatorCategoryPage({ params }: { params: { category: string } }) {
-  const category = calculatorCategories.find((c) => c.id === params.category)
-  if (!category) notFound()
+export default async function CalculatorCategoryPage({
+  params,
+}: {
+  params: Promise<{ category: string }>
+}) {
+  const { category: categoryParam } = await params
 
-  const tools = getCalculatorsByCategory(params.category as CalculatorGroup)
+  const category = calculatorCategories.find(
+    (c) => c.id === categoryParam
+  )
+
+  if (!category) {
+    notFound()
+  }
+
+  const tools = getCalculatorsByCategory(
+    categoryParam as CalculatorGroup
+  )
 
   return (
     <PageContainer title={category.label} description={`${tools.length} calculator${tools.length === 1 ? "" : "s"}`}>
