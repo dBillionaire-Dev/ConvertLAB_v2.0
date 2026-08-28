@@ -19,14 +19,13 @@ import {
   calciumPhosphateProductCalculator,
 } from "./definitions/chemistry"
 import {
-  mcvCalculator,
-  mchCalculator,
-  mchcCalculator,
+  redCellIndicesCalculator,
   absoluteCellCountCalculator,
   correctedWbcCalculator,
 } from "./definitions/hematology"
 import { molarityCalculator, normalityCalculator } from "./definitions/lab-solutions"
 import { cfuCalculator, dilutionFactorCalculator, concentrationAfterDilutionCalculator } from "./definitions/microbiology"
+import { RedCellIndicesCalculator } from "@/components/hematology/red-cell-indices-calculator"
 
 export const calculators: CalculatorDefinition[] = [
   bmiCalculator,
@@ -45,9 +44,7 @@ export const calculators: CalculatorDefinition[] = [
   correctedCalciumCalculator,
   totalHdlRatioCalculator,
   calciumPhosphateProductCalculator,
-  mcvCalculator,
-  mchCalculator,
-  mchcCalculator,
+  redCellIndicesCalculator,
   absoluteCellCountCalculator,
   correctedWbcCalculator,
   molarityCalculator,

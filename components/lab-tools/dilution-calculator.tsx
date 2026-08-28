@@ -10,10 +10,10 @@ type FieldId = "c1" | "v1" | "c2" | "v2"
 
 export function DilutionCalculator() {
   const [values, setValues] = useState<Record<FieldId, string>>({
-    c1: "10",
+    c1: "",
     v1: "",
-    c2: "1",
-    v2: "500",
+    c2: "",
+    v2: "",
   })
 
   const parsed = useMemo(() => {

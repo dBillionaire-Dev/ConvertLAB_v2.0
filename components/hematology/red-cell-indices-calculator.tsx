@@ -21,9 +21,9 @@ interface IndexResult {
 }
 
 export function RedCellIndicesCalculator() {
-  const [hgb, setHgb] = useState("14")
-  const [hct, setHct] = useState("42")
-  const [rbc, setRbc] = useState("4.8")
+  const [hgb, setHgb] = useState("")
+  const [hct, setHct] = useState("")
+  const [rbc, setRbc] = useState("")
   const [results, setResults] = useState<IndexResult[] | null>(null)
   const { toast } = useToast()
   const { record } = useHistory()
@@ -92,21 +92,21 @@ export function RedCellIndicesCalculator() {
             <div className="space-y-1.5">
               <Label htmlFor="hgb">Hemoglobin</Label>
               <div className="relative">
-                <Input id="hgb" type="number" inputMode="decimal" step="0.1" value={hgb} onChange={(e) => setHgb(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCalculate()} className="pr-12" />
+                <Input id="hgb" type="number" inputMode="decimal" step="0.1" placeholder="14" value={hgb} onChange={(e) => setHgb(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCalculate()} className="pr-12" />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">g/dL</span>
               </div>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="hct">Hematocrit</Label>
               <div className="relative">
-                <Input id="hct" type="number" inputMode="decimal" step="0.1" value={hct} onChange={(e) => setHct(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCalculate()} className="pr-8" />
+                <Input id="hct" type="number" inputMode="decimal" step="0.1" placeholder="42" value={hct} onChange={(e) => setHct(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCalculate()} className="pr-8" />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
               </div>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="rbc">RBC count</Label>
               <div className="relative">
-                <Input id="rbc" type="number" inputMode="decimal" step="0.01" value={rbc} onChange={(e) => setRbc(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCalculate()} className="pr-24" />
+                <Input id="rbc" type="number" inputMode="decimal" step="0.01" placeholder="4.8" value={rbc} onChange={(e) => setRbc(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCalculate()} className="pr-24" />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">million/µL</span>
               </div>
             </div>

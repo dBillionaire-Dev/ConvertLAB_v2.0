@@ -19,11 +19,11 @@ type Direction = "mass-to-volume" | "volume-to-mass"
 export function MassVolumeConverter() {
   const [direction, setDirection] = useState<Direction>("mass-to-volume")
   const [substanceId, setSubstanceId] = useState("water")
-  const [inputValue, setInputValue] = useState("100")
+  const [inputValue, setInputValue] = useState("")
   const [massUnit, setMassUnit] = useState("g")
   const [volumeUnit, setVolumeUnit] = useState("mL")
   const [useCustomDensity, setUseCustomDensity] = useState(false)
-  const [customDensity, setCustomDensity] = useState("1.000")
+  const [customDensity, setCustomDensity] = useState("")
 
   const substance = substances.find((s) => s.id === substanceId)
   const density = useCustomDensity ? Number.parseFloat(customDensity) : substance?.density.value
@@ -123,7 +123,7 @@ export function MassVolumeConverter() {
 
         <div className="space-y-1.5">
           <Label>{inputLabel}</Label>
-          <Input type="number" inputMode="decimal" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+          <Input type="number" inputMode="decimal" placeholder="100" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
         </div>
 
         <div className="flex items-center gap-2">
@@ -140,18 +140,18 @@ export function MassVolumeConverter() {
         {useCustomDensity ? (
           <div className="space-y-1.5 max-w-[200px]">
             <Label>Density (g/mL)</Label>
-            <Input type="number" inputMode="decimal" step="0.001" value={customDensity} onChange={(e) => setCustomDensity(e.target.value)} />
+            <Input type="number" inputMode="decimal" step="0.001" placeholder="1.000" value={customDensity} onChange={(e) => setCustomDensity(e.target.value)} />
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">
-            Density source: standard reference ({density ?? "—"} g/mL)
+            Density source: standard reference ({density ?? ""} g/mL)
           </p>
         )}
 
         <div className="rounded-md border bg-muted p-4">
           <p className="text-xs text-muted-foreground mb-1">Result</p>
           <p className="text-2xl font-bold">
-            {result !== null ? `${Number(result.toFixed(6))} ${outputUnit}` : density ? "—" : "Mass ↔ Volume requires density."}
+            {result !== null ? `${Number(result.toFixed(6))} ${outputUnit}` : density ? "" : "Mass ↔ Volume requires density."}
           </p>
         </div>
 

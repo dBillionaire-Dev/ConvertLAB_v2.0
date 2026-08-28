@@ -8,9 +8,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 
 export function SerialDilutionCalculator() {
-  const [initial, setInitial] = useState("10")
-  const [factor, setFactor] = useState("10")
-  const [steps, setSteps] = useState("3")
+  const [initial, setInitial] = useState("")
+  const [factor, setFactor] = useState("")
+  const [steps, setSteps] = useState("")
 
   const result = useMemo(() => {
     const initialValue = Number.parseFloat(initial)
@@ -42,7 +42,7 @@ export function SerialDilutionCalculator() {
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="space-y-1.5">
             <Label htmlFor="initial">Initial concentration</Label>
-            <Input id="initial" type="number" inputMode="decimal" value={initial} onChange={(e) => setInitial(e.target.value)} />
+            <Input id="initial" type="number" inputMode="decimal" placeholder="10" value={initial} onChange={(e) => setInitial(e.target.value)} />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="factor">Dilution factor (per step)</Label>
@@ -50,7 +50,7 @@ export function SerialDilutionCalculator() {
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="steps">Number of steps</Label>
-            <Input id="steps" type="number" inputMode="numeric" min={1} max={20} value={steps} onChange={(e) => setSteps(e.target.value)} />
+            <Input id="steps" type="number" inputMode="numeric" min={1} max={20} placeholder="3" value={steps} onChange={(e) => setSteps(e.target.value)} />
           </div>
         </div>
 

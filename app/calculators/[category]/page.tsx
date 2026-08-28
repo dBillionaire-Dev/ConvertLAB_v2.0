@@ -35,23 +35,11 @@ export default async function CalculatorCategoryPage({
   const allTools = getCalculatorsByCategory(categoryParam as CalculatorGroup)
   const isHematology = categoryParam === "hematology"
   const tools = isHematology ? allTools.filter((t) => !RED_CELL_INDEX_IDS.has(t.id)) : allTools
-  const toolCount = isHematology ? tools.length + 1 : tools.length
+  const toolCount = isHematology ? tools.length : tools.length
 
   return (
     <PageContainer title={category.label} description={`${toolCount} calculator${toolCount === 1 ? "" : "s"}`}>
       <div className="grid gap-3">
-        {isHematology ? (
-          <Link href="/calculators/hematology/red-cell-indices">
-            <Card className="hover:border-primary/50 transition-colors border-primary/30">
-              <CardHeader className="py-4">
-                <CardTitle className="text-base">Red Cell Indices</CardTitle>
-                <CardDescription className="mt-1">
-                  MCV, MCH, and MCHC together, enter Hemoglobin, Hematocrit, and RBC count once.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-        ) : null}
 
         {tools.map((tool) => (
           <Link key={tool.id} href={`/calculators/${category.id}/${tool.id}`}>

@@ -45,7 +45,7 @@ export function CalculatorField({ input, value, onChange, onEnter }: CalculatorF
           type="number"
           inputMode="decimal"
           value={value}
-          placeholder={input.placeholder}
+          placeholder={input.placeholder ?? (input.defaultValue !== undefined ? String(input.defaultValue) : undefined)}
           min={input.min}
           max={input.max}
           step={input.step ?? "any"}

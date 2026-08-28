@@ -14,9 +14,9 @@ type Direction = "mass-to-molar" | "molar-to-mass"
 export function MolarMassConverter() {
   const [analyteId, setAnalyteId] = useState("glucose")
   const [direction, setDirection] = useState<Direction>("mass-to-molar")
-  const [value, setValue] = useState("100")
+  const [value, setValue] = useState("")
   const [useCustomMw, setUseCustomMw] = useState(false)
-  const [customMw, setCustomMw] = useState("180.16")
+  const [customMw, setCustomMw] = useState("")
 
   const analyte = getAnalyte(analyteId)
   const mw = useCustomMw ? Number.parseFloat(customMw) : analyte?.molecularWeight
@@ -71,7 +71,7 @@ export function MolarMassConverter() {
 
         <div className="space-y-1.5">
           <Label>{direction === "mass-to-molar" ? "Concentration (mg/dL)" : "Concentration (mmol/L)"}</Label>
-          <Input type="number" inputMode="decimal" value={value} onChange={(e) => setValue(e.target.value)} />
+          <Input type="number" inputMode="decimal" placeholder="100" value={value} onChange={(e) => setValue(e.target.value)} />
         </div>
 
         <div className="flex items-center gap-2">
@@ -84,16 +84,16 @@ export function MolarMassConverter() {
         {useCustomMw ? (
           <div className="space-y-1.5 max-w-[200px]">
             <Label>Molecular weight (g/mol)</Label>
-            <Input type="number" inputMode="decimal" step="0.01" value={customMw} onChange={(e) => setCustomMw(e.target.value)} />
+            <Input type="number" inputMode="decimal" step="0.01" placeholder={analyte ? String(analyte.molecularWeight) : "180.16"} value={customMw} onChange={(e) => setCustomMw(e.target.value)} />
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">Molecular weight: {mw ?? "—"} g/mol</p>
+          <p className="text-sm text-muted-foreground">Molecular weight: {mw ?? ""} g/mol</p>
         )}
 
         <div className="rounded-md border bg-muted p-4">
           <p className="text-xs text-muted-foreground mb-1">Result</p>
           <p className="text-2xl font-bold">
-            {result !== null ? `${Number(result.toFixed(4))} ${direction === "mass-to-molar" ? "mmol/L" : "mg/dL"}` : "—"}
+            {result !== null ? `${Number(result.toFixed(4))} ${direction === "mass-to-molar" ? "mmol/L" : "mg/dL"}` : ""}
           </p>
         </div>
         <p className="text-xs text-muted-foreground">{LAB_PREP_DISCLAIMER}</p>

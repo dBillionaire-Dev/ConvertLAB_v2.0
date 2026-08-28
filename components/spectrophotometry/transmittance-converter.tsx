@@ -12,7 +12,7 @@ type Direction = "a-to-t" | "t-to-a"
 
 export function TransmittanceConverter() {
   const [direction, setDirection] = useState<Direction>("t-to-a")
-  const [value, setValue] = useState("50")
+  const [value, setValue] = useState("")
 
   const result = useMemo(() => {
     const v = Number.parseFloat(value)
@@ -47,7 +47,7 @@ export function TransmittanceConverter() {
 
         <div className="space-y-1.5 max-w-[200px]">
           <Label>{direction === "t-to-a" ? "%Transmittance" : "Absorbance"}</Label>
-          <Input type="number" inputMode="decimal" value={value} onChange={(e) => setValue(e.target.value)} />
+          <Input type="number" inputMode="decimal" placeholder={direction === "t-to-a" ? "50" : "0.301"} value={value} onChange={(e) => setValue(e.target.value)} />
         </div>
 
         <div className="rounded-md border bg-muted p-4">
