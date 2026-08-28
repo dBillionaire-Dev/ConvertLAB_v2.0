@@ -86,6 +86,113 @@ export const mchcCalculator: CalculatorDefinition = {
   },
 }
 
+export const redCellIndicesCalculator: CalculatorDefinition = {
+  id: "red-cell-indices",
+  name: "Red Cell Indices",
+  shortName: "MCV / MCH / MCHC",
+  category: "hematology",
+  description:
+    "Calculates mean corpuscular volume (MCV), mean corpuscular hemoglobin (MCH), and mean corpuscular hemoglobin concentration (MCHC) from RBC count, hemoglobin, and hematocrit.",
+  formula:
+    "MCV = (Hct x 10) / RBC | MCH = (Hgb x 10) / RBC | MCHC = (Hgb / Hct) x 100",
+  keywords: [
+    "red cell indices",
+    "mcv",
+    "mch",
+    "mchc",
+    "mean corpuscular volume",
+    "mean corpuscular hemoglobin",
+    "mean corpuscular hemoglobin concentration",
+    "erythrocyte indices",
+  ],
+  relatedTools: ["absolute-cell-count", "corrected-wbc"],
+
+  inputs: [
+    {
+      id: "hgb",
+      label: "Hemoglobin",
+      kind: "number",
+      unit: "g/dL",
+      min: 0,
+      step: 0.1,
+      defaultValue: 14,
+    },
+    {
+      id: "hct",
+      label: "Hematocrit",
+      kind: "number",
+      unit: "%",
+      min: 0,
+      step: 0.1,
+      defaultValue: 42,
+    },
+    {
+      id: "rbc",
+      label: "RBC Count",
+      kind: "number",
+      unit: "million/µL",
+      min: 0,
+      step: 0.01,
+      defaultValue: 4.8,
+    },
+  ],
+
+  calculate: (inputs) => {
+    const hgb = num(inputs, "hgb")
+    const hct = num(inputs, "hct")
+    const rbc = num(inputs, "rbc")
+
+    assertPositive(hgb, "Hemoglobin")
+    assertPositive(hct, "Hematocrit")
+    assertPositive(rbc, "RBC count")
+
+    const mcv = (hct * 10) / rbc
+    const mch = (hgb * 10) / rbc
+    const mchc = (hgb / hct) * 100
+
+    const roundedMcv = round(mcv, 1)
+    const roundedMch = round(mch, 1)
+    const roundedMchc = round(mchc, 1)
+
+    const warnings =
+      mchc > 38
+        ? [
+            "MCHC above ~36–38 g/dL is physiologically unusual and may indicate a specimen or analyzer artifact.",
+          ]
+        : undefined
+
+    return {
+      value: roundedMcv,
+      unit: "fL",
+      display: fmt(roundedMcv, 1, "fL"),
+
+      secondary: [
+        {
+          label: "MCH",
+          value: fmt(roundedMch, 1, "pg"),
+        },
+        {
+          label: "MCHC",
+          value: fmt(roundedMchc, 1, "g/dL"),
+        },
+      ],
+
+      calculationSteps: [
+        `MCV = (${hct} x 10) / ${rbc} = ${roundedMcv} fL`,
+        `MCH = (${hgb} x 10) / ${rbc} = ${roundedMch} pg`,
+        `MCHC = (${hgb} / ${hct}) x 100 = ${roundedMchc} g/dL`,
+      ],
+
+      warnings,
+    }
+  },
+
+  notes: [
+    "MCV, MCH, and MCHC are commonly reported red cell indices used to characterize erythrocytes.",
+    "Reference ranges vary by age, laboratory, analyzer, and clinical context; interpret results against your local reference interval.",
+  ],
+}
+
 const CELL_TYPES = [
   { value: "neutrophil", label: "Neutrophils (ANC)" },
   { value: "lymphocyte", label: "Lymphocytes (ALC)" },

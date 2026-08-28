@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { linearRegression, concentrationFromCalibration, SpectroError, type CalibrationPoint } from "@/lib/spectrophotometry"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
 
-const DEFAULT_POINTS = [
+const PLACEHOLDER_POINTS = [
   { concentration: "0", absorbance: "0.001" },
   { concentration: "10", absorbance: "0.120" },
   { concentration: "20", absorbance: "0.240" },
@@ -19,8 +19,8 @@ const DEFAULT_POINTS = [
 ]
 
 export function CalibrationCurveTool() {
-  const [rows, setRows] = useState(DEFAULT_POINTS)
-  const [unknownAbsorbance, setUnknownAbsorbance] = useState("0.300")
+  const [rows, setRows] = useState(PLACEHOLDER_POINTS.map(() => ({ concentration: "", absorbance: "" })))
+  const [unknownAbsorbance, setUnknownAbsorbance] = useState("")
 
   const points: CalibrationPoint[] = useMemo(
     () =>
@@ -74,6 +74,7 @@ export function CalibrationCurveTool() {
                 type="number"
                 inputMode="decimal"
                 value={row.concentration}
+                placeholder={PLACEHOLDER_POINTS[i]?.concentration}
                 onChange={(e) => updateRow(i, "concentration", e.target.value)}
                 aria-label={`Standard ${i + 1} concentration`}
               />
@@ -82,6 +83,7 @@ export function CalibrationCurveTool() {
                 inputMode="decimal"
                 step="0.001"
                 value={row.absorbance}
+                placeholder={PLACEHOLDER_POINTS[i]?.absorbance}
                 onChange={(e) => updateRow(i, "absorbance", e.target.value)}
                 aria-label={`Standard ${i + 1} absorbance`}
               />
@@ -130,7 +132,7 @@ export function CalibrationCurveTool() {
             <div className="grid gap-4 sm:grid-cols-2 items-end pt-2 border-t">
               <div className="space-y-1.5">
                 <Label htmlFor="unknown">Unknown's absorbance</Label>
-                <Input id="unknown" type="number" inputMode="decimal" step="0.001" value={unknownAbsorbance} onChange={(e) => setUnknownAbsorbance(e.target.value)} />
+                <Input id="unknown" type="number" inputMode="decimal" step="0.001" placeholder="0.300" value={unknownAbsorbance} onChange={(e) => setUnknownAbsorbance(e.target.value)} />
               </div>
               <div className="rounded-md border bg-muted p-3">
                 <p className="text-xs text-muted-foreground">Estimated concentration</p>

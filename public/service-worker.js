@@ -6,7 +6,7 @@ const CACHE_VERSION = "v2"
 const SHELL_CACHE = `convertlab-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `convertlab-runtime-${CACHE_VERSION}`
 
-const SHELL_URLS = ["/", "/manifest.json", "/favicon.ico", "/icons/icon-192x192.png", "/icons/icon-512x512.png"]
+const SHELL_URLS = ["/", "/manifest.webmanifest", "/favicon.ico", "/icon-192x192.png", "/icon-512x512.png"]
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

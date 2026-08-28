@@ -13,19 +13,19 @@ import { useToast } from "@/hooks/use-toast"
 import { recordUsage } from "@/lib/recently-used"
 
 export function ConversionRunner({ category }: { category: ConversionCategory }) {
-  const [value, setValue] = useState("1")
+  const [value, setValue] = useState("")
   const [fromId, setFromId] = useState(category.units[0]?.id ?? "")
   const [toId, setToId] = useState(category.units[1]?.id ?? category.units[0]?.id ?? "")
   const { toast } = useToast()
 
   const result = useMemo(() => {
     const numeric = Number.parseFloat(value)
-    if (!Number.isFinite(numeric)) return { display: "-", error: null as string | null }
+    if (!Number.isFinite(numeric)) return { display: "", error: null as string | null }
     try {
       const converted = convert(category, numeric, fromId, toId)
       return { display: formatNumber(converted), error: null as string | null }
     } catch (err) {
-      return { display: "-", error: err instanceof ConversionError ? err.message : "Conversion error" }
+      return { display: "", error: err instanceof ConversionError ? err.message : "Conversion error" }
     }
   }, [value, fromId, toId, category])
 
@@ -62,6 +62,7 @@ export function ConversionRunner({ category }: { category: ConversionCategory })
                 type="number"
                 inputMode="decimal"
                 value={value}
+                placeholder="1"
                 onChange={(e) => setValue(e.target.value)}
                 className="flex-1"
               />

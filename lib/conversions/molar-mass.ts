@@ -5,7 +5,7 @@ export interface Analyte {
 }
 
 export const analytes: Analyte[] = [
-  { id: "glucose", name: "Glucose", molecularWeight: 180.156 },
+  { id: "glucose", name: "Glucose", molecularWeight: 180.00 },
   { id: "urea", name: "Urea", molecularWeight: 60.06 },
   { id: "creatinine", name: "Creatinine", molecularWeight: 113.12 },
   { id: "cholesterol", name: "Cholesterol", molecularWeight: 386.65 },

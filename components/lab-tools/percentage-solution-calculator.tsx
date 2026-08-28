@@ -23,7 +23,7 @@ const MODE_LABELS: Record<Mode, { title: string; amountUnit: string; solutionUni
 
 export function PercentageSolutionCalculator() {
   const [mode, setMode] = useState<Mode>("wv")
-  const [percent, setPercent] = useState("0.9")
+  const [percent, setPercent] = useState("")
 
   const meta = MODE_LABELS[mode]
 
@@ -64,7 +64,7 @@ export function PercentageSolutionCalculator() {
         <div className="space-y-1.5 max-w-[200px]">
           <Label htmlFor="percent">Percentage</Label>
           <div className="relative">
-            <Input id="percent" type="number" inputMode="decimal" step="0.01" value={percent} onChange={(e) => setPercent(e.target.value)} className="pr-8" />
+            <Input id="percent" type="number" inputMode="decimal" step="0.01" placeholder="0.9" value={percent} onChange={(e) => setPercent(e.target.value)} className="pr-8" />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">%</span>
           </div>
         </div>

@@ -20,11 +20,18 @@ const FIELD_LABELS: Record<SolveFor, string> = {
 export function BeerLambertCalculator() {
   const [solveFor, setSolveFor] = useState<SolveFor>("concentration")
   const [values, setValues] = useState<Record<SolveFor, string>>({
+    absorbance: "",
+    epsilon: "",
+    pathLength: "",
+    concentration: "",
+  })
+
+  const PLACEHOLDERS: Record<SolveFor, string> = {
     absorbance: "0.5",
     epsilon: "5000",
     pathLength: "1",
-    concentration: "",
-  })
+    concentration: "0.0001",
+  }
 
   const otherFields = (Object.keys(FIELD_LABELS) as SolveFor[]).filter((f) => f !== solveFor)
 
@@ -77,6 +84,7 @@ export function BeerLambertCalculator() {
                 type="number"
                 inputMode="decimal"
                 value={values[field]}
+                placeholder={PLACEHOLDERS[field]}
                 onChange={(e) => setValues((prev) => ({ ...prev, [field]: e.target.value }))}
               />
             </div>

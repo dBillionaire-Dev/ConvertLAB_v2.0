@@ -21,7 +21,10 @@ function defaultValues(def: CalculatorDefinition | undefined): Record<string, st
   if (!def) return {}
   const values: Record<string, string> = {}
   for (const input of def.inputs) {
-    values[input.id] = input.defaultValue !== undefined ? String(input.defaultValue) : ""
+    // Select inputs need a real pre-selected value (there's no equivalent of a
+    // placeholder for a dropdown). Number inputs start empty — their
+    // defaultValue is shown as a placeholder hint instead (see CalculatorField).
+    values[input.id] = input.kind === "select" && input.defaultValue !== undefined ? String(input.defaultValue) : ""
   }
   return values
 }
