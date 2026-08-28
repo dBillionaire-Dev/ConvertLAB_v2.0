@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Calculator, ArrowLeftRight, Star, History, Settings } from "lucide-react"
+import { Calculator, ArrowLeftRight, FlaskConical, Star, History, Settings } from "lucide-react"
 import {
   CommandDialog,
   CommandEmpty,
@@ -51,8 +51,10 @@ export function CommandPalette() {
               <CommandItem key={`${r.type}-${r.id}`} value={`${r.title} ${r.id}`} onSelect={() => go(r.href)}>
                 {r.type === "calculator" ? (
                   <Calculator className="mr-2 h-4 w-4" />
-                ) : (
+                ) : r.type === "conversion" ? (
                   <ArrowLeftRight className="mr-2 h-4 w-4" />
+                ) : (
+                  <FlaskConical className="mr-2 h-4 w-4" />
                 )}
                 <span>{r.title}</span>
                 <span className="ml-auto text-xs text-muted-foreground">{r.subtitle}</span>

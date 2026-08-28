@@ -1,8 +1,8 @@
-const MESSAGE = "App currently under maintenance & upgrade by Nezer Ekunke. You may notice some changes, please confirm values manually before proceeding."
+const MESSAGE = "App under maintenance & upgrade by Nezer Ekunke. You may notice some changes, please confirm your values manually before proceeding."
 
 export function MaintenanceBanner() {
   return (
-    <div className="bg-blue-600 text-white py-1.5 text-sm">
+    <div className="bg-blue-600 text-white py-1.5 text-sm print:hidden">
       <span className="sr-only" role="status">
         {MESSAGE}
       </span>

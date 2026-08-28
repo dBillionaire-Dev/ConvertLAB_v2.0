@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { beerLambert, SpectroError } from "@/lib/spectrophotometry"
+import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
 
 type SolveFor = "absorbance" | "epsilon" | "pathLength" | "concentration"
 
@@ -48,7 +49,7 @@ export function BeerLambertCalculator() {
     <Card>
       <CardHeader>
         <CardTitle>Beer-Lambert Law</CardTitle>
-        <CardDescription>A = εbc. Choose the quantity to solve for.</CardDescription>
+        <CardDescription>A = εbc, choose the quantity to solve for.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-1.5 max-w-sm">
@@ -88,6 +89,7 @@ export function BeerLambertCalculator() {
             {result.error ? <span className="text-sm font-normal text-destructive">{result.error}</span> : result.value !== null ? Number(result.value.toPrecision(6)) : "—"}
           </p>
         </div>
+        <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>
       </CardContent>
     </Card>
   )

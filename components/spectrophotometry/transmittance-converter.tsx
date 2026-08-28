@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { absorbanceFromTransmittance, transmittanceFromAbsorbance, SpectroError } from "@/lib/spectrophotometry"
+import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
 
 type Direction = "a-to-t" | "t-to-a"
 
@@ -61,6 +62,7 @@ export function TransmittanceConverter() {
             )}
           </p>
         </div>
+        <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>
       </CardContent>
     </Card>
   )

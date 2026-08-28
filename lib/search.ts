@@ -1,12 +1,13 @@
 import { calculators } from "./calculators/registry"
 import { conversionCategories } from "./conversions/registry"
+import { labTools } from "./lab-tools-registry"
 
 export interface SearchResult {
   id: string
   title: string
   subtitle: string
   href: string
-  type: "calculator" | "conversion"
+  type: "calculator" | "conversion" | "tool"
 }
 
 export function globalSearch(query: string): SearchResult[] {
@@ -23,7 +24,7 @@ export function globalSearch(query: string): SearchResult[] {
       title: c.name,
       subtitle: c.isEstimator ? "Estimator" : "Calculator",
       href: `/calculators/${c.category}/${c.id}`,
-      type: "calculator",
+      type: "calculator" as const,
     }))
 
   const conversionResults: SearchResult[] = conversionCategories
@@ -36,8 +37,21 @@ export function globalSearch(query: string): SearchResult[] {
       title: cat.name,
       subtitle: "Conversion",
       href: `/conversions/${cat.id}`,
-      type: "conversion",
+      type: "conversion" as const,
     }))
 
-  return [...calcResults, ...conversionResults]
+  const toolResults: SearchResult[] = labTools
+    .filter((tool) => {
+      const haystack = [tool.name, tool.description, ...(tool.keywords ?? [])].join(" ").toLowerCase()
+      return haystack.includes(q)
+    })
+    .map((tool) => ({
+      id: tool.id,
+      title: tool.name,
+      subtitle: "Lab Tool",
+      href: tool.href,
+      type: "tool" as const,
+    }))
+
+  return [...calcResults, ...conversionResults, ...toolResults]
 }

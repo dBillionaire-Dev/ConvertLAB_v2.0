@@ -11,7 +11,7 @@ export function Header({ onOpenSearch }: { onOpenSearch?: () => void }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="border-b-2 border-blue-600 dark:border-blue-500 bg-background sticky top-0 z-40">
+    <header className="border-b-2 border-blue-600 dark:border-blue-500 bg-background sticky top-0 z-40 print:hidden">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 gap-4">
           <Link href="/" className="flex items-center gap-2 shrink-0">

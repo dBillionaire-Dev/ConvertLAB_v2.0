@@ -9,6 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { substances } from "@/lib/conversions/substances"
 import { massToVolume, volumeToMass } from "@/lib/conversions/density"
+import { convert } from "@/lib/conversions/engine"
+import { massConversion } from "@/lib/conversions/data/mass"
+import { volumeConversion } from "@/lib/conversions/data/volume"
+import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 
 type Direction = "mass-to-volume" | "volume-to-mass"
 
@@ -16,6 +20,8 @@ export function MassVolumeConverter() {
   const [direction, setDirection] = useState<Direction>("mass-to-volume")
   const [substanceId, setSubstanceId] = useState("water")
   const [inputValue, setInputValue] = useState("100")
+  const [massUnit, setMassUnit] = useState("g")
+  const [volumeUnit, setVolumeUnit] = useState("mL")
   const [useCustomDensity, setUseCustomDensity] = useState(false)
   const [customDensity, setCustomDensity] = useState("1.000")
 
@@ -25,8 +31,23 @@ export function MassVolumeConverter() {
   const result = useMemo(() => {
     const value = Number.parseFloat(inputValue)
     if (!Number.isFinite(value) || !density || density <= 0) return null
-    return direction === "mass-to-volume" ? massToVolume(value, density) : volumeToMass(value, density)
-  }, [inputValue, density, direction])
+
+    try {
+      if (direction === "mass-to-volume") {
+        const grams = convert(massConversion, value, massUnit, "g")
+        const mL = massToVolume(grams, density)
+        return convert(volumeConversion, mL, "mL", volumeUnit)
+      }
+      const mL = convert(volumeConversion, value, volumeUnit, "mL")
+      const grams = volumeToMass(mL, density)
+      return convert(massConversion, grams, "g", massUnit)
+    } catch {
+      return null
+    }
+  }, [inputValue, density, direction, massUnit, volumeUnit])
+
+  const inputLabel = direction === "mass-to-volume" ? `Mass (${massUnit})` : `Volume (${volumeUnit})`
+  const outputUnit = direction === "mass-to-volume" ? volumeUnit : massUnit
 
   return (
     <Card>
@@ -61,15 +82,47 @@ export function MassVolumeConverter() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="mass-to-volume">Mass (g) → Volume (mL)</SelectItem>
-                <SelectItem value="volume-to-mass">Volume (mL) → Mass (g)</SelectItem>
+                <SelectItem value="mass-to-volume">Mass → Volume</SelectItem>
+                <SelectItem value="volume-to-mass">Volume → Mass</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Mass unit</Label>
+            <Select value={massUnit} onValueChange={setMassUnit}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {massConversion.units.map((u) => (
+                  <SelectItem key={u.id} value={u.id}>
+                    {u.name} ({u.symbol})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label>Volume unit</Label>
+            <Select value={volumeUnit} onValueChange={setVolumeUnit}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {volumeConversion.units.map((u) => (
+                  <SelectItem key={u.id} value={u.id}>
+                    {u.name} ({u.symbol})
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <Label>{direction === "mass-to-volume" ? "Mass (g)" : "Volume (mL)"}</Label>
+          <Label>{inputLabel}</Label>
           <Input type="number" inputMode="decimal" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
         </div>
 
@@ -91,14 +144,14 @@ export function MassVolumeConverter() {
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">
-            Density source: standard reference ({density ?? "-"} g/mL)
+            Density source: standard reference ({density ?? "—"} g/mL)
           </p>
         )}
 
         <div className="rounded-md border bg-muted p-4">
           <p className="text-xs text-muted-foreground mb-1">Result</p>
           <p className="text-2xl font-bold">
-            {result !== null ? `${Number(result.toFixed(4))} ${direction === "mass-to-volume" ? "mL" : "g"}` : "—"}
+            {result !== null ? `${Number(result.toFixed(6))} ${outputUnit}` : density ? "—" : "Mass ↔ Volume requires density."}
           </p>
         </div>
 
@@ -109,6 +162,7 @@ export function MassVolumeConverter() {
             {substance?.density.approximate && substance.density.notes ? ` ${substance.density.notes}` : ""}
           </span>
         </div>
+        <p className="text-xs text-muted-foreground">{LAB_PREP_DISCLAIMER}</p>
       </CardContent>
     </Card>
   )

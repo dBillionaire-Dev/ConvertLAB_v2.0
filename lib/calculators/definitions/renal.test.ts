@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { creatinineClearanceCalculator, egfrCalculator } from "./renal"
+import { creatinineClearanceCalculator, egfrCalculator, bunCreatinineRatioCalculator } from "./renal"
 
 describe("creatinineClearanceCalculator", () => {
   it("computes CrCl for a male", () => {
@@ -63,5 +63,41 @@ describe("egfrCalculator", () => {
   it("handles decimal creatinine values", () => {
     const result = egfrCalculator.calculate({ age: 45, creatinine: 0.83, sex: "female" })
     expect(Number.isFinite(result.value)).toBe(true)
+  })
+})
+
+describe("bunCreatinineRatioCalculator", () => {
+  it("computes the BUN/creatinine ratio", () => {
+    const result = bunCreatinineRatioCalculator.calculate({ bun: 14, creatinine: 1.0 })
+    expect(result.value).toBe(14)
+  })
+
+  it("interprets a high ratio", () => {
+    const result = bunCreatinineRatioCalculator.calculate({ bun: 40, creatinine: 1.0 })
+    expect(result.interpretation).toContain("Elevated")
+  })
+
+  it("interprets a low ratio", () => {
+    const result = bunCreatinineRatioCalculator.calculate({ bun: 5, creatinine: 1.0 })
+    expect(result.interpretation).toContain("Low")
+  })
+
+  it("interprets a normal ratio", () => {
+    const result = bunCreatinineRatioCalculator.calculate({ bun: 14, creatinine: 1.0 })
+    expect(result.interpretation).toContain("typical")
+  })
+
+  it("throws for zero/negative creatinine", () => {
+    expect(() => bunCreatinineRatioCalculator.calculate({ bun: 14, creatinine: 0 })).toThrow()
+    expect(() => bunCreatinineRatioCalculator.calculate({ bun: 14, creatinine: -1 })).toThrow()
+  })
+
+  it("throws for negative BUN", () => {
+    expect(() => bunCreatinineRatioCalculator.calculate({ bun: -5, creatinine: 1.0 })).toThrow()
+  })
+
+  it("handles zero BUN (a legitimate value)", () => {
+    const result = bunCreatinineRatioCalculator.calculate({ bun: 0, creatinine: 1.0 })
+    expect(result.value).toBe(0)
   })
 })

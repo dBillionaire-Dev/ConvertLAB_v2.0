@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { bmiCalculator, bsaCalculator, idealBodyWeightCalculator, bmrCalculator } from "./clinical"
+import { bmiCalculator, bsaCalculator, idealBodyWeightCalculator, bmrCalculator, adjustedBodyWeightCalculator, estimatedCalorieRequirementCalculator } from "./clinical"
 
 describe("bmiCalculator", () => {
   it("computes a normal BMI", () => {
@@ -94,5 +94,68 @@ describe("bmrCalculator", () => {
 
   it("throws for missing inputs", () => {
     expect(() => bmrCalculator.calculate({ sex: "male", weight: 70, height: 175 })).toThrow()
+  })
+})
+
+describe("adjustedBodyWeightCalculator", () => {
+  it("computes adjusted body weight above IBW", () => {
+    const result = adjustedBodyWeightCalculator.calculate({ sex: "male", height: 175, actualWeight: 120 })
+    expect(result.value).toBeCloseTo(90.3, 1)
+    expect(result.secondary?.[0].label).toContain("Ideal body weight")
+  })
+
+  it("warns when actual weight is at or below IBW", () => {
+    const result = adjustedBodyWeightCalculator.calculate({ sex: "male", height: 175, actualWeight: 60 })
+    expect(result.warnings?.length).toBeGreaterThan(0)
+  })
+
+  it("throws for zero/negative height or actual weight", () => {
+    expect(() => adjustedBodyWeightCalculator.calculate({ sex: "male", height: 0, actualWeight: 100 })).toThrow()
+    expect(() => adjustedBodyWeightCalculator.calculate({ sex: "male", height: 175, actualWeight: -1 })).toThrow()
+  })
+})
+
+describe("estimatedCalorieRequirementCalculator", () => {
+  it("computes TDEE as BMR x activity factor", () => {
+    const result = estimatedCalorieRequirementCalculator.calculate({
+      sex: "male",
+      weight: 70,
+      height: 175,
+      age: 30,
+      activityLevel: "moderate",
+    })
+    const expectedBmr = 10 * 70 + 6.25 * 175 - 5 * 30 + 5
+    expect(result.value).toBeCloseTo(expectedBmr * 1.55, 0)
+    expect(result.secondary?.[0].label).toBe("BMR")
+  })
+
+  it("scales with activity level", () => {
+    const sedentary = estimatedCalorieRequirementCalculator.calculate({
+      sex: "female",
+      weight: 60,
+      height: 165,
+      age: 25,
+      activityLevel: "sedentary",
+    })
+    const active = estimatedCalorieRequirementCalculator.calculate({
+      sex: "female",
+      weight: 60,
+      height: 165,
+      age: 25,
+      activityLevel: "active",
+    })
+    expect(active.value as number).toBeGreaterThan(sedentary.value as number)
+  })
+
+  it("throws for an unrecognized activity level", () => {
+    expect(() =>
+      estimatedCalorieRequirementCalculator.calculate({ sex: "male", weight: 70, height: 175, age: 30, activityLevel: "bogus" }),
+    ).toThrow()
+  })
+
+  it("throws for zero/negative weight or height", () => {
+    expect(() =>
+      estimatedCalorieRequirementCalculator.calculate({ sex: "male", weight: 0, height: 175, age: 30, activityLevel: "sedentary" }),
+    ).toThrow()
   })
 })

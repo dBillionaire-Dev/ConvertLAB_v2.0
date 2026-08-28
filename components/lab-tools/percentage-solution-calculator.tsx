@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 
 /**
  * All three percentage types reduce to "amount of solute per 100 units of
@@ -93,6 +94,7 @@ export function PercentageSolutionCalculator() {
           For % w/w, the "per 100 g" and "mg/mL" figures assume solution density ≈ 1 g/mL unless you know the actual
           density — for precise work, use the Mass ↔ Volume converter with the correct substance density.
         </p>
+        <p className="text-xs text-muted-foreground">{LAB_PREP_DISCLAIMER}</p>
       </CardContent>
     </Card>
   )

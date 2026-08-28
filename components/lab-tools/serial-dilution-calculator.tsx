@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 
 export function SerialDilutionCalculator() {
   const [initial, setInitial] = useState("10")
@@ -90,6 +91,7 @@ export function SerialDilutionCalculator() {
         ) : (
           <p className="text-sm text-muted-foreground">Enter a positive dilution factor and 1-20 steps.</p>
         )}
+        <p className="text-xs text-muted-foreground">{LAB_PREP_DISCLAIMER}</p>
       </CardContent>
     </Card>
   )

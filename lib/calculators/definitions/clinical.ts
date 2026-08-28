@@ -128,7 +128,7 @@ export const idealBodyWeightCalculator: CalculatorDefinition = {
   isEstimator: true,
   formula: "Male: 50 + 2.3 x (height in inches - 60)\nFemale: 45.5 + 2.3 x (height in inches - 60)",
   keywords: ["ibw", "ideal body weight", "devine"],
-  relatedTools: ["bmi", "bsa"],
+  relatedTools: ["bmi", "bsa", "adjusted-body-weight"],
   inputs: [
     {
       id: "sex",
@@ -177,7 +177,7 @@ export const bmrCalculator: CalculatorDefinition = {
   isEstimator: true,
   formula: "Male: 10W + 6.25H - 5A + 5\nFemale: 10W + 6.25H - 5A - 161",
   keywords: ["bmr", "basal metabolic rate", "mifflin"],
-  relatedTools: ["bmi"],
+  relatedTools: ["bmi", "estimated-calorie-requirement"],
   inputs: [
     {
       id: "sex",
@@ -215,4 +215,129 @@ export const bmrCalculator: CalculatorDefinition = {
   },
   notes: ["Mifflin-St Jeor is generally considered more accurate than the older Harris-Benedict equation."],
   limitations: ["Does not account for body composition, medical conditions, or activity level (see TDEE)."],
+}
+
+export const adjustedBodyWeightCalculator: CalculatorDefinition = {
+  id: "adjusted-body-weight",
+  name: "Adjusted Body Weight",
+  shortName: "AdjBW",
+  category: "clinical",
+  description: "Estimates adjusted body weight for dosing in obese patients, using actual and ideal body weight.",
+  isEstimator: true,
+  formula: "AdjBW = IBW + 0.4 x (Actual Weight - IBW)",
+  keywords: ["adjusted body weight", "abw", "dosing weight", "obesity"],
+  relatedTools: ["ideal-body-weight", "bmi"],
+  inputs: [
+    {
+      id: "sex",
+      label: "Sex",
+      kind: "select",
+      options: [
+        { value: "male", label: "Male" },
+        { value: "female", label: "Female" },
+      ],
+      defaultValue: "male",
+    },
+    { id: "height", label: "Height", kind: "number", unit: "cm", min: 0, defaultValue: 170 },
+    { id: "actualWeight", label: "Actual weight", kind: "number", unit: "kg", min: 0, defaultValue: 100 },
+  ],
+  calculate: (inputs) => {
+    const sex = str(inputs, "sex")
+    const height = num(inputs, "height")
+    const actualWeight = num(inputs, "actualWeight")
+    assertPositive(height, "Height")
+    assertPositive(actualWeight, "Actual weight")
+
+    const heightInches = height / 2.54
+    const base = sex === "male" ? 50 : 45.5
+    const inchesOver5Feet = Math.max(heightInches - 60, 0)
+    const ibw = base + 2.3 * inchesOver5Feet
+
+    const adjBW = ibw + 0.4 * (actualWeight - ibw)
+    const rounded = round(adjBW, 1)
+
+    return {
+      value: rounded,
+      unit: "kg",
+      display: fmt(rounded, 1, "kg"),
+      secondary: [{ label: "Ideal body weight (Devine)", value: fmt(round(ibw, 1), 1, "kg") }],
+      calculationSteps: [`IBW = ${round(ibw, 1)} kg`, `${round(ibw, 1)} + 0.4 x (${actualWeight} - ${round(ibw, 1)})`],
+      warnings:
+        actualWeight <= ibw
+          ? ["Actual weight is at or below ideal body weight — adjusted body weight is typically only used when actual weight exceeds IBW (e.g. obesity)."]
+          : undefined,
+    }
+  },
+  notes: ["Commonly used for dosing certain medications (e.g. some antibiotics) in patients with actual weight well above ideal body weight."],
+  limitations: ["The 0.4 correction factor is a widely used convention, not a universally validated constant — follow your institution's dosing protocol."],
+}
+
+const ACTIVITY_MULTIPLIERS: { value: string; label: string; factor: number }[] = [
+  { value: "sedentary", label: "Sedentary (little or no exercise)", factor: 1.2 },
+  { value: "light", label: "Lightly active (1-3 days/week)", factor: 1.375 },
+  { value: "moderate", label: "Moderately active (3-5 days/week)", factor: 1.55 },
+  { value: "active", label: "Very active (6-7 days/week)", factor: 1.725 },
+  { value: "extra", label: "Extra active (physical job or 2x/day training)", factor: 1.9 },
+]
+
+export const estimatedCalorieRequirementCalculator: CalculatorDefinition = {
+  id: "estimated-calorie-requirement",
+  name: "Estimated Calorie Requirement (TDEE)",
+  shortName: "TDEE",
+  category: "clinical",
+  description: "Estimates total daily energy expenditure from BMR and activity level.",
+  isEstimator: true,
+  formula: "TDEE = BMR (Mifflin-St Jeor) x Activity Factor",
+  keywords: ["tdee", "calorie requirement", "energy expenditure", "activity factor"],
+  relatedTools: ["bmr", "bmi"],
+  inputs: [
+    {
+      id: "sex",
+      label: "Sex",
+      kind: "select",
+      options: [
+        { value: "male", label: "Male" },
+        { value: "female", label: "Female" },
+      ],
+      defaultValue: "male",
+    },
+    { id: "weight", label: "Weight", kind: "number", unit: "kg", min: 0, defaultValue: 70 },
+    { id: "height", label: "Height", kind: "number", unit: "cm", min: 0, defaultValue: 170 },
+    { id: "age", label: "Age", kind: "number", unit: "years", min: 0, defaultValue: 30 },
+    {
+      id: "activityLevel",
+      label: "Activity level",
+      kind: "select",
+      options: ACTIVITY_MULTIPLIERS.map((a) => ({ value: a.value, label: a.label })),
+      defaultValue: "sedentary",
+    },
+  ],
+  calculate: (inputs) => {
+    const sex = str(inputs, "sex")
+    const weight = num(inputs, "weight")
+    const height = num(inputs, "height")
+    const age = num(inputs, "age")
+    const activityLevel = str(inputs, "activityLevel")
+    assertPositive(weight, "Weight")
+    assertPositive(height, "Height")
+
+    const activity = ACTIVITY_MULTIPLIERS.find((a) => a.value === activityLevel)
+    if (!activity) throw new Error("Unknown activity level")
+
+    const base = 10 * weight + 6.25 * height - 5 * age
+    const bmr = sex === "male" ? base + 5 : base - 161
+    const tdee = bmr * activity.factor
+    const rounded = round(tdee, 0)
+
+    return {
+      value: rounded,
+      unit: "kcal/day",
+      display: fmt(rounded, 0, "kcal/day"),
+      secondary: [{ label: "BMR", value: fmt(round(bmr, 0), 0, "kcal/day") }],
+      calculationSteps: [`BMR = ${round(bmr, 0)} kcal/day`, `${round(bmr, 0)} x ${activity.factor} (${activity.label})`],
+      interpretation: "Approximate calories needed to maintain current weight at the selected activity level.",
+    }
+  },
+  notes: ["Activity multipliers are the standard Harris-Benedict/Mifflin activity factors; individual energy needs vary."],
+  limitations: ["Does not account for illness, injury, pregnancy, or significant body composition differences."],
 }

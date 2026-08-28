@@ -1,5 +1,5 @@
 import type { CalculatorDefinition } from "../types"
-import { num, str, assertPositive, round, fmt } from "../helpers"
+import { num, str, assertPositive, assertNonNegative, round, fmt } from "../helpers"
 
 export const creatinineClearanceCalculator: CalculatorDefinition = {
   id: "creatinine-clearance",
@@ -10,7 +10,7 @@ export const creatinineClearanceCalculator: CalculatorDefinition = {
   isEstimator: true,
   formula: "CrCl = [(140 - age) x weight(kg)] / (72 x Scr(mg/dL)) x (0.85 if female)",
   keywords: ["creatinine clearance", "crcl", "cockcroft-gault", "renal"],
-  relatedTools: ["egfr-ckd-epi"],
+  relatedTools: ["egfr-ckd-epi", "bun-creatinine-ratio"],
   inputs: [
     { id: "age", label: "Age", kind: "number", unit: "years", min: 0, defaultValue: 50 },
     { id: "weight", label: "Weight", kind: "number", unit: "kg", min: 0, defaultValue: 70 },
@@ -60,7 +60,7 @@ export const egfrCalculator: CalculatorDefinition = {
   isEstimator: true,
   formula: "eGFR = 142 x min(Scr/κ,1)^α x max(Scr/κ,1)^-1.200 x 0.9938^Age x (1.012 if female)",
   keywords: ["egfr", "gfr", "ckd-epi", "renal", "kidney"],
-  relatedTools: ["creatinine-clearance"],
+  relatedTools: ["creatinine-clearance", "bun-creatinine-ratio"],
   inputs: [
     { id: "age", label: "Age", kind: "number", unit: "years", min: 18, defaultValue: 50 },
     { id: "creatinine", label: "Serum Creatinine", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 1.0 },
@@ -115,4 +115,40 @@ export const egfrCalculator: CalculatorDefinition = {
     "Validated for adults 18 years and older.",
   ],
   limitations: ["Not valid for acute kidney injury, pregnancy, extremes of muscle mass, or pediatric patients."],
+}
+
+export const bunCreatinineRatioCalculator: CalculatorDefinition = {
+  id: "bun-creatinine-ratio",
+  name: "BUN/Creatinine Ratio",
+  shortName: "BUN/Cr",
+  category: "renal",
+  description: "Calculates the ratio of blood urea nitrogen to serum creatinine, both in mg/dL.",
+  formula: "BUN/Cr ratio = BUN (mg/dL) / Creatinine (mg/dL)",
+  keywords: ["bun", "creatinine ratio", "urea", "prerenal"],
+  relatedTools: ["creatinine-clearance", "egfr-ckd-epi"],
+  inputs: [
+    { id: "bun", label: "BUN", kind: "number", unit: "mg/dL", min: 0, step: 0.1, defaultValue: 14 },
+    { id: "creatinine", label: "Serum Creatinine", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 1.0 },
+  ],
+  calculate: (inputs) => {
+    const bun = num(inputs, "bun")
+    const creatinine = num(inputs, "creatinine")
+    assertNonNegative(bun, "BUN")
+    if (creatinine <= 0) throw new Error("Serum creatinine must be greater than zero")
+
+    const ratio = bun / creatinine
+    const rounded = round(ratio, 1)
+
+    let interpretation = "Within the typical 10:1-20:1 range."
+    if (ratio > 20) interpretation = "Elevated ratio — can suggest a prerenal cause (e.g. dehydration, GI bleed) or high protein intake."
+    else if (ratio < 10) interpretation = "Low ratio — can be seen with low protein intake, liver disease, or intrinsic renal causes."
+
+    return {
+      value: rounded,
+      display: fmt(rounded, 1, ":1"),
+      calculationSteps: [`${bun} / ${creatinine}`],
+      interpretation,
+    }
+  },
+  notes: ["Reference ranges vary by laboratory; this is a general guide, not a diagnostic threshold."],
 }

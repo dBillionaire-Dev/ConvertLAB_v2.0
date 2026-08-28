@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { ldlCalculator, nonHdlCalculator, vldlCalculator, anionGapCalculator, correctedCalciumCalculator } from "./chemistry"
+import { ldlCalculator, nonHdlCalculator, vldlCalculator, anionGapCalculator, correctedCalciumCalculator, totalHdlRatioCalculator, calciumPhosphateProductCalculator } from "./chemistry"
 
 describe("ldlCalculator", () => {
   it("computes LDL via the Friedewald equation (mg/dL)", () => {
@@ -92,5 +92,49 @@ describe("correctedCalciumCalculator", () => {
 
   it("throws for missing inputs", () => {
     expect(() => correctedCalciumCalculator.calculate({ calcium: 9 })).toThrow()
+  })
+})
+
+describe("totalHdlRatioCalculator", () => {
+  it("computes the ratio", () => {
+    const result = totalHdlRatioCalculator.calculate({ tc: 200, hdl: 50 })
+    expect(result.value).toBe(4)
+  })
+
+  it("flags high risk at or above 5:1", () => {
+    const result = totalHdlRatioCalculator.calculate({ tc: 200, hdl: 40 })
+    expect(result.interpretation).toContain("High risk")
+  })
+
+  it("flags desirable below 3.5:1", () => {
+    const result = totalHdlRatioCalculator.calculate({ tc: 150, hdl: 60 })
+    expect(result.interpretation).toContain("Desirable")
+  })
+
+  it("throws for zero/negative HDL", () => {
+    expect(() => totalHdlRatioCalculator.calculate({ tc: 200, hdl: 0 })).toThrow()
+    expect(() => totalHdlRatioCalculator.calculate({ tc: 200, hdl: -5 })).toThrow()
+  })
+})
+
+describe("calciumPhosphateProductCalculator", () => {
+  it("computes the product", () => {
+    const result = calciumPhosphateProductCalculator.calculate({ calcium: 9, phosphate: 4 })
+    expect(result.value).toBe(36)
+  })
+
+  it("warns above the 55 threshold", () => {
+    const result = calciumPhosphateProductCalculator.calculate({ calcium: 10, phosphate: 6 })
+    expect(result.warnings?.length).toBeGreaterThan(0)
+  })
+
+  it("does not warn below the threshold", () => {
+    const result = calciumPhosphateProductCalculator.calculate({ calcium: 9, phosphate: 4 })
+    expect(result.warnings).toBeUndefined()
+  })
+
+  it("handles zero values", () => {
+    const result = calciumPhosphateProductCalculator.calculate({ calcium: 0, phosphate: 4 })
+    expect(result.value).toBe(0)
   })
 })

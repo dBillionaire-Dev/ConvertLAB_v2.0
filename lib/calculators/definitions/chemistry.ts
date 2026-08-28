@@ -12,7 +12,7 @@ export const ldlCalculator: CalculatorDefinition = {
   isEstimator: true,
   formula: "LDL = TC - HDL - TG/5 (mg/dL) or TC - HDL - TG/2.2 (mmol/L)",
   keywords: ["ldl", "cholesterol", "friedewald", "lipid"],
-  relatedTools: ["non-hdl-cholesterol", "vldl-estimate"],
+  relatedTools: ["non-hdl-cholesterol", "vldl-estimate", "total-hdl-ratio"],
   inputs: [
     {
       id: "unit",
@@ -38,7 +38,7 @@ export const ldlCalculator: CalculatorDefinition = {
     if (tg > (unit === "mmol/L" ? 4.5 : 400)) {
       return {
         value: "N/A",
-        display: "Not valid, TG too high",
+        display: "Not valid — TG too high",
         warnings: [
           "The Friedewald equation is unreliable when triglycerides exceed ~400 mg/dL (4.5 mmol/L). Use direct LDL measurement instead.",
         ],
@@ -53,7 +53,7 @@ export const ldlCalculator: CalculatorDefinition = {
       unit,
       display: fmt(rounded, unit === "mmol/L" ? 2 : 1, unit),
       calculationSteps: [`${tc} - ${hdl} - (${tg} / ${divisor})`],
-      warnings: ldl < 0 ? ["Calculated LDL is negative, check input values."] : undefined,
+      warnings: ldl < 0 ? ["Calculated LDL is negative — check input values."] : undefined,
     }
   },
   notes: ["The Friedewald equation is an estimate, not a directly measured value."],
@@ -170,7 +170,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
   description: "Corrects total serum calcium for abnormal albumin concentration.",
   formula: "Corrected Ca (mg/dL) = Measured Ca + 0.8 x (4 - Albumin[g/dL])",
   keywords: ["calcium", "corrected calcium", "albumin"],
-  relatedTools: ["anion-gap"],
+  relatedTools: ["anion-gap", "calcium-phosphate-product"],
   inputs: [
     { id: "calcium", label: "Measured Calcium", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 9 },
     { id: "albumin", label: "Albumin", kind: "number", unit: "g/dL", min: 0, step: 0.1, defaultValue: 4 },
@@ -188,5 +188,70 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
       calculationSteps: [`${calcium} + 0.8 x (4 - ${albumin})`],
     }
   },
-  limitations: ["An approximation, ionized calcium measurement is more accurate when available, particularly in critical illness."],
+  limitations: ["An approximation — ionized calcium measurement is more accurate when available, particularly in critical illness."],
+}
+
+export const totalHdlRatioCalculator: CalculatorDefinition = {
+  id: "total-hdl-ratio",
+  name: "Total Cholesterol/HDL Ratio",
+  shortName: "TC/HDL",
+  category: "chemistry",
+  description: "Calculates the ratio of total cholesterol to HDL cholesterol, a cardiovascular risk indicator.",
+  formula: "TC/HDL ratio = Total Cholesterol / HDL",
+  keywords: ["cholesterol ratio", "tc/hdl", "cardiovascular risk", "lipid"],
+  relatedTools: ["ldl-friedewald", "non-hdl-cholesterol"],
+  inputs: [
+    { id: "tc", label: "Total Cholesterol", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 200 },
+    { id: "hdl", label: "HDL", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 50 },
+  ],
+  calculate: (inputs) => {
+    const tc = num(inputs, "tc")
+    const hdl = num(inputs, "hdl")
+    if (hdl <= 0) throw new Error("HDL must be greater than zero")
+
+    const ratio = tc / hdl
+    const rounded = round(ratio, 1)
+
+    let interpretation = "Desirable (below 3.5:1)."
+    if (ratio >= 5) interpretation = "High risk range (5:1 or above)."
+    else if (ratio >= 3.5) interpretation = "Borderline/moderate risk range (3.5:1-5:1)."
+
+    return {
+      value: rounded,
+      display: fmt(rounded, 1, ":1"),
+      calculationSteps: [`${tc} / ${hdl}`],
+      interpretation,
+    }
+  },
+  notes: ["General population thresholds are shown; individual cardiovascular risk depends on many additional factors."],
+}
+
+export const calciumPhosphateProductCalculator: CalculatorDefinition = {
+  id: "calcium-phosphate-product",
+  name: "Calcium-Phosphate Product",
+  shortName: "Ca x PO4",
+  category: "chemistry",
+  description: "Calculates the calcium-phosphate product, used to assess risk of soft tissue/vascular calcification (especially in CKD).",
+  formula: "Ca x PO4 product (mg²/dL²) = Calcium (mg/dL) x Phosphate (mg/dL)",
+  keywords: ["calcium phosphate product", "ckd-mbd", "vascular calcification"],
+  relatedTools: ["corrected-calcium"],
+  inputs: [
+    { id: "calcium", label: "Calcium", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 9 },
+    { id: "phosphate", label: "Phosphate", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 4 },
+  ],
+  calculate: (inputs) => {
+    const calcium = num(inputs, "calcium")
+    const phosphate = num(inputs, "phosphate")
+    const product = calcium * phosphate
+    const rounded = round(product, 1)
+
+    return {
+      value: rounded,
+      unit: "mg²/dL²",
+      display: fmt(rounded, 1, "mg²/dL²"),
+      calculationSteps: [`${calcium} x ${phosphate}`],
+      warnings: product > 55 ? ["Product above ~55 mg²/dL² is commonly cited as a threshold associated with increased calcification risk in CKD-MBD guidelines."] : undefined,
+    }
+  },
+  notes: ["Most relevant in the context of chronic kidney disease-mineral bone disorder (CKD-MBD) monitoring."],
 }

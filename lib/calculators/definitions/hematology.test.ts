@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { mcvCalculator, mchCalculator, mchcCalculator, absoluteCellCountCalculator } from "./hematology"
+import { mcvCalculator, mchCalculator, mchcCalculator, absoluteCellCountCalculator, correctedWbcCalculator } from "./hematology"
 
 describe("mcvCalculator", () => {
   it("computes MCV", () => {
@@ -69,5 +69,31 @@ describe("absoluteCellCountCalculator", () => {
 
   it("throws for zero/negative WBC", () => {
     expect(() => absoluteCellCountCalculator.calculate({ cellType: "neutrophil", wbc: 0, percent: 60 })).toThrow()
+  })
+})
+
+describe("correctedWbcCalculator", () => {
+  it("computes the corrected WBC count", () => {
+    const result = correctedWbcCalculator.calculate({ wbc: 15, nrbc: 10 })
+    expect(result.value).toBeCloseTo((15 * 100) / 110, 2)
+  })
+
+  it("returns the same value when nRBC is zero", () => {
+    const result = correctedWbcCalculator.calculate({ wbc: 15, nrbc: 0 })
+    expect(result.value).toBe(15)
+    expect(result.warnings?.length).toBeGreaterThan(0)
+  })
+
+  it("throws for zero/negative WBC", () => {
+    expect(() => correctedWbcCalculator.calculate({ wbc: 0, nrbc: 10 })).toThrow()
+  })
+
+  it("throws for negative nRBC", () => {
+    expect(() => correctedWbcCalculator.calculate({ wbc: 15, nrbc: -1 })).toThrow()
+  })
+
+  it("handles decimal WBC values", () => {
+    const result = correctedWbcCalculator.calculate({ wbc: 12.4, nrbc: 5 })
+    expect(Number.isFinite(result.value)).toBe(true)
   })
 })
