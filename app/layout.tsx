@@ -15,7 +15,7 @@ import { MaintenanceBanner } from "@/components/maintenance-banner"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "ConvertLAB",
+  title: "ConvertLAB - From units to results",
   description:
     "A laboratory calculation, conversion, estimation, and reference toolkit. Calculators, unit conversions, and lab tools for laboratory and clinical work.",
   keywords: "lab calculator, medical converter, laboratory units, eGFR, LDL calculator, PWA, healthcare tools",

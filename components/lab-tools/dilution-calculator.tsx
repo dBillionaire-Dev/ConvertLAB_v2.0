@@ -4,6 +4,7 @@ import { useMemo, useState, type ChangeEvent } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 
 type FieldId = "c1" | "v1" | "c2" | "v2"
 
@@ -39,10 +40,10 @@ export function DilutionCalculator() {
       else if (missing === "c2") solved = (numeric.c1! * numeric.v1!) / numeric.v2!
       else solved = (numeric.c1! * numeric.v1!) / numeric.c2!
     } catch {
-      return { error: "Unable to solve, check for a zero value.", result: null }
+      return { error: "Unable to solve — check for a zero value.", result: null }
     }
 
-    if (!Number.isFinite(solved)) return { error: "Unable to solve, check for a zero value.", result: null }
+    if (!Number.isFinite(solved)) return { error: "Unable to solve — check for a zero value.", result: null }
 
     return { error: null as string | null, result: { field: missing, value: solved } }
   }, [values])
@@ -60,7 +61,7 @@ export function DilutionCalculator() {
     <Card>
       <CardHeader>
         <CardTitle>C1V1 = C2V2 Dilution</CardTitle>
-        <CardDescription>Leave exactly one field blank. ConvertLAB will solve for it.</CardDescription>
+        <CardDescription>Leave exactly one field blank, ConvertLAB will solve for it.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
@@ -90,16 +91,17 @@ export function DilutionCalculator() {
             <p className="text-2xl font-bold">{Number(parsed.result.value.toFixed(4))}</p>
             {diluentRequired !== null && Number.isFinite(diluentRequired) ? (
               <p className="text-sm text-muted-foreground">
-                Diluent required: {Number(diluentRequired.toFixed(4))} (V2 − V1, in your volume units)
+                Diluent required: {Number(diluentRequired.toFixed(4))} (V2 - V1, in your volume units)
               </p>
             ) : null}
           </div>
         ) : null}
 
         <p className="text-xs text-muted-foreground">
-          Units are up to you (e.g. M for concentration, mL for volume). Keep concentration units consistent
+          Units are up to you (e.g. M for concentration, mL for volume), just keep concentration units consistent
           with each other and volume units consistent with each other.
         </p>
+        <p className="text-xs text-muted-foreground">{LAB_PREP_DISCLAIMER}</p>
       </CardContent>
     </Card>
   )

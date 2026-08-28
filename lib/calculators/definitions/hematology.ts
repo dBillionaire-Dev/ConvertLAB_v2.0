@@ -101,7 +101,7 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
   description: "Calculates an absolute white cell count (e.g. ANC, ALC) from total WBC and differential percentage.",
   formula: "Absolute count = WBC(x10³/µL) x (differential % / 100)",
   keywords: ["anc", "absolute neutrophil count", "alc", "aec", "amc", "differential"],
-  relatedTools: ["mcv", "mch", "mchc"],
+  relatedTools: ["mcv", "mch", "mchc", "corrected-wbc"],
   inputs: [
     {
       id: "cellType",
@@ -142,4 +142,37 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
     }
   },
   notes: ["Reference ranges vary by age, laboratory, and analyzer; interpret against your local reference interval."],
+}
+
+export const correctedWbcCalculator: CalculatorDefinition = {
+  id: "corrected-wbc",
+  name: "Corrected WBC Count",
+  shortName: "Corr. WBC",
+  category: "hematology",
+  description: "Corrects the total WBC count for the presence of nucleated red blood cells (nRBCs).",
+  formula: "Corrected WBC = (Uncorrected WBC x 100) / (100 + nRBC per 100 WBC)",
+  keywords: ["corrected wbc", "nucleated red blood cells", "nrbc"],
+  relatedTools: ["absolute-cell-count"],
+  inputs: [
+    { id: "wbc", label: "Uncorrected WBC", kind: "number", unit: "x10³/µL", min: 0, step: 0.01, defaultValue: 15 },
+    { id: "nrbc", label: "nRBC per 100 WBC", kind: "number", min: 0, step: 1, defaultValue: 10 },
+  ],
+  calculate: (inputs) => {
+    const wbc = num(inputs, "wbc")
+    const nrbc = num(inputs, "nrbc")
+    assertPositive(wbc, "Uncorrected WBC")
+    if (nrbc < 0) throw new Error("nRBC count cannot be negative")
+
+    const corrected = (wbc * 100) / (100 + nrbc)
+    const rounded = round(corrected, 2)
+
+    return {
+      value: rounded,
+      unit: "x10³/µL",
+      display: fmt(rounded, 2, "x10³/µL"),
+      calculationSteps: [`(${wbc} x 100) / (100 + ${nrbc})`],
+      warnings: nrbc === 0 ? ["No correction needed when nRBC count is zero — corrected value equals the uncorrected count."] : undefined,
+    }
+  },
+  notes: ["Automated analyzers count nucleated RBCs as WBCs; this correction removes that overestimate when a manual differential reports nRBCs."],
 }

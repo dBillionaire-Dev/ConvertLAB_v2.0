@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { analytes, getAnalyte, mgdLToMmolL, mmolLToMgdL } from "@/lib/conversions/molar-mass"
+import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 
 type Direction = "mass-to-molar" | "molar-to-mass"
 
@@ -95,6 +96,7 @@ export function MolarMassConverter() {
             {result !== null ? `${Number(result.toFixed(4))} ${direction === "mass-to-molar" ? "mmol/L" : "mg/dL"}` : "—"}
           </p>
         </div>
+        <p className="text-xs text-muted-foreground">{LAB_PREP_DISCLAIMER}</p>
       </CardContent>
     </Card>
   )

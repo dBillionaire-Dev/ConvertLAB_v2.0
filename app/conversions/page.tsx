@@ -4,7 +4,7 @@ import { conversionCategories } from "@/lib/conversions/registry"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Droplet } from "lucide-react"
 
-export const metadata = { title: "Conversions - ConvertLAB" }
+export const metadata = { title: "Conversions — ConvertLAB" }
 
 export default function ConversionsPage() {
   return (

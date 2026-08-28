@@ -80,3 +80,7 @@ export const CALCULATOR_CATEGORY_LABELS: Record<CalculatorGroup, string> = {
 /** Standard disclaimer shown on every calculator result. */
 export const CALCULATION_DISCLAIMER =
   "ConvertLAB provides mathematical calculations and estimates for educational and laboratory utility purposes. Results should be interpreted according to applicable laboratory procedures, validated methods, clinical context, and professional judgment. Reference ranges and formulas may vary."
+
+/** Shown on laboratory preparation tools (dilutions, solutions, density/molar conversions). */
+export const LAB_PREP_DISCLAIMER =
+  "Always follow your laboratory's validated SOPs, reagent manufacturer's instructions, and applicable safety procedures."

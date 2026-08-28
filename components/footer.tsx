@@ -4,7 +4,7 @@ import { Code } from 'lucide-react';
 export function Footer() {
 
   return (
-    <footer className="bg-gray-900 text-white pb-3 mt-4">
+    <footer className="bg-gray-900 text-white pb-3 mt-4 print:hidden">
       <div className="container mx-auto px-8">
 
         <div className="flex flex-col items-center justify-center space-y-4 mt-4">

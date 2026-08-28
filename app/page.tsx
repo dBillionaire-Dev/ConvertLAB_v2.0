@@ -2,28 +2,42 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Calculator, ArrowLeftRight, FlaskConical, BookOpen, Star, Clock, Search } from "lucide-react"
+import { Calculator, ArrowLeftRight, FlaskConical, TrendingUp, Star, Clock, Search, Sparkles } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { calculatorCategories, getCalculatorById } from "@/lib/calculators/registry"
 import { conversionCategories } from "@/lib/conversions/registry"
 import { getFavorites, subscribeFavorites } from "@/lib/favorites"
 import { getRecentlyUsed, subscribeRecentlyUsed } from "@/lib/recently-used"
+import { DashboardActivity } from "@/components/dashboard-activity"
 
 const quickLinks = [
   { href: "/calculators", label: "Calculators", icon: Calculator, description: "Clinical, renal, chemistry, hematology" },
   { href: "/conversions", label: "Conversions", icon: ArrowLeftRight, description: "Mass, volume, temperature, and more" },
+  { href: "/estimators", label: "Estimators", icon: TrendingUp, description: "Formula-based approximations" },
   { href: "/lab-tools", label: "Lab Tools", icon: FlaskConical, description: "Dilutions and solution prep" },
-  { href: "/reference", label: "Reference", icon: BookOpen, description: "Formulas and unit definitions" },
 ]
+
+// Curated highlights for discovery — shown to everyone, not derived from personal history.
+const POPULAR_CALCULATOR_IDS = ["bmi", "egfr-ckd-epi", "ldl-friedewald"]
+
+function getGreeting(hour: number) {
+  if (hour < 5) return "Good evening"
+  if (hour < 12) return "Good morning"
+  if (hour < 17) return "Good afternoon"
+  return "Good evening"
+}
 
 export default function HomePage() {
   const [favoriteIds, setFavoriteIds] = useState<string[]>([])
   const [recentIds, setRecentIds] = useState<string[]>([])
+  const [greeting, setGreeting] = useState<string | null>(null)
 
   useEffect(() => {
     setFavoriteIds(getFavorites())
     setRecentIds(getRecentlyUsed())
+    setGreeting(getGreeting(new Date().getHours()))
     const unsubFav = subscribeFavorites(() => setFavoriteIds(getFavorites()))
     const unsubRecent = subscribeRecentlyUsed(() => setRecentIds(getRecentlyUsed()))
     return () => {
@@ -37,13 +51,15 @@ export default function HomePage() {
     .filter((id) => !id.startsWith("conversion:"))
     .map((id) => getCalculatorById(id))
     .filter((t): t is NonNullable<typeof t> => Boolean(t))
+  const popularTools = POPULAR_CALCULATOR_IDS.map((id) => getCalculatorById(id)).filter((t): t is NonNullable<typeof t> => Boolean(t))
 
   return (
     <div className="container mx-auto px-4 py-8 sm:py-12 max-w-5xl">
       <div className="text-center mb-8 sm:mb-10">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">ConvertLAB</h1>
+        {greeting ? <p className="text-sm text-muted-foreground mb-1">{greeting}</p> : "ConvertLAB"}
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Your Laboratory Toolkit</h1>
         <p className="text-muted-foreground mt-2 text-sm sm:text-base max-w-xl mx-auto">
-          From units to results, calculators, conversions, and lab tools, all stored locally on your device.
+          Calculators, conversions, and lab tools, all stored locally on your device.
         </p>
         <Button
           variant="outline"
@@ -69,6 +85,30 @@ export default function HomePage() {
           </Link>
         ))}
       </div>
+
+      <DashboardActivity />
+
+      {popularTools.length > 0 ? (
+        <div className="mb-10">
+          <h2 className="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-3">
+            <Sparkles className="h-4 w-4" /> Popular Tools
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {popularTools.map((tool) => (
+              <Link key={tool.id} href={`/calculators/${tool.category}/${tool.id}`}>
+                <Badge variant="outline" className="cursor-pointer hover:bg-accent px-3 py-1.5 text-sm font-normal">
+                  {tool.shortName ?? tool.name}
+                </Badge>
+              </Link>
+            ))}
+            <Link href="/conversions">
+              <Badge variant="outline" className="cursor-pointer hover:bg-accent px-3 py-1.5 text-sm font-normal">
+                Unit Converter
+              </Badge>
+            </Link>
+          </div>
+        </div>
+      ) : null}
 
       {(favoriteTools.length > 0 || recentTools.length > 0) && (
         <div className="grid gap-6 lg:grid-cols-2 mb-10">

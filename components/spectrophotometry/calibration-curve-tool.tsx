@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { linearRegression, concentrationFromCalibration, SpectroError, type CalibrationPoint } from "@/lib/spectrophotometry"
+import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
 
 const DEFAULT_POINTS = [
   { concentration: "0", absorbance: "0.001" },
@@ -136,6 +137,7 @@ export function CalibrationCurveTool() {
                 <p className="text-lg font-bold">{unknownConcentration !== null ? Number(unknownConcentration.toPrecision(6)) : "—"}</p>
               </div>
             </div>
+            <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>
           </>
         ) : null}
       </CardContent>

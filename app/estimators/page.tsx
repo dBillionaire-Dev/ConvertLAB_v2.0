@@ -13,7 +13,7 @@ export default function EstimatorsPage() {
   return (
     <PageContainer
       title="Estimators"
-      description="Formula-based estimates (e.g. BSA, eGFR, BMR) & approximations, not measured values."
+      description="Formula-based estimates (e.g. BSA, eGFR, BMR), approximations, not measured values."
     >
       <div className="grid gap-3">
         {estimators.map((tool) => (

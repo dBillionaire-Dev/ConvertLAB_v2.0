@@ -10,28 +10,37 @@ export function generateStaticParams() {
   return calculatorCategories.map((c) => ({ category: c.id }))
 }
 
-export default async function CalculatorCategoryPage({
-  params,
-}: {
-  params: Promise<{ category: string }>
-}) {
-  const { category: categoryParam } = await params
+// MCV/MCH/MCHC are consolidated into one combined tool (enter Hgb/Hct/RBC
+// once, get all three) — hide their separate tiles here in favor of that,
+// while leaving the individual calculator pages themselves reachable
+// (search, formula reference, direct links) for anyone who wants just one.
+const RED_CELL_INDEX_IDS = new Set(["mcv", "mch", "mchc"])
 
-  const category = calculatorCategories.find(
-    (c) => c.id === categoryParam
-  )
+export default function CalculatorCategoryPage({ params }: { params: { category: string } }) {
+  const category = calculatorCategories.find((c) => c.id === params.category)
+  if (!category) notFound()
 
-  if (!category) {
-    notFound()
-  }
-
-  const tools = getCalculatorsByCategory(
-    categoryParam as CalculatorGroup
-  )
+  const allTools = getCalculatorsByCategory(params.category as CalculatorGroup)
+  const isHematology = params.category === "hematology"
+  const tools = isHematology ? allTools.filter((t) => !RED_CELL_INDEX_IDS.has(t.id)) : allTools
+  const toolCount = isHematology ? tools.length + 1 : tools.length
 
   return (
-    <PageContainer title={category.label} description={`${tools.length} calculator${tools.length === 1 ? "" : "s"}`}>
+    <PageContainer title={category.label} description={`${toolCount} calculator${toolCount === 1 ? "" : "s"}`}>
       <div className="grid gap-3">
+        {isHematology ? (
+          <Link href="/calculators/hematology/red-cell-indices">
+            <Card className="hover:border-primary/50 transition-colors border-primary/30">
+              <CardHeader className="py-4">
+                <CardTitle className="text-base">Red Cell Indices</CardTitle>
+                <CardDescription className="mt-1">
+                  MCV, MCH, and MCHC together, enter Hemoglobin, Hematocrit, and RBC count once.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
+        ) : null}
+
         {tools.map((tool) => (
           <Link key={tool.id} href={`/calculators/${category.id}/${tool.id}`}>
             <Card className="hover:border-primary/50 transition-colors">

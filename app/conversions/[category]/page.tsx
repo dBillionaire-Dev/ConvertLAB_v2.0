@@ -7,9 +7,8 @@ export function generateStaticParams() {
   return conversionCategories.map((c) => ({ category: c.id }))
 }
 
-export default async function ConversionCategoryPage({ params }: { params: Promise<{ category: string }> }) {
-  const { category: categoryParam } = await params
-  const category = getConversionCategory(categoryParam)
+export default function ConversionCategoryPage({ params }: { params: { category: string } }) {
+  const category = getConversionCategory(params.category)
   if (!category) notFound()
 
   return (

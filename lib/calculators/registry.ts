@@ -1,15 +1,30 @@
 import type { CalculatorDefinition, CalculatorGroup } from "./types"
 import { CALCULATOR_CATEGORY_LABELS } from "./types"
-import { bmiCalculator, bsaCalculator, idealBodyWeightCalculator, bmrCalculator } from "./definitions/clinical"
-import { creatinineClearanceCalculator, egfrCalculator } from "./definitions/renal"
+import {
+  bmiCalculator,
+  bsaCalculator,
+  idealBodyWeightCalculator,
+  bmrCalculator,
+  adjustedBodyWeightCalculator,
+  estimatedCalorieRequirementCalculator,
+} from "./definitions/clinical"
+import { creatinineClearanceCalculator, egfrCalculator, bunCreatinineRatioCalculator } from "./definitions/renal"
 import {
   ldlCalculator,
   nonHdlCalculator,
   vldlCalculator,
   anionGapCalculator,
   correctedCalciumCalculator,
+  totalHdlRatioCalculator,
+  calciumPhosphateProductCalculator,
 } from "./definitions/chemistry"
-import { mcvCalculator, mchCalculator, mchcCalculator, absoluteCellCountCalculator } from "./definitions/hematology"
+import {
+  mcvCalculator,
+  mchCalculator,
+  mchcCalculator,
+  absoluteCellCountCalculator,
+  correctedWbcCalculator,
+} from "./definitions/hematology"
 import { molarityCalculator, normalityCalculator } from "./definitions/lab-solutions"
 import { cfuCalculator, dilutionFactorCalculator, concentrationAfterDilutionCalculator } from "./definitions/microbiology"
 
@@ -18,17 +33,23 @@ export const calculators: CalculatorDefinition[] = [
   bsaCalculator,
   idealBodyWeightCalculator,
   bmrCalculator,
+  adjustedBodyWeightCalculator,
+  estimatedCalorieRequirementCalculator,
   creatinineClearanceCalculator,
   egfrCalculator,
+  bunCreatinineRatioCalculator,
   ldlCalculator,
   nonHdlCalculator,
   vldlCalculator,
   anionGapCalculator,
   correctedCalciumCalculator,
+  totalHdlRatioCalculator,
+  calciumPhosphateProductCalculator,
   mcvCalculator,
   mchCalculator,
   mchcCalculator,
   absoluteCellCountCalculator,
+  correctedWbcCalculator,
   molarityCalculator,
   normalityCalculator,
   cfuCalculator,

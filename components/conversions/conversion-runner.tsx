@@ -43,7 +43,7 @@ export function ConversionRunner({ category }: { category: ConversionCategory })
       await navigator.clipboard.writeText(`${value} ${fromUnit?.symbol} = ${result.display} ${toUnit?.symbol}`)
       toast({ description: "Result copied to clipboard." })
     } catch {
-      toast({ description: "Couldn't copy. Select the text manually." })
+      toast({ description: "Couldn't copy, try selecting the text manually." })
     }
   }
 

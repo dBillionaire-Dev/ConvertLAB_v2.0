@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import { Calculator, Copy, Save, Share2, Star, AlertTriangle } from "lucide-react"
+import { Calculator, Copy, Save, Share2, Star, AlertTriangle, FileDown } from "lucide-react"
 import type { CalculatorDefinition, CalculationResult } from "@/lib/calculators/types"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
 import { getCalculatorById, getRelatedCalculators } from "@/lib/calculators/registry"
@@ -53,6 +53,17 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
     setValues((prev) => ({ ...prev, [id]: value }))
   }
 
+  const resolvedInputs = definition.inputs.map((input) => {
+    const raw = values[input.id] ?? ""
+    let display = raw
+    if (input.kind === "select") {
+      display = input.options?.find((opt) => opt.value === raw)?.label ?? raw
+    } else if (input.unit && raw !== "") {
+      display = `${raw} ${input.unit}`
+    }
+    return { label: input.label, display: display || "—" }
+  })
+
   const handleCalculate = () => {
     setError(null)
     try {
@@ -85,11 +96,12 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
   const resultText = () => {
     if (!result) return ""
     const lines = [
-      `ConvertLAB — ${definition.name}`,
+      `ConvertLAB, ${definition.name}`,
       "",
       `Result: ${result.display}`,
       "",
-      ...definition.inputs.map((input) => `${input.label}: ${values[input.id]}${input.unit ? ` ${input.unit}` : ""}`),
+      "Inputs",
+      ...resolvedInputs.map((input) => `${input.label}: ${input.display}`),
     ]
     if (definition.formula) lines.push("", `Formula: ${definition.formula}`)
     return lines.join("\n")
@@ -100,7 +112,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
       await navigator.clipboard.writeText(resultText())
       toast({ description: "Result copied to clipboard." })
     } catch {
-      toast({ description: "Couldn't copy. Select the text manually." })
+      toast({ description: "Couldn't copy, try selecting the text manually." })
     }
   }
 
@@ -117,6 +129,14 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
     }
   }
 
+  const handleExportPdf = () => {
+    // Uses the browser's native print-to-PDF rather than a client-side PDF
+    // library — no extra dependency, works fully offline, and every browser
+    // supports "Save as PDF" from the print dialog. A dedicated print
+    // stylesheet hides site chrome and shows only the result.
+    window.print()
+  }
+
   const handleFavorite = () => {
     const nowFavorite = toggleFavorite(definition.id)
     setFavorite(nowFavorite)
@@ -124,7 +144,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="print:hidden">
         <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
           <div>
             <div className="flex items-center gap-2">
@@ -172,6 +192,11 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
       {result ? (
         <Card aria-live="polite">
           <CardHeader>
+            {/* Print-only masthead — site header/nav is hidden when printing */}
+            <div className="hidden print:block mb-2">
+              <p className="font-bold">ConvertLAB</p>
+              <p className="text-xs text-muted-foreground">{definition.name} — {new Date().toLocaleDateString()}</p>
+            </div>
             <CardTitle className="text-sm font-medium text-muted-foreground">Result</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
@@ -198,6 +223,19 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
                 ))}
               </div>
             ) : null}
+
+            <div>
+              <Separator className="mb-3" />
+              <h4 className="text-sm font-medium text-muted-foreground mb-1">Inputs</h4>
+              <dl className="grid gap-1.5 text-sm">
+                {resolvedInputs.map((input) => (
+                  <div key={input.label} className="flex justify-between gap-4">
+                    <dt className="text-muted-foreground">{input.label}</dt>
+                    <dd className="font-medium">{input.display}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
 
             {definition.formula ? (
               <div>
@@ -241,7 +279,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
             ) : null}
 
             <Separator />
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 print:hidden">
               <Button variant="outline" size="sm" onClick={handleCopy}>
                 <Copy className="h-4 w-4 mr-1.5" /> Copy
               </Button>
@@ -251,6 +289,9 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
               <Button variant="outline" size="sm" onClick={handleShare}>
                 <Share2 className="h-4 w-4 mr-1.5" /> Share
               </Button>
+              <Button variant="outline" size="sm" onClick={handleExportPdf}>
+                <FileDown className="h-4 w-4 mr-1.5" /> Export PDF
+              </Button>
             </div>
 
             <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>
@@ -259,7 +300,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
       ) : null}
 
       {related.length ? (
-        <div>
+        <div className="print:hidden">
           <h3 className="text-sm font-medium text-muted-foreground mb-2">Related Tools</h3>
           <div className="flex flex-wrap gap-2">
             {related.map((tool) => (
