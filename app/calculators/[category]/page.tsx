@@ -16,12 +16,24 @@ export function generateStaticParams() {
 // (search, formula reference, direct links) for anyone who wants just one.
 const RED_CELL_INDEX_IDS = new Set(["mcv", "mch", "mchc"])
 
-export default function CalculatorCategoryPage({ params }: { params: { category: string } }) {
-  const category = calculatorCategories.find((c) => c.id === params.category)
-  if (!category) notFound()
+export default async function CalculatorCategoryPage({
+  params,
+}: {
+  params: Promise<{ category: string }>
+}) {
+  const { category: categoryParam } = await params
 
-  const allTools = getCalculatorsByCategory(params.category as CalculatorGroup)
-  const isHematology = params.category === "hematology"
+  const category = calculatorCategories.find(
+    (c) => c.id === categoryParam
+  )
+
+  if (!category) {
+    notFound()
+  }
+
+
+  const allTools = getCalculatorsByCategory(categoryParam as CalculatorGroup)
+  const isHematology = categoryParam === "hematology"
   const tools = isHematology ? allTools.filter((t) => !RED_CELL_INDEX_IDS.has(t.id)) : allTools
   const toolCount = isHematology ? tools.length + 1 : tools.length
 

@@ -41,9 +41,9 @@ export const chemistryReferenceRanges: ReferenceRangeGroup = {
   id: "chemistry",
   title: "Clinical Chemistry",
   ranges: [
-    { analyte: "Glucose, fasting", range: "70-100", unit: "mg/dL" },
+    { analyte: "Glucose, fasting", range: "70-120", unit: "mg/dL" },
     { analyte: "BUN", range: "7-20", unit: "mg/dL" },
-    { analyte: "Creatinine (male)", range: "0.7-1.3", unit: "mg/dL" },
+    { analyte: "Creatinine (male)", range: "0.5-1.3", unit: "mg/dL" },
     { analyte: "Creatinine (female)", range: "0.6-1.1", unit: "mg/dL" },
     { analyte: "Sodium", range: "135-145", unit: "mmol/L" },
     { analyte: "Potassium", range: "3.5-5.0", unit: "mmol/L" },
@@ -59,10 +59,10 @@ export const chemistryReferenceRanges: ReferenceRangeGroup = {
     { analyte: "LDL cholesterol", range: "<100", unit: "mg/dL", note: "optimal" },
     { analyte: "HDL cholesterol (male)", range: ">40", unit: "mg/dL" },
     { analyte: "HDL cholesterol (female)", range: ">50", unit: "mg/dL" },
-    { analyte: "Triglycerides", range: "<150", unit: "mg/dL" },
+    { analyte: "Triglycerides", range: "65-185", unit: "mg/dL" },
     { analyte: "TSH", range: "0.4-4.0", unit: "mIU/L" },
   ],
 }
 
 export const REFERENCE_RANGE_DISCLAIMER =
-  "Reference ranges vary by laboratory, analytical method, population, age, sex, and local validation. These are general examples only, not diagnostic cutoffs — always use your own laboratory's validated reference intervals."
+  "Reference ranges vary by laboratory, analytical method, population, age, sex, and local validation. These are general examples only, not diagnostic cutoffs. Always use your own laboratory's validated reference intervals."

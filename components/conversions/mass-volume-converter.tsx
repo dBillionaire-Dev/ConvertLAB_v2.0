@@ -54,7 +54,7 @@ export function MassVolumeConverter() {
       <CardHeader>
         <CardTitle>Mass ↔ Volume</CardTitle>
         <CardDescription>
-          Mass and volume are only interchangeable through density — ConvertLAB never assumes 1 g = 1 mL.
+          Mass and volume are only interchangeable through density. ConvertLAB never assumes 1 g = 1 mL.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
