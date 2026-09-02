@@ -1,5 +1,5 @@
 import type { CalculatorDefinition } from "../types"
-import { num, str, round, fmt } from "../helpers"
+import { num, str, assertPositive, assertNonNegative, round, fmt } from "../helpers"
 
 const unitOption = (opts: { value: string; label: string }[]) => opts
 
@@ -12,7 +12,7 @@ export const ldlCalculator: CalculatorDefinition = {
   isEstimator: true,
   formula: "LDL = TC - HDL - TG/5 (mg/dL) or TC - HDL - TG/2.2 (mmol/L)",
   keywords: ["ldl", "cholesterol", "friedewald", "lipid"],
-  relatedTools: ["non-hdl-cholesterol", "vldl-estimate", "total-hdl-ratio"],
+  relatedTools: ["non-hdl-cholesterol", "vldl-estimate", "total-hdl-ratio", "ldl-hdl-ratio"],
   inputs: [
     {
       id: "unit",
@@ -38,7 +38,7 @@ export const ldlCalculator: CalculatorDefinition = {
     if (tg > (unit === "mmol/L" ? 4.5 : 400)) {
       return {
         value: "N/A",
-        display: "Not valid — TG too high",
+        display: "Not valid, TG too high",
         warnings: [
           "The Friedewald equation is unreliable when triglycerides exceed ~400 mg/dL (4.5 mmol/L). Use direct LDL measurement instead.",
         ],
@@ -53,7 +53,7 @@ export const ldlCalculator: CalculatorDefinition = {
       unit,
       display: fmt(rounded, unit === "mmol/L" ? 2 : 1, unit),
       calculationSteps: [`${tc} - ${hdl} - (${tg} / ${divisor})`],
-      warnings: ldl < 0 ? ["Calculated LDL is negative — check input values."] : undefined,
+      warnings: ldl < 0 ? ["Calculated LDL is negative. Check input values."] : undefined,
     }
   },
   notes: ["The Friedewald equation is an estimate, not a directly measured value."],
@@ -119,7 +119,7 @@ export const anionGapCalculator: CalculatorDefinition = {
   description: "Calculates the serum anion gap, with optional albumin correction.",
   formula: "AG = Na - (Cl + HCO3); Corrected AG = AG + 2.5 x (4 - albumin[g/dL])",
   keywords: ["anion gap", "electrolytes", "acid-base"],
-  relatedTools: ["corrected-calcium"],
+  relatedTools: ["corrected-calcium", "delta-ratio", "estimated-osmolality"],
   inputs: [
     { id: "na", label: "Sodium", kind: "number", unit: "mmol/L", min: 0, defaultValue: 140 },
     { id: "cl", label: "Chloride", kind: "number", unit: "mmol/L", min: 0, defaultValue: 104 },
@@ -199,7 +199,7 @@ export const totalHdlRatioCalculator: CalculatorDefinition = {
   description: "Calculates the ratio of total cholesterol to HDL cholesterol, a cardiovascular risk indicator.",
   formula: "TC/HDL ratio = Total Cholesterol / HDL",
   keywords: ["cholesterol ratio", "tc/hdl", "cardiovascular risk", "lipid"],
-  relatedTools: ["ldl-friedewald", "non-hdl-cholesterol"],
+  relatedTools: ["ldl-friedewald", "non-hdl-cholesterol", "ldl-hdl-ratio"],
   inputs: [
     { id: "tc", label: "Total Cholesterol", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 200 },
     { id: "hdl", label: "HDL", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 50 },
@@ -254,4 +254,202 @@ export const calciumPhosphateProductCalculator: CalculatorDefinition = {
     }
   },
   notes: ["Most relevant in the context of chronic kidney disease-mineral bone disorder (CKD-MBD) monitoring."],
+}
+
+export const ldlHdlRatioCalculator: CalculatorDefinition = {
+  id: "ldl-hdl-ratio",
+  name: "LDL/HDL Ratio",
+  shortName: "LDL/HDL",
+  category: "chemistry",
+  description: "Calculates the ratio of LDL cholesterol to HDL cholesterol.",
+  formula: "LDL/HDL ratio = LDL / HDL",
+  keywords: ["ldl hdl ratio", "cholesterol ratio", "lipid", "cardiovascular risk"],
+  relatedTools: ["ldl-friedewald", "total-hdl-ratio"],
+  inputs: [
+    { id: "ldl", label: "LDL", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 100 },
+    { id: "hdl", label: "HDL", kind: "number", unit: "mg/dL", min: 0, step: 0.01, defaultValue: 50 },
+  ],
+  calculate: (inputs) => {
+    const ldl = num(inputs, "ldl")
+    const hdl = num(inputs, "hdl")
+    if (hdl <= 0) throw new Error("HDL must be greater than zero")
+    assertNonNegative(ldl, "LDL")
+
+    const ratio = ldl / hdl
+    const rounded = round(ratio, 1)
+
+    let interpretation = "Desirable (below 2.5:1)."
+    if (ratio >= 4) interpretation = "High risk range (4:1 or above)."
+    else if (ratio >= 2.5) interpretation = "Borderline/moderate risk range (2.5:1-4:1)."
+
+    return {
+      value: rounded,
+      display: fmt(rounded, 1, ":1"),
+      calculationSteps: [`${ldl} / ${hdl}`],
+      interpretation,
+    }
+  },
+  notes: ["General population thresholds are shown; individual cardiovascular risk depends on many additional factors."],
+}
+
+export const deltaRatioCalculator: CalculatorDefinition = {
+  id: "delta-ratio",
+  name: "Delta Gap / Delta Ratio",
+  shortName: "Delta Ratio",
+  category: "chemistry",
+  description: "Calculates the delta gap and delta ratio from Na, Cl, and HCO3 to help classify mixed acid-base disorders.",
+  formula: "Delta Gap = AG - 12\nDelta Ratio = Delta Gap / (24 - HCO3)",
+  keywords: ["delta gap", "delta ratio", "acid-base", "anion gap", "metabolic acidosis"],
+  relatedTools: ["anion-gap"],
+  inputs: [
+    { id: "na", label: "Sodium", kind: "number", unit: "mmol/L", min: 0, defaultValue: 140 },
+    { id: "cl", label: "Chloride", kind: "number", unit: "mmol/L", min: 0, defaultValue: 100 },
+    { id: "hco3", label: "Bicarbonate", kind: "number", unit: "mmol/L", min: 0, defaultValue: 12 },
+  ],
+  calculate: (inputs) => {
+    const na = num(inputs, "na")
+    const cl = num(inputs, "cl")
+    const hco3 = num(inputs, "hco3")
+
+    const ag = na - (cl + hco3)
+    const deltaGap = ag - 12
+    const deltaHco3 = 24 - hco3
+
+    if (deltaHco3 === 0) throw new Error("Cannot calculate delta ratio: HCO3 is 24 (delta HCO3 is zero)")
+
+    const deltaRatio = deltaGap / deltaHco3
+    const rounded = round(deltaRatio, 2)
+
+    let interpretation = "Pure high-anion-gap metabolic acidosis (ratio 1-2)."
+    if (rounded < 0.4) interpretation = "Suggests a pure hyperchloremic (normal-anion-gap) metabolic acidosis (ratio <0.4)."
+    else if (rounded < 1) interpretation = "Suggests a combined high-anion-gap and normal-anion-gap metabolic acidosis (ratio 0.4-1)."
+    else if (rounded > 2) interpretation = "Suggests a concurrent metabolic alkalosis or pre-existing compensated respiratory acidosis (ratio >2)."
+
+    return {
+      value: rounded,
+      display: fmt(rounded, 2),
+      secondary: [
+        { label: "Anion gap", value: fmt(round(ag, 1), 1, "mmol/L") },
+        { label: "Delta gap", value: fmt(round(deltaGap, 1), 1, "mmol/L") },
+      ],
+      calculationSteps: [`AG = ${na} - (${cl} + ${hco3}) = ${round(ag, 1)}`, `Delta gap = ${round(ag, 1)} - 12 = ${round(deltaGap, 1)}`, `Delta ratio = ${round(deltaGap, 1)} / (24 - ${hco3})`],
+      interpretation,
+    }
+  },
+  notes: ["Assumes a normal anion gap of 12 and normal HCO3 of 24 mmol/L. Some institutions use slightly different baselines."],
+  limitations: ["A teaching tool for classifying mixed acid-base disorders, not a substitute for full clinical/blood gas assessment."],
+}
+
+export const estimatedOsmolalityCalculator: CalculatorDefinition = {
+  id: "estimated-osmolality",
+  name: "Estimated Serum Osmolality",
+  shortName: "Osm",
+  category: "chemistry",
+  description: "Estimates serum osmolality from sodium, glucose, and BUN, with an optional osmolar gap if measured osmolality is known.",
+  isEstimator: true,
+  formula: "Osm (mOsm/kg) = 2 x Na + Glucose/18 + BUN/2.8",
+  keywords: ["osmolality", "osmolar gap", "toxic alcohol", "serum osmolality"],
+  relatedTools: ["anion-gap"],
+  inputs: [
+    { id: "na", label: "Sodium", kind: "number", unit: "mmol/L", min: 0, defaultValue: 140 },
+    { id: "glucose", label: "Glucose", kind: "number", unit: "mg/dL", min: 0, defaultValue: 90 },
+    { id: "bun", label: "BUN", kind: "number", unit: "mg/dL", min: 0, defaultValue: 14 },
+    {
+      id: "measuredOsmolality",
+      label: "Measured osmolality (optional, for osmolar gap)",
+      kind: "number",
+      unit: "mOsm/kg",
+      min: 0,
+      optional: true,
+    },
+  ],
+  calculate: (inputs) => {
+    const na = num(inputs, "na")
+    const glucose = num(inputs, "glucose")
+    const bun = num(inputs, "bun")
+    assertPositive(na, "Sodium")
+    assertNonNegative(glucose, "Glucose")
+    assertNonNegative(bun, "BUN")
+
+    const calculated = 2 * na + glucose / 18 + bun / 2.8
+    const rounded = round(calculated, 1)
+
+    const secondary = []
+    let osmolarGap: number | undefined
+    const measuredRaw = inputs["measuredOsmolality"]
+    if (measuredRaw !== undefined && measuredRaw !== "") {
+      const measured = num(inputs, "measuredOsmolality")
+      osmolarGap = measured - calculated
+      secondary.push({ label: "Osmolar gap", value: fmt(round(osmolarGap, 1), 1, "mOsm/kg") })
+    }
+
+    return {
+      value: rounded,
+      unit: "mOsm/kg",
+      display: fmt(rounded, 1, "mOsm/kg"),
+      secondary: secondary.length ? secondary : undefined,
+      calculationSteps: [`(2 x ${na}) + (${glucose} / 18) + (${bun} / 2.8)`],
+      interpretation: "Typical reference interval is approximately 275-295 mOsm/kg.",
+      warnings:
+        osmolarGap !== undefined && Math.abs(osmolarGap) > 10
+          ? ["An osmolar gap above ~10 mOsm/kg can suggest the presence of an unmeasured osmotically active substance (e.g. a toxic alcohol)."]
+          : undefined,
+    }
+  },
+  notes: ["The osmolar gap (measured minus calculated) is most useful when a toxic alcohol ingestion is suspected."],
+}
+
+const HBA1C_SLOPE = 28.7
+const HBA1C_INTERCEPT = -46.7
+
+export const hba1cEagCalculator: CalculatorDefinition = {
+  id: "hba1c-eag",
+  name: "HbA1c ↔ Estimated Average Glucose",
+  shortName: "HbA1c ↔ eAG",
+  category: "chemistry",
+  description: "Converts between HbA1c and estimated average glucose (eAG) using the ADAG study formula.",
+  isEstimator: true,
+  formula: "eAG (mg/dL) = 28.7 x HbA1c(%) - 46.7",
+  keywords: ["hba1c", "eag", "estimated average glucose", "a1c", "diabetes"],
+  relatedTools: [],
+  inputs: [
+    {
+      id: "direction",
+      label: "Direction",
+      kind: "select",
+      options: [
+        { value: "hba1c-to-eag", label: "HbA1c → eAG" },
+        { value: "eag-to-hba1c", label: "eAG → HbA1c" },
+      ],
+      defaultValue: "hba1c-to-eag",
+    },
+    { id: "value", label: "Value", kind: "number", min: 0, step: 0.1, defaultValue: 7 },
+  ],
+  calculate: (inputs) => {
+    const direction = str(inputs, "direction")
+    const value = num(inputs, "value")
+    assertPositive(value, "Value")
+
+    if (direction === "hba1c-to-eag") {
+      const eag = HBA1C_SLOPE * value + HBA1C_INTERCEPT
+      const rounded = round(eag, 0)
+      return {
+        value: rounded,
+        unit: "mg/dL",
+        display: fmt(rounded, 0, "mg/dL"),
+        calculationSteps: [`(28.7 x ${value}) - 46.7`],
+        interpretation: "Estimated average glucose over the preceding ~3 months (ADAG study formula).",
+      }
+    }
+
+    const hba1c = (value - HBA1C_INTERCEPT) / HBA1C_SLOPE
+    const rounded = round(hba1c, 1)
+    return {
+      value: rounded,
+      unit: "%",
+      display: fmt(rounded, 1, "%"),
+      calculationSteps: [`(${value} + 46.7) / 28.7`],
+    }
+  },
+  notes: ["Based on the ADAG (A1c-Derived Average Glucose) study formula; individual correlation between HbA1c and glucose varies."],
 }

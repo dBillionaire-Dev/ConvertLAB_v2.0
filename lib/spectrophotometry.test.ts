@@ -5,6 +5,7 @@ import {
   transmittanceFromAbsorbance,
   linearRegression,
   concentrationFromCalibration,
+  originalConcentrationFromDiluted,
   SpectroError,
 } from "./spectrophotometry"
 
@@ -97,5 +98,24 @@ describe("linearRegression + concentrationFromCalibration", () => {
         { concentration: 5, absorbance: 0.2 },
       ]),
     ).toThrow(SpectroError)
+  })
+})
+
+describe("originalConcentrationFromDiluted", () => {
+  it("scales the diluted concentration back up by the dilution factor", () => {
+    expect(originalConcentrationFromDiluted(5, 10)).toBe(50)
+  })
+
+  it("returns the same value for a dilution factor of 1 (no dilution)", () => {
+    expect(originalConcentrationFromDiluted(25, 1)).toBe(25)
+  })
+
+  it("handles zero diluted concentration", () => {
+    expect(originalConcentrationFromDiluted(0, 10)).toBe(0)
+  })
+
+  it("throws for zero or negative dilution factor", () => {
+    expect(() => originalConcentrationFromDiluted(5, 0)).toThrow(SpectroError)
+    expect(() => originalConcentrationFromDiluted(5, -2)).toThrow(SpectroError)
   })
 })

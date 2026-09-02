@@ -27,6 +27,12 @@
   }
 }
 
+/* In-app override (Settings > Preferences), independent of the OS-level
+   media query above — some users want this without changing OS settings. */
+html.reduce-motion .animate-marquee {
+  animation: none;
+}
+
 /* Export PDF uses the browser's native print-to-PDF. Force a clean,
    ink-friendly light layout regardless of the active theme, and let
    .print\:hidden (site chrome, buttons, the editable form, related

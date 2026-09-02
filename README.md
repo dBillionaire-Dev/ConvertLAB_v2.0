@@ -6,7 +6,7 @@ ConvertLAB is a progresive web application for converting various medical, labor
 
 ## Live Demo
 
-[ConvertLAB v2.0 Live](https://convertlab-eta.vercel.app/)
+[ConvertLAB v2.0 Live](https://convertlab-nex.vercel.app/)
 
 ---
 

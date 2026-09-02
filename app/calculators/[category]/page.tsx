@@ -10,10 +10,6 @@ export function generateStaticParams() {
   return calculatorCategories.map((c) => ({ category: c.id }))
 }
 
-// MCV/MCH/MCHC are consolidated into one combined tool (enter Hgb/Hct/RBC
-// once, get all three) — hide their separate tiles here in favor of that,
-// while leaving the individual calculator pages themselves reachable
-// (search, formula reference, direct links) for anyone who wants just one.
 const RED_CELL_INDEX_IDS = new Set(["mcv", "mch", "mchc"])
 
 export default async function CalculatorCategoryPage({

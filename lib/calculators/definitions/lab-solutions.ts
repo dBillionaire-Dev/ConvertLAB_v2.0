@@ -83,5 +83,5 @@ export const normalityCalculator: CalculatorDefinition = {
       calculationSteps: [`equivalents = ${mass} / ${eqWeight}`, `N = ${round(equivalents, 4)} / ${volume} L`],
     }
   },
-  notes: ["Equivalent weight depends on the reaction context — it is not a fixed property of a substance."],
+  notes: ["Equivalent weight depends on the reaction context, it is not a fixed property of a substance."],
 }

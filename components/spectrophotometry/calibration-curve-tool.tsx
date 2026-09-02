@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { linearRegression, concentrationFromCalibration, SpectroError, type CalibrationPoint } from "@/lib/spectrophotometry"
+import { linearRegression, concentrationFromCalibration, originalConcentrationFromDiluted, SpectroError, type CalibrationPoint } from "@/lib/spectrophotometry"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
 
 const PLACEHOLDER_POINTS = [
@@ -21,6 +21,7 @@ const PLACEHOLDER_POINTS = [
 export function CalibrationCurveTool() {
   const [rows, setRows] = useState(PLACEHOLDER_POINTS.map(() => ({ concentration: "", absorbance: "" })))
   const [unknownAbsorbance, setUnknownAbsorbance] = useState("")
+  const [dilutionFactor, setDilutionFactor] = useState("")
 
   const points: CalibrationPoint[] = useMemo(
     () =>
@@ -47,6 +48,16 @@ export function CalibrationCurveTool() {
       return null
     }
   }, [unknownAbsorbance, regression.data])
+
+  const originalConcentration = useMemo(() => {
+    const factor = Number.parseFloat(dilutionFactor)
+    if (unknownConcentration === null || !Number.isFinite(factor) || factor <= 0) return null
+    try {
+      return originalConcentrationFromDiluted(unknownConcentration, factor)
+    } catch {
+      return null
+    }
+  }, [unknownConcentration, dilutionFactor])
 
   const updateRow = (index: number, field: "concentration" | "absorbance", value: string) => {
     setRows((prev) => prev.map((r, i) => (i === index ? { ...r, [field]: value } : r)))
@@ -135,8 +146,26 @@ export function CalibrationCurveTool() {
                 <Input id="unknown" type="number" inputMode="decimal" step="0.001" placeholder="0.300" value={unknownAbsorbance} onChange={(e) => setUnknownAbsorbance(e.target.value)} />
               </div>
               <div className="rounded-md border bg-muted p-3">
-                <p className="text-xs text-muted-foreground">Estimated concentration</p>
+                <p className="text-xs text-muted-foreground">Concentration (as measured)</p>
                 <p className="text-lg font-bold">{unknownConcentration !== null ? Number(unknownConcentration.toPrecision(6)) : "—"}</p>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 items-end">
+              <div className="space-y-1.5">
+                <Label htmlFor="dilution-factor">Dilution factor (optional — if the sample was diluted before measurement)</Label>
+                <Input
+                  id="dilution-factor"
+                  type="number"
+                  inputMode="decimal"
+                  placeholder="e.g. 10 for a 1:10 dilution"
+                  value={dilutionFactor}
+                  onChange={(e) => setDilutionFactor(e.target.value)}
+                />
+              </div>
+              <div className="rounded-md border bg-muted p-3">
+                <p className="text-xs text-muted-foreground">Original (undiluted) sample concentration</p>
+                <p className="text-lg font-bold">{originalConcentration !== null ? Number(originalConcentration.toPrecision(6)) : "—"}</p>
               </div>
             </div>
             <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>

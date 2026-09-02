@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Code } from 'lucide-react';
 
 export function Footer() {
 
@@ -9,15 +8,13 @@ export function Footer() {
 
         <div className="flex flex-col items-center justify-center space-y-4 mt-4">
           <div className="flex items-center space-x-2 text-sm text-gray-400">
-            <Code className="h-4 w-4" />
-            <span>Developed by</span>
             <Link
               href="https://nex.is-a.dev/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-300 transition-colors font-medium"
+              className="hover:text-blue-300 transition-colors font-medium"
             >
-              Nex.Dev
+              <span>&copy; {new Date().getFullYear()} ConvertLAB by NexDev</span>
             </Link>
           </div>
         </div>

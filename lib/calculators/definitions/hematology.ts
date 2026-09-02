@@ -1,18 +1,112 @@
 import type { CalculatorDefinition } from "../types"
 import { num, str, assertPositive, safeDivide, round, fmt } from "../helpers"
 
+export const redCellIndicesCalculator: CalculatorDefinition = {
+  id: "red-cell-indices",
+  name: "Red Cell Indices",
+  shortName: "RBC Indices",
+  category: "hematology",
+  description:
+    "Calculates MCV, MCH, and MCHC from hemoglobin, hematocrit, and RBC count.",
+  formula:
+    "MCV = (Hct × 10) / RBC; MCH = (Hgb × 10) / RBC; MCHC = (Hgb / Hct) × 100",
+  keywords: [
+    "red cell indices",
+    "rbc indices",
+    "mcv",
+    "mch",
+    "mchc",
+    "mean corpuscular volume",
+    "mean corpuscular hemoglobin",
+    "mean corpuscular hemoglobin concentration",
+  ],
+  relatedTools: ["absolute-cell-count", "hematocrit-estimate"],
+  inputs: [
+    {
+      id: "hgb",
+      label: "Hemoglobin",
+      kind: "number",
+      unit: "g/dL",
+      min: 0,
+      step: 0.1,
+      defaultValue: 14,
+    },
+    {
+      id: "hct",
+      label: "Hematocrit",
+      kind: "number",
+      unit: "%",
+      min: 0,
+      step: 0.1,
+      defaultValue: 42,
+    },
+    {
+      id: "rbc",
+      label: "RBC Count",
+      kind: "number",
+      unit: "10¹²/L",
+      min: 0,
+      step: 0.01,
+      defaultValue: 4.8,
+    },
+  ],
+  calculate: (inputs) => {
+    const hgb = num(inputs, "hgb")
+    const hct = num(inputs, "hct")
+    const rbc = num(inputs, "rbc")
+
+    assertPositive(rbc, "RBC count")
+    assertPositive(hct, "Hematocrit")
+
+    const mcv = round(safeDivide(hct * 10, rbc, "RBC count"), 1)
+    const mch = round(safeDivide(hgb * 10, rbc, "RBC count"), 1)
+    const mchc = round(safeDivide(hgb, hct, "Hematocrit") * 100, 1)
+
+    return {
+      value: mcv,
+      unit: "fL",
+      display: `MCV: ${fmt(mcv, 1, "fL")}`,
+      secondary: [
+        {
+          label: "MCH",
+          value: fmt(mch, 1, "pg"),
+        },
+        {
+          label: "MCHC",
+          value: fmt(mchc, 1, "g/dL"),
+        },
+      ],
+      calculationSteps: [
+        `MCV = (${hct} x 10) / ${rbc}`,
+        `MCH = (${hgb} x 10) / ${rbc}`,
+        `MCHC = (${hgb} / ${hct}) x 100`,
+      ],
+      warnings:
+        mchc > 38
+          ? [
+              "MCHC above ~36-38 g/dL is physiologically unusual and may indicate a specimen or analyzer artifact.",
+            ]
+          : undefined,
+    }
+  },
+  notes: [
+    "MCV, MCH, and MCHC are commonly interpreted together as red cell indices.",
+    "Reference intervals vary by laboratory, age, and clinical context.",
+  ],
+}
+
 export const mcvCalculator: CalculatorDefinition = {
   id: "mcv",
   name: "Mean Corpuscular Volume",
   shortName: "MCV",
   category: "hematology",
   description: "Calculates mean corpuscular volume from hematocrit and RBC count.",
-  formula: "MCV (fL) = (Hct[%] x 10) / RBC(millions/µL)",
+  formula: "MCV (fL) = (Hct[%] x 10) / RBC(10¹²/L)",
   keywords: ["mcv", "mean corpuscular volume", "red cell indices"],
   relatedTools: ["mch", "mchc"],
   inputs: [
     { id: "hct", label: "Hematocrit", kind: "number", unit: "%", min: 0, step: 0.1, defaultValue: 42 },
-    { id: "rbc", label: "RBC Count", kind: "number", unit: "million/µL", min: 0, step: 0.01, defaultValue: 4.8 },
+    { id: "rbc", label: "RBC Count", kind: "number", unit: "10¹²/L", min: 0, step: 0.01, defaultValue: 4.8 },
   ],
   calculate: (inputs) => {
     const hct = num(inputs, "hct")
@@ -35,12 +129,12 @@ export const mchCalculator: CalculatorDefinition = {
   shortName: "MCH",
   category: "hematology",
   description: "Calculates mean corpuscular hemoglobin from hemoglobin and RBC count.",
-  formula: "MCH (pg) = (Hgb[g/dL] x 10) / RBC(millions/µL)",
+  formula: "MCH (pg) = (Hgb[g/dL] x 10) / RBC(10¹²/L)",
   keywords: ["mch", "mean corpuscular hemoglobin", "red cell indices"],
   relatedTools: ["mcv", "mchc"],
   inputs: [
     { id: "hgb", label: "Hemoglobin", kind: "number", unit: "g/dL", min: 0, step: 0.1, defaultValue: 14 },
-    { id: "rbc", label: "RBC Count", kind: "number", unit: "million/µL", min: 0, step: 0.01, defaultValue: 4.8 },
+    { id: "rbc", label: "RBC Count", kind: "number", unit: "10¹²/L", min: 0, step: 0.01, defaultValue: 4.8 },
   ],
   calculate: (inputs) => {
     const hgb = num(inputs, "hgb")
@@ -86,113 +180,6 @@ export const mchcCalculator: CalculatorDefinition = {
   },
 }
 
-export const redCellIndicesCalculator: CalculatorDefinition = {
-  id: "red-cell-indices",
-  name: "Red Cell Indices",
-  shortName: "MCV / MCH / MCHC",
-  category: "hematology",
-  description:
-    "Calculates mean corpuscular volume (MCV), mean corpuscular hemoglobin (MCH), and mean corpuscular hemoglobin concentration (MCHC) from RBC count, hemoglobin, and hematocrit.",
-  formula:
-    "MCV = (Hct x 10) / RBC | MCH = (Hgb x 10) / RBC | MCHC = (Hgb / Hct) x 100",
-  keywords: [
-    "red cell indices",
-    "mcv",
-    "mch",
-    "mchc",
-    "mean corpuscular volume",
-    "mean corpuscular hemoglobin",
-    "mean corpuscular hemoglobin concentration",
-    "erythrocyte indices",
-  ],
-  relatedTools: ["absolute-cell-count", "corrected-wbc"],
-
-  inputs: [
-    {
-      id: "hgb",
-      label: "Hemoglobin",
-      kind: "number",
-      unit: "g/dL",
-      min: 0,
-      step: 0.1,
-      defaultValue: 14,
-    },
-    {
-      id: "hct",
-      label: "Hematocrit",
-      kind: "number",
-      unit: "%",
-      min: 0,
-      step: 0.1,
-      defaultValue: 42,
-    },
-    {
-      id: "rbc",
-      label: "RBC Count",
-      kind: "number",
-      unit: "million/µL",
-      min: 0,
-      step: 0.01,
-      defaultValue: 4.8,
-    },
-  ],
-
-  calculate: (inputs) => {
-    const hgb = num(inputs, "hgb")
-    const hct = num(inputs, "hct")
-    const rbc = num(inputs, "rbc")
-
-    assertPositive(hgb, "Hemoglobin")
-    assertPositive(hct, "Hematocrit")
-    assertPositive(rbc, "RBC count")
-
-    const mcv = (hct * 10) / rbc
-    const mch = (hgb * 10) / rbc
-    const mchc = (hgb / hct) * 100
-
-    const roundedMcv = round(mcv, 1)
-    const roundedMch = round(mch, 1)
-    const roundedMchc = round(mchc, 1)
-
-    const warnings =
-      mchc > 38
-        ? [
-            "MCHC above ~36–38 g/dL is physiologically unusual and may indicate a specimen or analyzer artifact.",
-          ]
-        : undefined
-
-    return {
-      value: roundedMcv,
-      unit: "fL",
-      display: fmt(roundedMcv, 1, "fL"),
-
-      secondary: [
-        {
-          label: "MCH",
-          value: fmt(roundedMch, 1, "pg"),
-        },
-        {
-          label: "MCHC",
-          value: fmt(roundedMchc, 1, "g/dL"),
-        },
-      ],
-
-      calculationSteps: [
-        `MCV = (${hct} x 10) / ${rbc} = ${roundedMcv} fL`,
-        `MCH = (${hgb} x 10) / ${rbc} = ${roundedMch} pg`,
-        `MCHC = (${hgb} / ${hct}) x 100 = ${roundedMchc} g/dL`,
-      ],
-
-      warnings,
-    }
-  },
-
-  notes: [
-    "MCV, MCH, and MCHC are commonly reported red cell indices used to characterize erythrocytes.",
-    "Reference ranges vary by age, laboratory, analyzer, and clinical context; interpret results against your local reference interval.",
-  ],
-}
-
 const CELL_TYPES = [
   { value: "neutrophil", label: "Neutrophils (ANC)" },
   { value: "lymphocyte", label: "Lymphocytes (ALC)" },
@@ -206,7 +193,7 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
   shortName: "Abs. Count",
   category: "hematology",
   description: "Calculates an absolute white cell count (e.g. ANC, ALC) from total WBC and differential percentage.",
-  formula: "Absolute count = WBC(x10³/µL) x (differential % / 100)",
+  formula: "Absolute count = WBC(x10⁹/L) x (differential % / 100)",
   keywords: ["anc", "absolute neutrophil count", "alc", "aec", "amc", "differential"],
   relatedTools: ["mcv", "mch", "mchc", "corrected-wbc"],
   inputs: [
@@ -217,7 +204,7 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
       options: CELL_TYPES,
       defaultValue: "neutrophil",
     },
-    { id: "wbc", label: "Total WBC", kind: "number", unit: "x10³/µL", min: 0, step: 0.01, defaultValue: 7.5 },
+    { id: "wbc", label: "Total WBC", kind: "number", unit: "x10⁹/L", min: 0, step: 0.01, defaultValue: 7.5 },
     { id: "percent", label: "Differential %", kind: "number", unit: "%", min: 0, max: 100, step: 0.1, defaultValue: 60 },
   ],
   calculate: (inputs) => {
@@ -241,8 +228,8 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
 
     return {
       value: rounded,
-      unit: "x10³/µL",
-      display: fmt(rounded, 2, "x10³/µL"),
+      unit: "x10⁹/L",
+      display: fmt(rounded, 2, "x10⁹/L"),
       secondary: [{ label: "In cells/µL", value: fmt(round(absoluteCells, 0), 0, "cells/µL") }],
       calculationSteps: [`${wbc} x (${percent} / 100)`],
       interpretation: interpretation ? `${label}: ${interpretation}` : undefined,
@@ -261,7 +248,7 @@ export const correctedWbcCalculator: CalculatorDefinition = {
   keywords: ["corrected wbc", "nucleated red blood cells", "nrbc"],
   relatedTools: ["absolute-cell-count"],
   inputs: [
-    { id: "wbc", label: "Uncorrected WBC", kind: "number", unit: "x10³/µL", min: 0, step: 0.01, defaultValue: 15 },
+    { id: "wbc", label: "Uncorrected WBC", kind: "number", unit: "x10⁹/L", min: 0, step: 0.01, defaultValue: 15 },
     { id: "nrbc", label: "nRBC per 100 WBC", kind: "number", min: 0, step: 1, defaultValue: 10 },
   ],
   calculate: (inputs) => {
@@ -275,11 +262,41 @@ export const correctedWbcCalculator: CalculatorDefinition = {
 
     return {
       value: rounded,
-      unit: "x10³/µL",
-      display: fmt(rounded, 2, "x10³/µL"),
+      unit: "x10⁹/L",
+      display: fmt(rounded, 2, "x10⁹/L"),
       calculationSteps: [`(${wbc} x 100) / (100 + ${nrbc})`],
-      warnings: nrbc === 0 ? ["No correction needed when nRBC count is zero — corrected value equals the uncorrected count."] : undefined,
+      warnings: nrbc === 0 ? ["No correction needed when nRBC count is zero. Corrected value equals the uncorrected count."] : undefined,
     }
   },
   notes: ["Automated analyzers count nucleated RBCs as WBCs; this correction removes that overestimate when a manual differential reports nRBCs."],
+}
+
+export const hematocritEstimateCalculator: CalculatorDefinition = {
+  id: "hematocrit-estimate",
+  name: "Hematocrit Estimation",
+  shortName: "Est. Hct",
+  category: "hematology",
+  description: "Estimates hematocrit from hemoglobin using the commonly cited 'rule of three'.",
+  isEstimator: true,
+  formula: "Hct (%) ≈ Hgb (g/dL) x 3",
+  keywords: ["hematocrit estimation", "rule of three", "hgb hct relationship"],
+  relatedTools: ["mcv", "mchc"],
+  inputs: [{ id: "hgb", label: "Hemoglobin", kind: "number", unit: "g/dL", min: 0, step: 0.1, defaultValue: 14 }],
+  calculate: (inputs) => {
+    const hgb = num(inputs, "hgb")
+    assertPositive(hgb, "Hemoglobin")
+
+    const hct = hgb * 3
+    const rounded = round(hct, 1)
+
+    return {
+      value: rounded,
+      unit: "%",
+      display: fmt(rounded, 1, "%"),
+      calculationSteps: [`${hgb} x 3`],
+      warnings: ["This is a rough approximation, actual Hgb:Hct ratio varies with red cell size (MCV) and shape; a measured hematocrit should be used whenever available."],
+    }
+  },
+  notes: ["The 'rule of three' (Hct ≈ 3 x Hgb) is a bedside approximation, not a substitute for a measured hematocrit."],
+  limitations: ["Less accurate with abnormal MCV (microcytosis/macrocytosis) or abnormal red cell morphology."],
 }
