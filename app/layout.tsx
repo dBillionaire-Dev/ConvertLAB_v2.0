@@ -10,7 +10,8 @@ import { CommandPalette } from "@/components/command-palette"
 import { InstallPrompt } from "@/components/install-prompt"
 import { ServiceWorkerRegistration } from "@/components/service-worker-registration"
 import { SkipToContent } from "@/components/skip-to-content"
-import { MaintenanceBanner } from "@/components/maintenance-banner"
+// import { MaintenanceBanner } from "@/components/maintenance-banner"
+import { ApplyPreferences } from "@/components/apply-preferences"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -56,7 +57,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SkipToContent />
           <div className="min-h-screen flex flex-col bg-background">
-            <MaintenanceBanner />
+            {/*<MaintenanceBanner />*/}
             <Header />
             <main id="main-content" className="flex-1">
               {children}
@@ -66,6 +67,7 @@ export default function RootLayout({
           <CommandPalette />
           <InstallPrompt />
           <ServiceWorkerRegistration />
+          <ApplyPreferences />
           <Toaster />
         </ThemeProvider>
       </body>

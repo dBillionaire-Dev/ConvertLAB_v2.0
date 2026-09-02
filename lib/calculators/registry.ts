@@ -7,8 +7,17 @@ import {
   bmrCalculator,
   adjustedBodyWeightCalculator,
   estimatedCalorieRequirementCalculator,
+  waistToHeightRatioCalculator,
+  waistToHipRatioCalculator,
 } from "./definitions/clinical"
-import { creatinineClearanceCalculator, egfrCalculator, bunCreatinineRatioCalculator } from "./definitions/renal"
+import {
+  creatinineClearanceCalculator,
+  egfrCalculator,
+  bunCreatinineRatioCalculator,
+  egfrMdrdCalculator,
+  fenaCalculator,
+  feureaCalculator,
+} from "./definitions/renal"
 import {
   ldlCalculator,
   nonHdlCalculator,
@@ -17,15 +26,22 @@ import {
   correctedCalciumCalculator,
   totalHdlRatioCalculator,
   calciumPhosphateProductCalculator,
+  ldlHdlRatioCalculator,
+  deltaRatioCalculator,
+  estimatedOsmolalityCalculator,
+  hba1cEagCalculator,
 } from "./definitions/chemistry"
 import {
+  // mcvCalculator,
+  // mchCalculator,
+  // mchcCalculator,
   redCellIndicesCalculator,
   absoluteCellCountCalculator,
   correctedWbcCalculator,
+  hematocritEstimateCalculator,
 } from "./definitions/hematology"
 import { molarityCalculator, normalityCalculator } from "./definitions/lab-solutions"
 import { cfuCalculator, dilutionFactorCalculator, concentrationAfterDilutionCalculator } from "./definitions/microbiology"
-import { RedCellIndicesCalculator } from "@/components/hematology/red-cell-indices-calculator"
 
 export const calculators: CalculatorDefinition[] = [
   bmiCalculator,
@@ -34,9 +50,14 @@ export const calculators: CalculatorDefinition[] = [
   bmrCalculator,
   adjustedBodyWeightCalculator,
   estimatedCalorieRequirementCalculator,
+  waistToHeightRatioCalculator,
+  waistToHipRatioCalculator,
   creatinineClearanceCalculator,
   egfrCalculator,
   bunCreatinineRatioCalculator,
+  egfrMdrdCalculator,
+  fenaCalculator,
+  feureaCalculator,
   ldlCalculator,
   nonHdlCalculator,
   vldlCalculator,
@@ -44,9 +65,17 @@ export const calculators: CalculatorDefinition[] = [
   correctedCalciumCalculator,
   totalHdlRatioCalculator,
   calciumPhosphateProductCalculator,
+  ldlHdlRatioCalculator,
+  deltaRatioCalculator,
+  estimatedOsmolalityCalculator,
+  hba1cEagCalculator,
+  // mcvCalculator,
+  // mchCalculator,
+  // mchcCalculator,
   redCellIndicesCalculator,
   absoluteCellCountCalculator,
   correctedWbcCalculator,
+  hematocritEstimateCalculator,
   molarityCalculator,
   normalityCalculator,
   cfuCalculator,

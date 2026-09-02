@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { mcvCalculator, mchCalculator, mchcCalculator, absoluteCellCountCalculator, correctedWbcCalculator } from "./hematology"
+import { mcvCalculator, mchCalculator, mchcCalculator, absoluteCellCountCalculator, correctedWbcCalculator, hematocritEstimateCalculator } from "./hematology"
 
 describe("mcvCalculator", () => {
   it("computes MCV", () => {
@@ -95,5 +95,27 @@ describe("correctedWbcCalculator", () => {
   it("handles decimal WBC values", () => {
     const result = correctedWbcCalculator.calculate({ wbc: 12.4, nrbc: 5 })
     expect(Number.isFinite(result.value)).toBe(true)
+  })
+})
+
+describe("hematocritEstimateCalculator", () => {
+  it("estimates hematocrit as 3x hemoglobin", () => {
+    const result = hematocritEstimateCalculator.calculate({ hgb: 14 })
+    expect(result.value).toBe(42)
+  })
+
+  it("always includes the approximation warning", () => {
+    const result = hematocritEstimateCalculator.calculate({ hgb: 10 })
+    expect(result.warnings?.length).toBeGreaterThan(0)
+  })
+
+  it("throws for zero/negative hemoglobin", () => {
+    expect(() => hematocritEstimateCalculator.calculate({ hgb: 0 })).toThrow()
+    expect(() => hematocritEstimateCalculator.calculate({ hgb: -1 })).toThrow()
+  })
+
+  it("handles decimal hemoglobin", () => {
+    const result = hematocritEstimateCalculator.calculate({ hgb: 13.5 })
+    expect(result.value).toBeCloseTo(40.5, 1)
   })
 })

@@ -1,17 +1,26 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { PageContainer } from "@/components/page-container"
 import { AppearanceRadioGroup } from "@/components/theme-toggle"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { clearHistory } from "@/lib/history/db"
+import { getReduceMotion, setReduceMotion } from "@/lib/preferences"
 
 export default function SettingsPage() {
   const { toast } = useToast()
+  const [reduceMotion, setReduceMotionState] = useState(false)
+
+  useEffect(() => {
+    setReduceMotionState(getReduceMotion())
+  }, [])
 
   return (
-    <PageContainer title="Settings" description="Appearance and local data preferences.">
+    <PageContainer title="Settings" description="Appearance, preferences, and local data.">
       <div className="space-y-6">
         <Card>
           <CardHeader>
@@ -20,6 +29,33 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent>
             <AppearanceRadioGroup />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Preferences</CardTitle>
+            <CardDescription>Behavior settings for this device.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <Label htmlFor="reduce-motion" className="font-normal">
+                  Reduce motion
+                </Label>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Stops the scrolling banner and other animations, independent of your system setting.
+                </p>
+              </div>
+              <Switch
+                id="reduce-motion"
+                checked={reduceMotion}
+                onCheckedChange={(checked) => {
+                  setReduceMotionState(checked)
+                  setReduceMotion(checked)
+                }}
+              />
+            </div>
           </CardContent>
         </Card>
 

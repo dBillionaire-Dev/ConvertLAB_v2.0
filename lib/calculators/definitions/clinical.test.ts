@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { bmiCalculator, bsaCalculator, idealBodyWeightCalculator, bmrCalculator, adjustedBodyWeightCalculator, estimatedCalorieRequirementCalculator } from "./clinical"
+import { bmiCalculator, bsaCalculator, idealBodyWeightCalculator, bmrCalculator, adjustedBodyWeightCalculator, estimatedCalorieRequirementCalculator, waistToHeightRatioCalculator, waistToHipRatioCalculator } from "./clinical"
 
 describe("bmiCalculator", () => {
   it("computes a normal BMI", () => {
@@ -157,5 +157,41 @@ describe("estimatedCalorieRequirementCalculator", () => {
     expect(() =>
       estimatedCalorieRequirementCalculator.calculate({ sex: "male", weight: 0, height: 175, age: 30, activityLevel: "sedentary" }),
     ).toThrow()
+  })
+})
+
+describe("waistToHeightRatioCalculator", () => {
+  it("computes the ratio", () => {
+    const result = waistToHeightRatioCalculator.calculate({ waist: 90, height: 180 })
+    expect(result.value).toBe(0.5)
+  })
+
+  it("flags at/above the 0.5 threshold", () => {
+    const result = waistToHeightRatioCalculator.calculate({ waist: 100, height: 180 })
+    expect(result.interpretation).toContain("0.5")
+  })
+
+  it("throws for zero/negative waist or height", () => {
+    expect(() => waistToHeightRatioCalculator.calculate({ waist: 0, height: 180 })).toThrow()
+    expect(() => waistToHeightRatioCalculator.calculate({ waist: 90, height: 0 })).toThrow()
+  })
+})
+
+describe("waistToHipRatioCalculator", () => {
+  it("computes the ratio", () => {
+    const result = waistToHipRatioCalculator.calculate({ sex: "male", waist: 100, hip: 100 })
+    expect(result.value).toBe(1)
+  })
+
+  it("uses sex-specific thresholds", () => {
+    const male = waistToHipRatioCalculator.calculate({ sex: "male", waist: 95, hip: 100 })
+    const female = waistToHipRatioCalculator.calculate({ sex: "female", waist: 88, hip: 100 })
+    expect(male.interpretation).toContain("0.9")
+    expect(female.interpretation).toContain("0.85")
+  })
+
+  it("throws for zero/negative waist or hip", () => {
+    expect(() => waistToHipRatioCalculator.calculate({ sex: "male", waist: 0, hip: 100 })).toThrow()
+    expect(() => waistToHipRatioCalculator.calculate({ sex: "male", waist: 90, hip: 0 })).toThrow()
   })
 })

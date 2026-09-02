@@ -66,9 +66,9 @@ export const labTools: LabToolEntry[] = [
   {
     id: "calibration-curve",
     name: "Calibration Curve",
-    description: "Linear regression from standards, solve for unknowns",
+    description: "Linear regression from standards, solve for unknowns, dilution-adjusted concentration",
     href: "/lab-tools/spectrophotometry",
-    keywords: ["calibration curve", "linear regression", "standards"],
+    keywords: ["calibration curve", "linear regression", "standards", "dilution-adjusted concentration"],
   },
   {
     id: "mcfarland",

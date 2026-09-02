@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { ldlCalculator, nonHdlCalculator, vldlCalculator, anionGapCalculator, correctedCalciumCalculator, totalHdlRatioCalculator, calciumPhosphateProductCalculator } from "./chemistry"
+import { ldlCalculator, nonHdlCalculator, vldlCalculator, anionGapCalculator, correctedCalciumCalculator, totalHdlRatioCalculator, calciumPhosphateProductCalculator, ldlHdlRatioCalculator, deltaRatioCalculator, estimatedOsmolalityCalculator, hba1cEagCalculator } from "./chemistry"
 
 describe("ldlCalculator", () => {
   it("computes LDL via the Friedewald equation (mg/dL)", () => {
@@ -136,5 +136,95 @@ describe("calciumPhosphateProductCalculator", () => {
   it("handles zero values", () => {
     const result = calciumPhosphateProductCalculator.calculate({ calcium: 0, phosphate: 4 })
     expect(result.value).toBe(0)
+  })
+})
+
+describe("ldlHdlRatioCalculator", () => {
+  it("computes the ratio", () => {
+    const result = ldlHdlRatioCalculator.calculate({ ldl: 100, hdl: 50 })
+    expect(result.value).toBe(2)
+  })
+
+  it("flags high risk at or above 4:1", () => {
+    const result = ldlHdlRatioCalculator.calculate({ ldl: 200, hdl: 40 })
+    expect(result.interpretation).toContain("High risk")
+  })
+
+  it("throws for zero/negative HDL", () => {
+    expect(() => ldlHdlRatioCalculator.calculate({ ldl: 100, hdl: 0 })).toThrow()
+    expect(() => ldlHdlRatioCalculator.calculate({ ldl: 100, hdl: -5 })).toThrow()
+  })
+
+  it("throws for negative LDL", () => {
+    expect(() => ldlHdlRatioCalculator.calculate({ ldl: -10, hdl: 50 })).toThrow()
+  })
+})
+
+describe("deltaRatioCalculator", () => {
+  it("computes AG, delta gap, and delta ratio", () => {
+    const result = deltaRatioCalculator.calculate({ na: 140, cl: 100, hco3: 12 })
+    const ag = 140 - (100 + 12)
+    const deltaGap = ag - 12
+    const deltaRatio = deltaGap / (24 - 12)
+    expect(result.value).toBeCloseTo(deltaRatio, 2)
+    expect(result.secondary?.[0].label).toBe("Anion gap")
+  })
+
+  it("classifies a low delta ratio as hyperchloremic", () => {
+    const result = deltaRatioCalculator.calculate({ na: 140, cl: 110, hco3: 20 })
+    expect(result.interpretation).toContain("hyperchloremic")
+  })
+
+  it("throws when HCO3 is exactly 24 (delta HCO3 is zero)", () => {
+    expect(() => deltaRatioCalculator.calculate({ na: 140, cl: 100, hco3: 24 })).toThrow()
+  })
+})
+
+describe("estimatedOsmolalityCalculator", () => {
+  it("computes calculated osmolality", () => {
+    const result = estimatedOsmolalityCalculator.calculate({ na: 140, glucose: 90, bun: 14 })
+    expect(result.value).toBeCloseTo(2 * 140 + 90 / 18 + 14 / 2.8, 1)
+  })
+
+  it("computes the osmolar gap when measured osmolality is provided", () => {
+    const result = estimatedOsmolalityCalculator.calculate({ na: 140, glucose: 90, bun: 14, measuredOsmolality: 310 })
+    expect(result.secondary?.length).toBe(1)
+    expect(result.secondary?.[0].label).toBe("Osmolar gap")
+  })
+
+  it("omits the gap when measured osmolality is not provided", () => {
+    const result = estimatedOsmolalityCalculator.calculate({ na: 140, glucose: 90, bun: 14 })
+    expect(result.secondary).toBeUndefined()
+  })
+
+  it("warns when the osmolar gap is large", () => {
+    const result = estimatedOsmolalityCalculator.calculate({ na: 140, glucose: 90, bun: 14, measuredOsmolality: 330 })
+    expect(result.warnings?.length).toBeGreaterThan(0)
+  })
+
+  it("throws for zero/negative sodium", () => {
+    expect(() => estimatedOsmolalityCalculator.calculate({ na: 0, glucose: 90, bun: 14 })).toThrow()
+  })
+})
+
+describe("hba1cEagCalculator", () => {
+  it("converts HbA1c to eAG", () => {
+    const result = hba1cEagCalculator.calculate({ direction: "hba1c-to-eag", value: 7 })
+    expect(result.value).toBeCloseTo(28.7 * 7 - 46.7, 0)
+  })
+
+  it("converts eAG to HbA1c", () => {
+    const result = hba1cEagCalculator.calculate({ direction: "eag-to-hba1c", value: 154.2 })
+    expect(result.value).toBeCloseTo(7, 1)
+  })
+
+  it("round-trips approximately", () => {
+    const eag = hba1cEagCalculator.calculate({ direction: "hba1c-to-eag", value: 8 })
+    const back = hba1cEagCalculator.calculate({ direction: "eag-to-hba1c", value: eag.value as number })
+    expect(back.value as number).toBeCloseTo(8, 0)
+  })
+
+  it("throws for zero/negative value", () => {
+    expect(() => hba1cEagCalculator.calculate({ direction: "hba1c-to-eag", value: 0 })).toThrow()
   })
 })

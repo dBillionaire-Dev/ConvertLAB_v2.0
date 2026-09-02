@@ -68,7 +68,7 @@ export function linearRegression(points: CalibrationPoint[]): RegressionResult {
     ssYY += dy * dy
   }
 
-  if (ssXX === 0) throw new SpectroError("All standard concentrations are identical — cannot fit a line.")
+  if (ssXX === 0) throw new SpectroError("All standard concentrations are identical, cannot fit a line.")
 
   const slope = ssXY / ssXX
   const intercept = meanY - slope * meanX
@@ -78,6 +78,16 @@ export function linearRegression(points: CalibrationPoint[]): RegressionResult {
 }
 
 export function concentrationFromCalibration(absorbance: number, regression: RegressionResult): number {
-  if (regression.slope === 0) throw new SpectroError("Calibration slope is zero — cannot solve for concentration.")
+  if (regression.slope === 0) throw new SpectroError("Calibration slope is zero, cannot solve for concentration.")
   return (absorbance - regression.intercept) / regression.slope
+}
+
+/**
+ * When a sample was diluted before measurement, the concentration read off
+ * a calibration curve reflects the DILUTED sample, not the original. This
+ * scales back up to the original (undiluted) concentration.
+ */
+export function originalConcentrationFromDiluted(dilutedConcentration: number, dilutionFactor: number): number {
+  if (dilutionFactor <= 0) throw new SpectroError("Dilution factor must be greater than zero.")
+  return dilutedConcentration * dilutionFactor
 }

@@ -19,7 +19,7 @@ const quickLinks = [
   { href: "/lab-tools", label: "Lab Tools", icon: FlaskConical, description: "Dilutions and solution prep" },
 ]
 
-// Curated highlights for discovery — shown to everyone, not derived from personal history.
+// Curated highlights for discovery is shown to everyone, not derived from personal history.
 const POPULAR_CALCULATOR_IDS = ["bmi", "egfr-ckd-epi", "ldl-friedewald"]
 
 function getGreeting(hour: number) {

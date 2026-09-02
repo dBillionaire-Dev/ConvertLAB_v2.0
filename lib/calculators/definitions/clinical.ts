@@ -26,7 +26,7 @@ export const bmiCalculator: CalculatorDefinition = {
   description: "Calculates body mass index from weight and height.",
   formula: "BMI = weight (kg) / height (m)²",
   keywords: ["bmi", "body mass index", "weight"],
-  relatedTools: ["bsa", "ideal-body-weight", "bmr"],
+  relatedTools: ["bsa", "ideal-body-weight", "bmr", "waist-to-height-ratio", "waist-to-hip-ratio"],
   inputs: [
     { id: "weight", label: "Weight", kind: "number", unit: "kg", min: 0, defaultValue: 70 },
     {
@@ -77,7 +77,7 @@ export const bmiCalculator: CalculatorDefinition = {
       secondary: [{ label: "Category", value: category }],
       calculationSteps: [`${round(weightKg, 1)} kg / (${round(heightM, 2)} m)²`],
       interpretation: `${category} range (WHO adult classification).`,
-      warnings: bmi < 10 || bmi > 80 ? ["BMI is outside the typical human range — check inputs."] : undefined,
+      warnings: bmi < 10 || bmi > 80 ? ["BMI is outside the typical human range, check inputs."] : undefined,
     }
   },
   notes: ["Standard WHO adult BMI categories are used; they may not apply to children, pregnant patients, or highly muscular individuals."],
@@ -264,12 +264,12 @@ export const adjustedBodyWeightCalculator: CalculatorDefinition = {
       calculationSteps: [`IBW = ${round(ibw, 1)} kg`, `${round(ibw, 1)} + 0.4 x (${actualWeight} - ${round(ibw, 1)})`],
       warnings:
         actualWeight <= ibw
-          ? ["Actual weight is at or below ideal body weight — adjusted body weight is typically only used when actual weight exceeds IBW (e.g. obesity)."]
+          ? ["Actual weight is at or below ideal body weight. Adjusted body weight is typically only used when actual weight exceeds IBW (e.g. obesity)."]
           : undefined,
     }
   },
   notes: ["Commonly used for dosing certain medications (e.g. some antibiotics) in patients with actual weight well above ideal body weight."],
-  limitations: ["The 0.4 correction factor is a widely used convention, not a universally validated constant — follow your institution's dosing protocol."],
+  limitations: ["The 0.4 correction factor is a widely used convention, not a universally validated constant. Follow your institution's dosing protocol."],
 }
 
 const ACTIVITY_MULTIPLIERS: { value: string; label: string; factor: number }[] = [
@@ -340,4 +340,90 @@ export const estimatedCalorieRequirementCalculator: CalculatorDefinition = {
   },
   notes: ["Activity multipliers are the standard Harris-Benedict/Mifflin activity factors; individual energy needs vary."],
   limitations: ["Does not account for illness, injury, pregnancy, or significant body composition differences."],
+}
+
+export const waistToHeightRatioCalculator: CalculatorDefinition = {
+  id: "waist-to-height-ratio",
+  name: "Waist-to-Height Ratio",
+  shortName: "WHtR",
+  category: "clinical",
+  description: "Calculates the ratio of waist circumference to height, a marker of central adiposity.",
+  formula: "WHtR = Waist circumference / Height (same units)",
+  keywords: ["waist to height ratio", "whtr", "central adiposity", "abdominal obesity"],
+  relatedTools: ["bmi", "waist-to-hip-ratio"],
+  inputs: [
+    { id: "waist", label: "Waist circumference", kind: "number", unit: "cm", min: 0, defaultValue: 80 },
+    { id: "height", label: "Height", kind: "number", unit: "cm", min: 0, defaultValue: 170 },
+  ],
+  calculate: (inputs) => {
+    const waist = num(inputs, "waist")
+    const height = num(inputs, "height")
+    assertPositive(waist, "Waist circumference")
+    assertPositive(height, "Height")
+
+    const ratio = safeDivide(waist, height, "height")
+    const rounded = round(ratio, 2)
+
+    let interpretation = "Below the commonly cited 0.5 threshold."
+    if (ratio >= 0.5) interpretation = "At or above the commonly cited 0.5 threshold, sometimes used as a simple screening cutoff for increased cardiometabolic risk."
+
+    return {
+      value: rounded,
+      display: fmt(rounded, 2),
+      calculationSteps: [`${waist} / ${height}`],
+      interpretation,
+    }
+  },
+  notes: ["\"Keep your waist to less than half your height\" (WHtR < 0.5) is a commonly cited rule of thumb, though cutoffs vary by population and guideline."],
+  limitations: ["Does not account for sex, age, or body composition differences; not a diagnostic measure on its own."],
+}
+
+export const waistToHipRatioCalculator: CalculatorDefinition = {
+  id: "waist-to-hip-ratio",
+  name: "Waist-to-Hip Ratio",
+  shortName: "WHR",
+  category: "clinical",
+  description: "Calculates the ratio of waist circumference to hip circumference, a marker of fat distribution.",
+  formula: "WHR = Waist circumference / Hip circumference (same units)",
+  keywords: ["waist to hip ratio", "whr", "fat distribution", "abdominal obesity"],
+  relatedTools: ["bmi", "waist-to-height-ratio"],
+  inputs: [
+    {
+      id: "sex",
+      label: "Sex",
+      kind: "select",
+      options: [
+        { value: "male", label: "Male" },
+        { value: "female", label: "Female" },
+      ],
+      defaultValue: "male",
+    },
+    { id: "waist", label: "Waist circumference", kind: "number", unit: "cm", min: 0, defaultValue: 80 },
+    { id: "hip", label: "Hip circumference", kind: "number", unit: "cm", min: 0, defaultValue: 100 },
+  ],
+  calculate: (inputs) => {
+    const sex = str(inputs, "sex")
+    const waist = num(inputs, "waist")
+    const hip = num(inputs, "hip")
+    assertPositive(waist, "Waist circumference")
+    assertPositive(hip, "Hip circumference")
+
+    const ratio = safeDivide(waist, hip, "hip circumference")
+    const rounded = round(ratio, 2)
+
+    const threshold = sex === "male" ? 0.9 : 0.85
+    const interpretation =
+      ratio >= threshold
+        ? `At or above the commonly cited WHO threshold for ${sex === "male" ? "men" : "women"} (${threshold}), sometimes used as a screening indicator for increased health risk.`
+        : `Below the commonly cited WHO threshold for ${sex === "male" ? "men" : "women"} (${threshold}).`
+
+    return {
+      value: rounded,
+      display: fmt(rounded, 2),
+      calculationSteps: [`${waist} / ${hip}`],
+      interpretation,
+    }
+  },
+  notes: ["WHO commonly cites 0.90 (men) and 0.85 (women) as screening thresholds; other guidelines use different cutoffs."],
+  limitations: ["Measurement technique (where waist/hip are measured) significantly affects results; not a diagnostic measure on its own."],
 }

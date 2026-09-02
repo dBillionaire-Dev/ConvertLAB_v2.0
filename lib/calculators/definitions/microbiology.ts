@@ -99,5 +99,5 @@ export const concentrationAfterDilutionCalculator: CalculatorDefinition = {
       calculationSteps: [`${initial} / ${factor}`],
     }
   },
-  notes: ["Use the same concentration units for input and output — this tool does not convert units."],
+  notes: ["Use the same concentration units for input and output. This tool does not convert units."],
 }
