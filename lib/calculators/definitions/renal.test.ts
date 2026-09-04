@@ -127,7 +127,9 @@ describe("egfrMdrdCalculator", () => {
 describe("fenaCalculator", () => {
   it("computes FeNa", () => {
     const result = fenaCalculator.calculate({ urineNa: 20, plasmaNa: 140, urineCr: 60, plasmaCr: 1.0 })
-    expect(result.value).toBeCloseTo(((20 * 1.0) / (140 * 60)) * 100, 3)
+    // The calculator rounds its display value to 2 decimals, so compare
+    // against that same precision rather than the raw unrounded formula.
+    expect(result.value).toBeCloseTo(((20 * 1.0) / (140 * 60)) * 100, 2)
   })
 
   it("interprets a low FeNa as prerenal", () => {

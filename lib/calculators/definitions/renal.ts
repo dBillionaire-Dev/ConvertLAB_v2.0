@@ -140,8 +140,8 @@ export const bunCreatinineRatioCalculator: CalculatorDefinition = {
     const rounded = round(ratio, 1)
 
     let interpretation = "Within the typical 10:1-20:1 range."
-    if (ratio > 20) interpretation = "Elevated ratio can suggest a prerenal cause (e.g. dehydration, GI bleed) or high protein intake."
-    else if (ratio < 10) interpretation = "Low ratio can be seen with low protein intake, liver disease, or intrinsic renal causes."
+    if (ratio > 20) interpretation = "Elevated ratio — can suggest a prerenal cause (e.g. dehydration, GI bleed) or high protein intake."
+    else if (ratio < 10) interpretation = "Low ratio — can be seen with low protein intake, liver disease, or intrinsic renal causes."
 
     return {
       value: rounded,
@@ -240,10 +240,10 @@ export const fenaCalculator: CalculatorDefinition = {
 
     const interpretation =
       fena < 1
-        ? "Below 1% suggests a prerenal cause (e.g. volume depletion)."
+        ? "Below 1% — suggests a prerenal cause (e.g. volume depletion)."
         : fena > 2
-          ? "Above 2% suggests an intrinsic renal cause (e.g. acute tubular necrosis)."
-          : "Between 1-2% suggests an indeterminate range; consider clinical context."
+          ? "Above 2% — suggests an intrinsic renal cause (e.g. acute tubular necrosis)."
+          : "Between 1-2% — an indeterminate range; consider clinical context."
 
     return {
       value: rounded,
@@ -262,7 +262,7 @@ export const feureaCalculator: CalculatorDefinition = {
   name: "Fractional Excretion of Urea",
   shortName: "FeUrea",
   category: "renal",
-  description: "Calculates the fractional excretion of urea. Useful when FeNa is unreliable (e.g. diuretic use).",
+  description: "Calculates the fractional excretion of urea — useful when FeNa is unreliable (e.g. diuretic use).",
   formula: "FeUrea (%) = (Urine Urea x Plasma Cr) / (Plasma Urea x Urine Cr) x 100",
   keywords: ["feurea", "fractional excretion of urea", "prerenal", "aki", "diuretics"],
   relatedTools: ["fena", "creatinine-clearance"],
@@ -287,10 +287,10 @@ export const feureaCalculator: CalculatorDefinition = {
 
     const interpretation =
       feurea < 35
-        ? "Below 35% suggests a prerenal cause, even in patients on diuretics."
+        ? "Below 35% — suggests a prerenal cause, even in patients on diuretics."
         : feurea > 50
-          ? "Above 50% suggests an intrinsic renal cause."
-          : "Between 35-50% suggests an indeterminate range; consider clinical context."
+          ? "Above 50% — suggests an intrinsic renal cause."
+          : "Between 35-50% — an indeterminate range; consider clinical context."
 
     return {
       value: rounded,

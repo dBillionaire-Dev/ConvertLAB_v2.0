@@ -64,7 +64,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
     } else if (input.unit && raw !== "") {
       display = `${raw} ${input.unit}`
     }
-    return { label: input.label, display: display || "" }
+    return { label: input.label, display: display || "—" }
   })
 
   const handleCalculate = () => {
@@ -198,7 +198,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
             {/* Print-only masthead — site header/nav is hidden when printing */}
             <div className="hidden print:block mb-2">
               <p className="font-bold">ConvertLAB</p>
-              <p className="text-xs text-muted-foreground">{definition.name}, {new Date().toLocaleDateString()}</p>
+              <p className="text-xs text-muted-foreground">{definition.name} — {new Date().toLocaleDateString()}</p>
             </div>
             <CardTitle className="text-sm font-medium text-muted-foreground">Result</CardTitle>
           </CardHeader>

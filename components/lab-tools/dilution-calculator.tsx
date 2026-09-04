@@ -40,10 +40,10 @@ export function DilutionCalculator() {
       else if (missing === "c2") solved = (numeric.c1! * numeric.v1!) / numeric.v2!
       else solved = (numeric.c1! * numeric.v1!) / numeric.c2!
     } catch {
-      return { error: "Unable to solve, check for a zero value.", result: null }
+      return { error: "Unable to solve — check for a zero value.", result: null }
     }
 
-    if (!Number.isFinite(solved)) return { error: "Unable to solve, check for a zero value.", result: null }
+    if (!Number.isFinite(solved)) return { error: "Unable to solve — check for a zero value.", result: null }
 
     return { error: null as string | null, result: { field: missing, value: solved } }
   }, [values])

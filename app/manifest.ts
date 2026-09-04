@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ConvertLAB",
+    name: "ConvertLAB — From units to results",
     short_name: "ConvertLAB",
     description:
       "A laboratory calculation, conversion, estimation, and reference toolkit for laboratory and clinical work.",

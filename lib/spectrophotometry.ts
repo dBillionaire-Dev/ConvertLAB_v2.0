@@ -68,7 +68,7 @@ export function linearRegression(points: CalibrationPoint[]): RegressionResult {
     ssYY += dy * dy
   }
 
-  if (ssXX === 0) throw new SpectroError("All standard concentrations are identical, cannot fit a line.")
+  if (ssXX === 0) throw new SpectroError("All standard concentrations are identical — cannot fit a line.")
 
   const slope = ssXY / ssXX
   const intercept = meanY - slope * meanX
@@ -78,7 +78,7 @@ export function linearRegression(points: CalibrationPoint[]): RegressionResult {
 }
 
 export function concentrationFromCalibration(absorbance: number, regression: RegressionResult): number {
-  if (regression.slope === 0) throw new SpectroError("Calibration slope is zero, cannot solve for concentration.")
+  if (regression.slope === 0) throw new SpectroError("Calibration slope is zero — cannot solve for concentration.")
   return (absorbance - regression.intercept) / regression.slope
 }
 

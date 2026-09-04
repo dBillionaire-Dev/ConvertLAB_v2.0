@@ -144,14 +144,14 @@ export function MassVolumeConverter() {
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">
-            Density source: standard reference ({density ?? ""} g/mL)
+            Density source: standard reference ({density ?? "—"} g/mL)
           </p>
         )}
 
         <div className="rounded-md border bg-muted p-4">
           <p className="text-xs text-muted-foreground mb-1">Result</p>
           <p className="text-2xl font-bold">
-            {result !== null ? `${Number(result.toFixed(6))} ${outputUnit}` : density ? "" : "Mass ↔ Volume requires density."}
+            {result !== null ? `${Number(result.toFixed(6))} ${outputUnit}` : density ? "—" : "Mass ↔ Volume requires density."}
           </p>
         </div>
 
