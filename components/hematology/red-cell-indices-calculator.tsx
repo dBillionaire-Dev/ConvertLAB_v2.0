@@ -64,7 +64,7 @@ export function RedCellIndicesCalculator() {
       "",
       `Hemoglobin: ${hgb} g/dL`,
       `Hematocrit: ${hct} %`,
-      `RBC count: ${rbc} 10¹²/L`,
+      `RBC count: ${rbc} million/µL`,
       "",
       ...results.filter((r) => r.result).map((r) => `${r.label}: ${r.result!.display}`),
     ]
@@ -106,8 +106,8 @@ export function RedCellIndicesCalculator() {
             <div className="space-y-1.5">
               <Label htmlFor="rbc">RBC count</Label>
               <div className="relative">
-                <Input id="rbc" type="number" inputMode="decimal" step="0.01" placeholder="4.8" value={rbc} onChange={(e) => setRbc(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCalculate()} className="pr-14" />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">10¹²/L</span>
+                <Input id="rbc" type="number" inputMode="decimal" step="0.01" placeholder="4.8" value={rbc} onChange={(e) => setRbc(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCalculate()} className="pr-24" />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">million/µL</span>
               </div>
             </div>
           </div>

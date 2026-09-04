@@ -77,7 +77,7 @@ export const bmiCalculator: CalculatorDefinition = {
       secondary: [{ label: "Category", value: category }],
       calculationSteps: [`${round(weightKg, 1)} kg / (${round(heightM, 2)} m)²`],
       interpretation: `${category} range (WHO adult classification).`,
-      warnings: bmi < 10 || bmi > 80 ? ["BMI is outside the typical human range, check inputs."] : undefined,
+      warnings: bmi < 10 || bmi > 80 ? ["BMI is outside the typical human range — check inputs."] : undefined,
     }
   },
   notes: ["Standard WHO adult BMI categories are used; they may not apply to children, pregnant patients, or highly muscular individuals."],
@@ -264,12 +264,12 @@ export const adjustedBodyWeightCalculator: CalculatorDefinition = {
       calculationSteps: [`IBW = ${round(ibw, 1)} kg`, `${round(ibw, 1)} + 0.4 x (${actualWeight} - ${round(ibw, 1)})`],
       warnings:
         actualWeight <= ibw
-          ? ["Actual weight is at or below ideal body weight. Adjusted body weight is typically only used when actual weight exceeds IBW (e.g. obesity)."]
+          ? ["Actual weight is at or below ideal body weight — adjusted body weight is typically only used when actual weight exceeds IBW (e.g. obesity)."]
           : undefined,
     }
   },
   notes: ["Commonly used for dosing certain medications (e.g. some antibiotics) in patients with actual weight well above ideal body weight."],
-  limitations: ["The 0.4 correction factor is a widely used convention, not a universally validated constant. Follow your institution's dosing protocol."],
+  limitations: ["The 0.4 correction factor is a widely used convention, not a universally validated constant — follow your institution's dosing protocol."],
 }
 
 const ACTIVITY_MULTIPLIERS: { value: string; label: string; factor: number }[] = [

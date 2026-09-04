@@ -38,7 +38,7 @@ export const ldlCalculator: CalculatorDefinition = {
     if (tg > (unit === "mmol/L" ? 4.5 : 400)) {
       return {
         value: "N/A",
-        display: "Not valid, TG too high",
+        display: "Not valid — TG too high",
         warnings: [
           "The Friedewald equation is unreliable when triglycerides exceed ~400 mg/dL (4.5 mmol/L). Use direct LDL measurement instead.",
         ],
@@ -53,7 +53,7 @@ export const ldlCalculator: CalculatorDefinition = {
       unit,
       display: fmt(rounded, unit === "mmol/L" ? 2 : 1, unit),
       calculationSteps: [`${tc} - ${hdl} - (${tg} / ${divisor})`],
-      warnings: ldl < 0 ? ["Calculated LDL is negative. Check input values."] : undefined,
+      warnings: ldl < 0 ? ["Calculated LDL is negative — check input values."] : undefined,
     }
   },
   notes: ["The Friedewald equation is an estimate, not a directly measured value."],
@@ -336,7 +336,7 @@ export const deltaRatioCalculator: CalculatorDefinition = {
       interpretation,
     }
   },
-  notes: ["Assumes a normal anion gap of 12 and normal HCO3 of 24 mmol/L. Some institutions use slightly different baselines."],
+  notes: ["Assumes a normal anion gap of 12 and normal HCO3 of 24 mmol/L — some institutions use slightly different baselines."],
   limitations: ["A teaching tool for classifying mixed acid-base disorders, not a substitute for full clinical/blood gas assessment."],
 }
 

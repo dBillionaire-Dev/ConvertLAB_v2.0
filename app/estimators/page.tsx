@@ -7,6 +7,10 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 
 export const metadata = { title: "Estimators - ConvertLAB" }
 
+// Estimators are grouped by clinical purpose rather than the raw data
+// category — anthropometric/energy estimates (BSA, IBW, BMR, TDEE) read
+// better as "Metabolic" here even though they're filed under "clinical"
+// elsewhere in the app.
 const ESTIMATOR_GROUP_LABELS: Partial<Record<CalculatorGroup, string>> = {
   clinical: "Metabolic",
 }
@@ -24,7 +28,7 @@ export default function EstimatorsPage() {
   return (
     <PageContainer
       title="Estimators"
-      description="Formula-based estimates (e.g. BSA, eGFR, BMR), approximations, not measured values."
+      description="Formula-based estimates (e.g. BSA, eGFR, BMR) — approximations, not measured values."
     >
       <div className="space-y-8">
         {Array.from(groups.entries()).map(([category, tools]) => (
