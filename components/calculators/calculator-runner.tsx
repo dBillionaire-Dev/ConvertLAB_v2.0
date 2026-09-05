@@ -64,7 +64,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
     } else if (input.unit && raw !== "") {
       display = `${raw} ${input.unit}`
     }
-    return { label: input.label, display: display || "—" }
+    return { label: input.label, display: display || "" }
   })
 
   const handleCalculate = () => {

@@ -87,13 +87,13 @@ export function MolarMassConverter() {
             <Input type="number" inputMode="decimal" step="0.01" placeholder={analyte ? String(analyte.molecularWeight) : "180.16"} value={customMw} onChange={(e) => setCustomMw(e.target.value)} />
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">Molecular weight: {mw ?? "—"} g/mol</p>
+          <p className="text-sm text-muted-foreground">Molecular weight: {mw ?? ""} g/mol</p>
         )}
 
         <div className="rounded-md border bg-muted p-4">
           <p className="text-xs text-muted-foreground mb-1">Result</p>
           <p className="text-2xl font-bold">
-            {result !== null ? `${Number(result.toFixed(4))} ${direction === "mass-to-molar" ? "mmol/L" : "mg/dL"}` : "—"}
+            {result !== null ? `${Number(result.toFixed(4))} ${direction === "mass-to-molar" ? "mmol/L" : "mg/dL"}` : ""}
           </p>
         </div>
         <p className="text-xs text-muted-foreground">{LAB_PREP_DISCLAIMER}</p>

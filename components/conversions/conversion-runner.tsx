@@ -20,12 +20,12 @@ export function ConversionRunner({ category }: { category: ConversionCategory })
 
   const result = useMemo(() => {
     const numeric = Number.parseFloat(value)
-    if (!Number.isFinite(numeric)) return { display: "-", error: null as string | null }
+    if (!Number.isFinite(numeric)) return { display: "", error: null as string | null }
     try {
       const converted = convert(category, numeric, fromId, toId)
       return { display: formatNumber(converted), error: null as string | null }
     } catch (err) {
-      return { display: "-", error: err instanceof ConversionError ? err.message : "Conversion error" }
+      return { display: "", error: err instanceof ConversionError ? err.message : "Conversion error" }
     }
   }, [value, fromId, toId, category])
 
