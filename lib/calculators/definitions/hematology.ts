@@ -229,7 +229,7 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
       value: rounded,
       unit: "x10⁹/L",
       display: fmt(rounded, 2, "x10⁹/L"),
-      secondary: [{ label: "In cells/µL", value: fmt(round(absoluteCells, 0), 0, "cells/µL") }],
+      secondary: [{ label: "In cells/µL", value: fmt(round(absoluteK, 0), 0, "cells/µL") }],
       calculationSteps: [`${wbc} x (${percent} / 100)`],
       interpretation: interpretation ? `${label}: ${interpretation}` : undefined,
     }
