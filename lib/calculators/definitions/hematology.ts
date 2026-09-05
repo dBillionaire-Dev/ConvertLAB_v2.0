@@ -215,15 +215,14 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
     if (percent < 0 || percent > 100) throw new Error("Differential percentage must be between 0 and 100")
 
     const absoluteK = wbc * (percent / 100)
-    const absoluteCells = absoluteK * 1000
     const rounded = round(absoluteK, 2)
     const label = CELL_TYPES.find((c) => c.value === cellType)?.label ?? "Absolute count"
 
     let interpretation: string | undefined
     if (cellType === "neutrophil") {
-      if (absoluteCells < 500) interpretation = "Severe neutropenia range (<500 cells/µL)."
-      else if (absoluteCells < 1000) interpretation = "Moderate neutropenia range (500-1000 cells/µL)."
-      else if (absoluteCells < 1500) interpretation = "Mild neutropenia range (1000-1500 cells/µL)."
+      if (absoluteK < 0.5) interpretation = "Severe neutropenia range (<0.5 ×10⁹/L)."
+      else if (absoluteK < 1.0) interpretation = "Moderate neutropenia range (0.5-1.0 ×10⁹/L)."
+      else if (absoluteK < 1.5) interpretation = "Mild neutropenia range (1.0-1.5 ×10⁹/L)."
     }
 
     return {
