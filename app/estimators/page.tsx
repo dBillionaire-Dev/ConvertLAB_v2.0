@@ -28,7 +28,7 @@ export default function EstimatorsPage() {
   return (
     <PageContainer
       title="Estimators"
-      description="Formula-based estimates (e.g. BSA, eGFR, BMR) — approximations, not measured values."
+      description="Formula-based estimates (e.g. BSA, eGFR, BMR) & approximations, not measured values."
     >
       <div className="space-y-8">
         {Array.from(groups.entries()).map(([category, tools]) => (
