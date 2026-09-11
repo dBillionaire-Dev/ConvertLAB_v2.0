@@ -7,23 +7,24 @@ ConvertLAB is a progresive web application for converting various medical, labor
 ## Live Demo
 
 [ConvertLAB v2.0 Live](https://convertlab-nex.vercel.app/)
+![](image.png)
 
 ---
 
 ## Tech Stack
 
-- **Next.js** (App Router) — for page routing, server rendering where needed, and fast frontend performance  
-- **TypeScript** — static typing for safer, more maintainable code  
-- **Tailwind CSS** — utility-first CSS for rapid UI development and consistent design  
-- **React hooks / client-side state** — for form handling, conversion logic, and interactive components  
-- **GitHub + Vercel** — version control and deployment  
+- **Next.js** (App Router) - for page routing, server rendering where needed, and fast frontend performance  
+- **TypeScript** - static typing for safer, more maintainable code  
+- **Tailwind CSS** - utility-first CSS for rapid UI development and consistent design  
+- **React hooks / client-side state** - for form handling, conversion logic, and interactive components  
+- **GitHub + Vercel** - version control and deployment  
 
 ---
 
 ## Features
 
 - Unit conversion for various lab/health metrics (e.g. chemical, weight, temperature, LDL, BMI)  
-- Responsive layout — mobile & desktop friendly  
+- Responsive layout, mobile & desktop friendly  
 - Real-time input validation and conversion feedback  
 - Modular component architecture (conversion cards, input fields, selection controls)  
 - Clean, user-friendly UI  
@@ -34,15 +35,15 @@ ConvertLAB is a progresive web application for converting various medical, labor
 
 ```
 
-/app                   ── Next.js pages/components (routes, layout, etc.)
-/components            ── Reusable React components (cards, inputs, buttons, etc.)
-/hooks                 ── Custom React hooks for state & logic
-/lib                   ── Utility functions (conversion algorithms, helpers)
-/public                ── Static assets (images, icons, etc.)
-/styles                ── Global and Tailwind config/style overrides
-next.config.mjs        ── Next.js configuration
-tailwind.config.ts     ── Tailwind configuration
-tsconfig.json          ── TypeScript configuration
+/app                   ─ Next.js pages/components (routes, layout, etc.)
+/components            ─ Reusable React components (cards, inputs, buttons, etc.)
+/hooks                 ─ Custom React hooks for state & logic
+/lib                   ─ Utility functions (conversion algorithms, helpers)
+/public                ─ Static assets (images, icons, etc.)
+/styles                ─ Global and Tailwind config/style overrides
+next.config.mjs        ─ Next.js configuration
+tailwind.config.ts     ─ Tailwind configuration
+tsconfig.json          ─ TypeScript configuration
 
 ````
 
@@ -132,10 +133,10 @@ When analytics is first enabled, ConvertLAB performs a one-time migration of cal
 ConvertLAB can record calculator usage without requiring users to register. Events are queued locally in IndexedDB first, so calculations made offline can sync later when connectivity returns. The `/admin` management console shows aggregate usage across the deployed application.
 
 Analytics can distinguish:
-- `web` — normal browser usage
-- `pwa` — installed/standalone PWA usage
-- deployment `environment` — configured with `NEXT_PUBLIC_APP_ENV`
-- `appVersion` — application version recorded by the tracker
-- historical backlog — calculations imported once from an existing user's local History
+- `web` - normal browser usage
+- `pwa` - installed/standalone PWA usage
+- deployment `environment` - configured with `NEXT_PUBLIC_APP_ENV`
+- `appVersion` - application version recorded by the tracker
+- historical backlog - calculations imported once from an existing user's local History
 
 The analytics implementation does not send calculator inputs or results. Run `supabase/analytics.sql` in Supabase before enabling the server-side analytics API.
