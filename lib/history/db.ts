@@ -1,7 +1,7 @@
 "use client"
 
 const DB_NAME = "convertlab"
-const DB_VERSION = 1
+const DB_VERSION = 2
 const STORE_NAME = "history"
 
 export interface HistoryItem {
@@ -34,6 +34,11 @@ function openDB(): Promise<IDBDatabase> {
         store.createIndex("timestamp", "timestamp", { unique: false })
         store.createIndex("calculatorId", "calculatorId", { unique: false })
         store.createIndex("category", "category", { unique: false })
+      }
+
+      if (!db.objectStoreNames.contains("analytics_outbox")) {
+        const outbox = db.createObjectStore("analytics_outbox", { keyPath: "id" })
+        outbox.createIndex("occurredAt", "occurredAt", { unique: false })
       }
     }
 

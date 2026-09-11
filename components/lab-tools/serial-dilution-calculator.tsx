@@ -1,11 +1,12 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
+import { trackCalculation } from "@/lib/analytics/track-calculation"
 
 export function SerialDilutionCalculator() {
   const [initial, setInitial] = useState("")
@@ -31,6 +32,18 @@ export function SerialDilutionCalculator() {
 
     return { rows, finalDilution: `1:${Math.round(cumulativeFactor)}`, finalConcentration: current }
   }, [initial, factor, steps])
+
+  useEffect(() => {
+    if (!result) return
+    const timer = window.setTimeout(() => {
+      void trackCalculation({
+        calculatorId: "lab-tool:serial-dilution",
+        calculatorName: "Serial Dilution",
+        category: "lab-tools",
+      })
+    }, 800)
+    return () => window.clearTimeout(timer)
+  }, [result])
 
   return (
     <Card>

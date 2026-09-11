@@ -1,10 +1,11 @@
 "use client"
 
-import { useMemo, useState, type ChangeEvent } from "react"
+import { useEffect, useMemo, useState, type ChangeEvent } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
+import { trackCalculation } from "@/lib/analytics/track-calculation"
 
 type FieldId = "c1" | "v1" | "c2" | "v2"
 
@@ -56,6 +57,18 @@ export function DilutionCalculator() {
 
   const set = (id: FieldId) => (e: ChangeEvent<HTMLInputElement>) =>
     setValues((prev) => ({ ...prev, [id]: e.target.value }))
+
+  useEffect(() => {
+    if (!parsed.result) return
+    const timer = window.setTimeout(() => {
+      void trackCalculation({
+        calculatorId: "lab-tool:dilution",
+        calculatorName: "C1V1 = C2V2 Dilution",
+        category: "lab-tools",
+      })
+    }, 800)
+    return () => window.clearTimeout(timer)
+  }, [parsed.result])
 
   return (
     <Card>

@@ -99,3 +99,43 @@ Visit `http://localhost:3000` (or whatever port your setup uses) to view.
 ## Contact
 
 For issues or feature requests, open a GitHub issue in this repo or contact me via email / social profile
+
+## Anonymous Usage Analytics
+
+ConvertLAB can record successful calculator usage without requiring users to register. Each browser gets an anonymous installation ID, and calculation events are first placed in an IndexedDB outbox so usage is retained while offline. When connectivity returns, pending events are uploaded to the Next.js analytics API and stored in Supabase.
+
+### Setup
+
+1. Create a Supabase project.
+2. Run `supabase/analytics.sql` in the Supabase SQL Editor.
+3. Add the variables from `.env.example` to your local environment and Vercel:
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY` (server-only)
+   - `ADMIN_PASSWORD`
+   - `ADMIN_SESSION_SECRET` (at least 32 characters)
+4. Open `/admin` and sign in with `ADMIN_PASSWORD`.
+
+The implementation records tool metadata and timestamps, not calculator input values or patient identifiers.
+
+Offline events remain in the browser's IndexedDB until the server confirms receipt. The analytics API is intentionally outside the calculator's critical path, so a failed network request never prevents a calculation from working.
+
+### Analytics console
+
+`/admin` provides total calculations, today's usage, seven-day usage, offline-synced calculations, top calculators, category usage, and a 14-day usage chart.
+
+### Existing history backfill
+
+When analytics is first enabled, ConvertLAB performs a one-time migration of calculation history that is still present in the user's local IndexedDB. Historical entries are queued using their existing history IDs, so an interrupted migration can safely retry without double-counting. Only calculator metadata and timestamps are sent; existing calculation inputs and results remain local. Historical entries are labelled separately in the admin console as **Historical backlog**.
+
+## Anonymous Usage Analytics
+
+ConvertLAB can record calculator usage without requiring users to register. Events are queued locally in IndexedDB first, so calculations made offline can sync later when connectivity returns. The `/admin` management console shows aggregate usage across the deployed application.
+
+Analytics can distinguish:
+- `web` — normal browser usage
+- `pwa` — installed/standalone PWA usage
+- deployment `environment` — configured with `NEXT_PUBLIC_APP_ENV`
+- `appVersion` — application version recorded by the tracker
+- historical backlog — calculations imported once from an existing user's local History
+
+The analytics implementation does not send calculator inputs or results. Run `supabase/analytics.sql` in Supabase before enabling the server-side analytics API.

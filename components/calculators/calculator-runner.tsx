@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
 import { isFavorite, toggleFavorite } from "@/lib/favorites"
 import { recordUsage } from "@/lib/recently-used"
+import { trackCalculation } from "@/lib/analytics/track-calculation"
 import { useHistory } from "@/lib/history/use-history"
 import { cn } from "@/lib/utils"
 
@@ -82,6 +83,11 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
       const calcResult = definition.calculate(parsed)
       setResult(calcResult)
       recordUsage(definition.id)
+      void trackCalculation({
+        calculatorId: definition.id,
+        calculatorName: definition.name,
+        category: definition.category,
+      })
       record({
         calculatorId: definition.id,
         calculatorName: definition.name,

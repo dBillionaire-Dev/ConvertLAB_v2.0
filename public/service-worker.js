@@ -8,7 +8,7 @@
 // so opening any calculator that hadn't been visited online first would
 // fail offline. This version precaches every route in the app up front,
 // so the whole toolkit works offline immediately after install.
-const CACHE_VERSION = "v3"
+const CACHE_VERSION = "v4"
 const SHELL_CACHE = `convertlab-shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `convertlab-runtime-${CACHE_VERSION}`
 
@@ -128,6 +128,87 @@ self.addEventListener("activate", (event) => {
 
 function isSameOrigin(url) {
   return new URL(url).origin === self.location.origin
+}
+
+
+
+self.addEventListener("sync", (event) => {
+  if (event.tag !== "convertlab-analytics") return
+  event.waitUntil(syncAnalyticsFromServiceWorker())
+})
+
+function openAnalyticsDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("convertlab", 2)
+
+    request.onupgradeneeded = () => {
+      const db = request.result
+      if (!db.objectStoreNames.contains("history")) {
+        const history = db.createObjectStore("history", { keyPath: "id" })
+        history.createIndex("timestamp", "timestamp", { unique: false })
+        history.createIndex("calculatorId", "calculatorId", { unique: false })
+        history.createIndex("category", "category", { unique: false })
+      }
+      if (!db.objectStoreNames.contains("analytics_outbox")) {
+        const outbox = db.createObjectStore("analytics_outbox", { keyPath: "id" })
+        outbox.createIndex("occurredAt", "occurredAt", { unique: false })
+      }
+    }
+
+    request.onsuccess = () => resolve(request.result)
+    request.onerror = () => reject(request.error)
+  })
+}
+
+async function getAnalyticsEvents() {
+  const db = await openAnalyticsDB()
+  const events = await new Promise((resolve, reject) => {
+    const tx = db.transaction("analytics_outbox", "readonly")
+    const request = tx.objectStore("analytics_outbox").getAll()
+    request.onsuccess = () => resolve(request.result)
+    request.onerror = () => reject(request.error)
+  })
+  db.close()
+  return events
+}
+
+async function deleteAnalyticsEvents(ids) {
+  if (!ids.length) return
+
+  const db = await openAnalyticsDB()
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction("analytics_outbox", "readwrite")
+    const store = tx.objectStore("analytics_outbox")
+    ids.forEach((id) => store.delete(id))
+    tx.oncomplete = resolve
+    tx.onerror = () => reject(tx.error)
+  })
+  db.close()
+}
+
+async function syncAnalyticsFromServiceWorker() {
+  const events = await getAnalyticsEvents()
+  if (!events.length) return
+
+  for (let i = 0; i < events.length; i += 100) {
+    const batch = events.slice(i, i + 100)
+
+    try {
+      const response = await fetch("/api/analytics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ events: batch }),
+      })
+
+      if (!response.ok) return
+
+      const body = await response.json()
+      await deleteAnalyticsEvents(body.accepted || [])
+    } catch {
+      // Throwing causes Background Sync to retry when supported.
+      throw new Error("ConvertLAB analytics sync failed")
+    }
+  }
 }
 
 self.addEventListener("fetch", (event) => {

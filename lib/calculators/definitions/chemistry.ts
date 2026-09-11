@@ -38,7 +38,7 @@ export const ldlCalculator: CalculatorDefinition = {
     if (tg > (unit === "mmol/L" ? 4.5 : 400)) {
       return {
         value: "N/A",
-        display: "Not valid — TG too high",
+        display: "Not valid. TG too high!!!",
         warnings: [
           "The Friedewald equation is unreliable when triglycerides exceed ~400 mg/dL (4.5 mmol/L). Use direct LDL measurement instead.",
         ],
@@ -53,7 +53,7 @@ export const ldlCalculator: CalculatorDefinition = {
       unit,
       display: fmt(rounded, unit === "mmol/L" ? 2 : 1, unit),
       calculationSteps: [`${tc} - ${hdl} - (${tg} / ${divisor})`],
-      warnings: ldl < 0 ? ["Calculated LDL is negative — check input values."] : undefined,
+      warnings: ldl < 0 ? ["Calculated LDL is negative, check input values."] : undefined,
     }
   },
   notes: ["The Friedewald equation is an estimate, not a directly measured value."],

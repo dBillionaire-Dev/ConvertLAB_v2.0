@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast"
 import { mcvCalculator, mchCalculator, mchcCalculator } from "@/lib/calculators/definitions/hematology"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
 import { recordUsage } from "@/lib/recently-used"
+import { trackCalculation } from "@/lib/analytics/track-calculation"
 import { useHistory } from "@/lib/history/use-history"
 import type { CalculationResult, CalculatorDefinition } from "@/lib/calculators/types"
 
@@ -43,6 +44,11 @@ export function RedCellIndicesCalculator() {
     setResults(computed)
 
     recordUsage("red-cell-indices")
+    void trackCalculation({
+      calculatorId: "red-cell-indices",
+      calculatorName: "Red Cell Indices",
+      category: "hematology",
+    })
     for (const item of computed) {
       if (item.result) {
         record({

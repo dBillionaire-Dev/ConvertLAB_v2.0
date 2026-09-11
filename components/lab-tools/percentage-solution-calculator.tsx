@@ -1,11 +1,12 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
+import { trackCalculation } from "@/lib/analytics/track-calculation"
 
 /**
  * All three percentage types reduce to "amount of solute per 100 units of
@@ -40,6 +41,18 @@ export function PercentageSolutionCalculator() {
       mgPerMl,
     }
   }, [percent])
+
+  useEffect(() => {
+    if (!result) return
+    const timer = window.setTimeout(() => {
+      void trackCalculation({
+        calculatorId: "lab-tool:percentage-solution",
+        calculatorName: "Percentage Solution",
+        category: "lab-tools",
+      })
+    }, 800)
+    return () => window.clearTimeout(timer)
+  }, [result])
 
   return (
     <Card>

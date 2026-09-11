@@ -1,12 +1,13 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { beerLambert, SpectroError } from "@/lib/spectrophotometry"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
+import { trackCalculation } from "@/lib/analytics/track-calculation"
 
 type SolveFor = "absorbance" | "epsilon" | "pathLength" | "concentration"
 
@@ -51,6 +52,18 @@ export function BeerLambertCalculator() {
       return { error: err instanceof SpectroError ? err.message : "Unable to solve", value: null }
     }
   }, [values, otherFields])
+
+  useEffect(() => {
+    if (result.value === null || result.error) return
+    const timer = window.setTimeout(() => {
+      void trackCalculation({
+        calculatorId: "lab-tool:beer-lambert",
+        calculatorName: "Beer-Lambert Law",
+        category: "spectrophotometry",
+      })
+    }, 800)
+    return () => window.clearTimeout(timer)
+  }, [result])
 
   return (
     <Card>

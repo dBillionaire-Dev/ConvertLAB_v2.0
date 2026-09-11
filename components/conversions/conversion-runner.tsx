@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { ArrowLeftRight, Copy } from "lucide-react"
 import type { ConversionCategory } from "@/lib/conversions/types"
 import { convert, ConversionError } from "@/lib/conversions/engine"
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { recordUsage } from "@/lib/recently-used"
+import { trackCalculation } from "@/lib/analytics/track-calculation"
 
 export function ConversionRunner({ category }: { category: ConversionCategory }) {
   const [value, setValue] = useState("")
@@ -29,6 +30,21 @@ export function ConversionRunner({ category }: { category: ConversionCategory })
     }
   }, [value, fromId, toId, category])
 
+  useEffect(() => {
+    if (!result.display || result.error || !value.trim()) return
+
+    const timer = window.setTimeout(() => {
+      recordUsage(`conversion:${category.id}`)
+      void trackCalculation({
+        calculatorId: `conversion:${category.id}`,
+        calculatorName: `${category.name} Conversion`,
+        category: "conversions",
+      })
+    }, 800)
+
+    return () => window.clearTimeout(timer)
+  }, [value, fromId, toId, result.display, result.error, category])
+
   const toUnit = category.units.find((u) => u.id === toId)
   const fromUnit = category.units.find((u) => u.id === fromId)
 
@@ -38,7 +54,6 @@ export function ConversionRunner({ category }: { category: ConversionCategory })
   }
 
   const handleCopy = async () => {
-    recordUsage(`conversion:${category.id}`)
     try {
       await navigator.clipboard.writeText(`${value} ${fromUnit?.symbol} = ${result.display} ${toUnit?.symbol}`)
       toast({ description: "Result copied to clipboard." })

@@ -11,6 +11,7 @@ import { InstallPrompt } from "@/components/install-prompt"
 import { ServiceWorkerRegistration } from "@/components/service-worker-registration"
 import { SkipToContent } from "@/components/skip-to-content"
 import { ApplyPreferences } from "@/components/apply-preferences"
+import { AnalyticsSync } from "@/components/analytics-sync"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -66,6 +67,7 @@ export default function RootLayout({
           <InstallPrompt />
           <ServiceWorkerRegistration />
           <ApplyPreferences />
+          <AnalyticsSync />
           <Toaster />
         </ThemeProvider>
       </body>
