@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 export const metadata = { title: "Estimators - ConvertLAB" }
 
 // Estimators are grouped by clinical purpose rather than the raw data
-// category — anthropometric/energy estimates (BSA, IBW, BMR, TDEE) read
+// category, anthropometric/energy estimates (BSA, IBW, BMR, TDEE) read
 // better as "Metabolic" here even though they're filed under "clinical"
 // elsewhere in the app.
 const ESTIMATOR_GROUP_LABELS: Partial<Record<CalculatorGroup, string>> = {

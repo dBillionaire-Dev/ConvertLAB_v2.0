@@ -131,7 +131,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
       try {
         await navigator.share({ title: definition.name, text })
       } catch {
-        // user cancelled — no-op
+        // user cancelled, no-op
       }
     } else {
       handleCopy()
@@ -140,7 +140,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
 
   const handleExportPdf = () => {
     // Uses the browser's native print-to-PDF rather than a client-side PDF
-    // library — no extra dependency, works fully offline, and every browser
+    // library, no extra dependency, works fully offline, and every browser
     // supports "Save as PDF" from the print dialog. A dedicated print
     // stylesheet hides site chrome and shows only the result.
     window.print()

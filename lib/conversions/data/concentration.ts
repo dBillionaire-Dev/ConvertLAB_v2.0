@@ -1,6 +1,6 @@
 import type { ConversionCategory } from "../types"
 
-// Base unit is g/L. Mass concentration only — converting to/from molar
+// Base unit is g/L. Mass concentration only, converting to/from molar
 // concentration requires a molecular weight and is handled separately
 // (see lib/conversions/molar-mass.ts).
 export const concentrationConversion: ConversionCategory = {

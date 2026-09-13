@@ -26,7 +26,7 @@ function getGreeting(hour: number) {
   if (hour < 5) return "Good evening"
   if (hour < 12) return "Good morning"
   if (hour < 17) return "Good afternoon"
-  return "Good evening"
+  return "Welcome to"
 }
 
 export default function HomePage() {
@@ -57,7 +57,7 @@ export default function HomePage() {
     <div className="container mx-auto px-4 py-8 sm:py-12 max-w-5xl">
       <div className="text-center mb-8 sm:mb-10">
         {greeting ? <p className="text-sm text-muted-foreground mb-1">{greeting}</p> : "ConvertLAB"}
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Your Laboratory Toolkit</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Your Clinical Toolkit</h1>
         <p className="text-muted-foreground mt-2 text-sm sm:text-base max-w-xl mx-auto">
           Calculators, conversions, and lab tools, all stored locally on your device.
         </p>
