@@ -120,8 +120,7 @@ export default async function AdminPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-medium text-primary">ConvertLAB</p>
-            <h1 className="mt-1 text-3xl font-bold tracking-tight">Management Console</h1>
+            <h1 className="mt-1 text-3xl font-bold tracking-tight">Analytical Console</h1>
             <p className="mt-2 text-sm text-muted-foreground">
               Anonymous calculation and device activity across the product.
             </p>
