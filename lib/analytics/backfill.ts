@@ -6,7 +6,7 @@ import { queueCalculationEvent } from "./outbox"
 import { syncAnalytics } from "./sync"
 import { isStandaloneDisplayMode } from "@/lib/platform"
 
-const BACKFILL_KEY = "convertlab:analytics-history-backfill:v1"
+const BACKFILL_KEY = "convertlab:analytics-history-backfill:v2"
 const BACKFILL_APP_VERSION = "2.0.0-history-backfill"
 const APP_ENVIRONMENT = process.env.NEXT_PUBLIC_APP_ENV ?? "production"
 

@@ -59,6 +59,43 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unable to record analytics." }, { status: 502 })
     }
 
+    // Keep the anonymous device directory current and attach the latest
+    // calculation time to each device. The ID is never exposed as a real name.
+    const latestByDevice = new Map<string, (typeof body.events)[number]>()
+    for (const event of body.events) {
+      const previous = latestByDevice.get(event.anonymousId)
+      if (!previous || new Date(event.occurredAt).getTime() > new Date(previous.occurredAt).getTime()) {
+        latestByDevice.set(event.anonymousId, event)
+      }
+    }
+
+    const deviceRows = Array.from(latestByDevice.values()).map((event) => ({
+      anonymous_id: event.anonymousId,
+      display_name: `User-${event.anonymousId.replace(/[^a-zA-Z0-9]/g, "").slice(-8).toUpperCase().padEnd(8, "0").slice(0, 6)}`,
+      last_seen_at: new Date().toISOString(),
+      last_calculation_at: event.occurredAt,
+      source: event.source,
+      environment: event.environment,
+      app_version: event.appVersion,
+    }))
+
+    if (deviceRows.length) {
+      const deviceResponse = await fetch(`${url}/rest/v1/convertlab_devices?on_conflict=anonymous_id`, {
+        method: "POST",
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          "Content-Type": "application/json",
+          Prefer: "resolution=merge-duplicates,return=minimal",
+        },
+        body: JSON.stringify(deviceRows),
+      })
+
+      if (!deviceResponse.ok) {
+        console.error("ConvertLAB device update failed:", await deviceResponse.text())
+      }
+    }
+
     return NextResponse.json({ accepted: body.events.map((event) => event.id) })
   } catch (error) {
     if (error instanceof z.ZodError) {

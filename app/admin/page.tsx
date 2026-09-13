@@ -11,6 +11,13 @@ async function getAnalytics(): Promise<AnalyticsSnapshot> {
       total: 0,
       today: 0,
       thisWeek: 0,
+      last14Days: 0,
+      activeUsers: 0,
+      uniqueUsersToday: 0,
+      uniqueUsersLast14Days: 0,
+      totalUsers: 0,
+      activeUsersList: [],
+      allUsersList: [],
       offlineSynced: 0,
       historyBackfilled: 0,
       topCalculators: [],
@@ -23,7 +30,7 @@ async function getAnalytics(): Promise<AnalyticsSnapshot> {
     }
   }
 
-  const response = await fetch(`${url.replace(/\/$/, "")}/rest/v1/rpc/convertlab_usage_summary_v2`, {
+  const response = await fetch(`${url.replace(/\/$/, "")}/rest/v1/rpc/convertlab_usage_summary_v3`, {
     method: "POST",
     headers: {
       apikey: key,
@@ -44,6 +51,13 @@ async function getAnalytics(): Promise<AnalyticsSnapshot> {
     total: Number(result?.total ?? 0),
     today: Number(result?.today ?? 0),
     thisWeek: Number(result?.thisWeek ?? 0),
+    last14Days: Number(result?.last14Days ?? 0),
+    activeUsers: Number(result?.activeUsers ?? 0),
+    uniqueUsersToday: Number(result?.uniqueUsersToday ?? 0),
+    uniqueUsersLast14Days: Number(result?.uniqueUsersLast14Days ?? 0),
+    totalUsers: Number(result?.totalUsers ?? 0),
+    activeUsersList: Array.isArray(result?.activeUsersList) ? result.activeUsersList : [],
+    allUsersList: Array.isArray(result?.allUsersList) ? result.allUsersList : [],
     offlineSynced: Number(result?.offlineSynced ?? 0),
     historyBackfilled: Number(result?.historyBackfilled ?? 0),
     topCalculators: Array.isArray(result?.topCalculators) ? result.topCalculators : [],
@@ -79,6 +93,13 @@ export default async function AdminPage() {
       total: 0,
       today: 0,
       thisWeek: 0,
+      last14Days: 0,
+      activeUsers: 0,
+      uniqueUsersToday: 0,
+      uniqueUsersLast14Days: 0,
+      totalUsers: 0,
+      activeUsersList: [],
+      allUsersList: [],
       offlineSynced: 0,
       historyBackfilled: 0,
       topCalculators: [],
@@ -99,9 +120,10 @@ export default async function AdminPage() {
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="mt-1 text-3xl font-bold tracking-tight">Analytical Dashboard</h1>
+            <p className="text-sm font-medium text-primary">ConvertLAB</p>
+            <h1 className="mt-1 text-3xl font-bold tracking-tight">Management Console</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Anonymous calculation usage across the product.
+              Anonymous calculation and device activity across the product.
             </p>
           </div>
           <form action={logout}>
@@ -117,11 +139,15 @@ export default async function AdminPage() {
           </div>
         ) : null}
 
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {[
             ["Total calculations", data.total],
-            ["Today", data.today],
-            ["Last 7 days", data.thisWeek],
+            ["Calculations today", data.today],
+            ["Calculations · 14 days", data.last14Days],
+            ["Active now", data.activeUsers],
+            ["Total users/devices", data.totalUsers],
+            ["Users today", data.uniqueUsersToday],
+            ["Users · 14 days", data.uniqueUsersLast14Days],
             ["Offline synced", data.offlineSynced],
             ["Historical backlog", data.historyBackfilled],
           ].map(([label, value]) => (
@@ -174,6 +200,67 @@ export default async function AdminPage() {
                 </div>
               )) : <p className="text-sm text-muted-foreground">No categories recorded yet.</p>}
             </div>
+          </div>
+        </section>
+
+        <section className="mt-6 rounded-xl border bg-background p-5 shadow-sm">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="font-semibold">All users / devices</h2>
+              <p className="mt-1 text-xs text-muted-foreground">Every anonymous browser or PWA installation ever recorded. Active means seen within the last 5 minutes.</p>
+            </div>
+            <span className="text-sm font-medium">{number(data.totalUsers)} total</span>
+          </div>
+          <div className="mt-4 overflow-x-auto">
+            {data.allUsersList.length ? (
+              <table className="w-full min-w-[1120px] text-sm">
+                <thead>
+                  <tr className="border-b text-left text-muted-foreground">
+                    <th className="pb-3 pr-4 font-medium">User</th>
+                    <th className="pb-3 pr-4 font-medium">Status</th>
+                    <th className="pb-3 pr-4 font-medium">Last online</th>
+                    <th className="pb-3 pr-4 font-medium">Last test</th>
+                    <th className="pb-3 pr-4 font-medium">Source</th>
+                    <th className="pb-3 pr-4 font-medium">Environment</th>
+                    <th className="pb-3 pr-4 font-medium">Today</th>
+                    <th className="pb-3 pr-4 font-medium">14 days</th>
+                    <th className="pb-3 font-medium">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.allUsersList.map((item) => {
+                    const lastSeen = new Date(item.lastSeenAt).getTime()
+                    const isActive = Number.isFinite(lastSeen) && Date.now() - lastSeen <= 5 * 60 * 1000
+                    return (
+                      <tr key={item.anonymousId} className="border-b last:border-0">
+                        <td className="py-3 pr-4 font-medium">{item.displayName}</td>
+                        <td className="py-3 pr-4">
+                          <span className={isActive ? "font-medium text-emerald-600" : "text-muted-foreground"}>
+                            {isActive ? "Active" : "Offline"}
+                          </span>
+                        </td>
+                        <td className="py-3 pr-4 whitespace-nowrap">{new Date(item.lastSeenAt).toLocaleString()}</td>
+                        <td className="py-3 pr-4">
+                          {item.lastCalculatorName ? (
+                            <div>
+                              <div className="max-w-[220px] truncate font-medium">{item.lastCalculatorName}</div>
+                              {item.lastCalculationAt ? <div className="text-xs text-muted-foreground">{new Date(item.lastCalculationAt).toLocaleString()}</div> : null}
+                            </div>
+                          ) : <span className="text-muted-foreground">No test recorded</span>}
+                        </td>
+                        <td className="py-3 pr-4 capitalize">{item.source}</td>
+                        <td className="py-3 pr-4">{item.environment}</td>
+                        <td className="py-3 pr-4 font-medium">{number(item.calculationsToday)}</td>
+                        <td className="py-3 pr-4 font-medium">{number(item.calculationsLast14Days)}</td>
+                        <td className="py-3 font-medium">{number(item.totalCalculations)}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <p className="text-sm text-muted-foreground">No users/devices recorded yet.</p>
+            )}
           </div>
         </section>
 
@@ -246,7 +333,7 @@ export default async function AdminPage() {
         </section>
 
         <p className="mt-6 text-xs text-muted-foreground">
-          Usage is anonymous. ConvertLAB does not need registered users to count calculator activity.
+          Usage is anonymous. Each browser/PWA installation receives a stable pseudonym such as User-7A31C2; it is not a real name or account identity. Active means seen within the last 5 minutes.
           Calculation inputs and results are not sent to analytics by this implementation.
         </p>
       </div>

@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation"
-import { setAdminCookie } from "@/lib/admin-auth"
 import { Activity } from "lucide-react"
 import Link from "next/link"
+import { redirect } from "next/navigation"
+import { setAdminCookie } from "@/lib/admin-auth"
 
 async function login(formData: FormData) {
   "use server"
@@ -27,7 +27,7 @@ export default async function AdminLoginPage({
   return (
     <main className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
       <div className="w-full max-w-sm rounded-xl border bg-background p-6 shadow-sm">
-        <div className="mb-6 flex flex-col justify-center items-center">
+        <div className="mb-6">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Activity className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             <span className="text-lg font-bold">ConvertLAB</span>
