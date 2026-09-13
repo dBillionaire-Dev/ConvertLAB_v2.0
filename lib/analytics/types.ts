@@ -23,6 +23,36 @@ export interface AnalyticsSnapshot {
   environments: Array<{ environment: string; uses: number }>
   versions: Array<{ appVersion: string; uses: number }>
   daily: Array<{ date: string; uses: number }>
+  activeUsers: number
+  activeUsersList: Array<{
+    anonymousId: string
+    displayName: string
+    source: string
+    environment: string
+    appVersion: string
+    firstSeenAt: string
+    lastSeenAt: string
+    lastCalculationAt: string | null
+    calculationsToday: number
+  }>
+  allUsersList: Array<{
+    anonymousId: string
+    displayName: string
+    source: string
+    environment: string
+    appVersion: string
+    firstSeenAt: string
+    lastSeenAt: string
+    lastCalculationAt: string | null
+    lastCalculatorName: string | null
+    calculationsToday: number
+    calculationsLast14Days: number
+    totalCalculations: number
+  }>
+  last14Days: number
+  uniqueUsersToday: number
+  uniqueUsersLast14Days: number
+  totalUsers: number
   lastEvent: {
     calculatorName: string
     source: string
