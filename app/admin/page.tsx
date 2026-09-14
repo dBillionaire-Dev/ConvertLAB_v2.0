@@ -80,6 +80,19 @@ function number(value: number) {
   return new Intl.NumberFormat("en-US").format(value)
 }
 
+const NIGERIA_TIME_ZONE = "Africa/Lagos"
+
+function localDateTime(value: string | null | undefined) {
+  if (!value) return "—"
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return "—"
+  return new Intl.DateTimeFormat("en-NG", {
+    timeZone: NIGERIA_TIME_ZONE,
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date)
+}
+
 export default async function AdminPage() {
   if (!(await isAdminAuthenticated())) redirect("/admin/login")
 
@@ -238,12 +251,12 @@ export default async function AdminPage() {
                             {isActive ? "Active" : "Offline"}
                           </span>
                         </td>
-                        <td className="py-3 pr-4 whitespace-nowrap">{new Date(item.lastSeenAt).toLocaleString()}</td>
+                        <td className="py-3 pr-4 whitespace-nowrap">{localDateTime(item.lastSeenAt)}</td>
                         <td className="py-3 pr-4">
                           {item.lastCalculatorName ? (
                             <div>
                               <div className="max-w-[220px] truncate font-medium">{item.lastCalculatorName}</div>
-                              {item.lastCalculationAt ? <div className="text-xs text-muted-foreground">{new Date(item.lastCalculationAt).toLocaleString()}</div> : null}
+                              {item.lastCalculationAt ? <div className="text-xs text-muted-foreground">{localDateTime(item.lastCalculationAt)}</div> : null}
                             </div>
                           ) : <span className="text-muted-foreground">No test recorded</span>}
                         </td>
@@ -271,7 +284,7 @@ export default async function AdminPage() {
               <div><p className="text-muted-foreground">Source</p><p className="mt-1 font-medium capitalize">{data.lastEvent.source}</p></div>
               <div><p className="text-muted-foreground">Environment</p><p className="mt-1 font-medium">{data.lastEvent.environment}</p></div>
               <div><p className="text-muted-foreground">Version</p><p className="mt-1 font-medium">{data.lastEvent.appVersion}</p></div>
-              <div><p className="text-muted-foreground">Received</p><p className="mt-1 font-medium">{new Date(data.lastEvent.receivedAt).toLocaleString()}</p></div>
+              <div><p className="text-muted-foreground">Received</p><p className="mt-1 font-medium">{localDateTime(data.lastEvent.receivedAt)}</p></div>
             </div>
           </section>
         ) : null}
