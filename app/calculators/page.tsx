@@ -7,9 +7,11 @@ export const metadata = { title: "Calculators - ConvertLAB" }
 
 export default function CalculatorsPage() {
   return (
-    <PageContainer title="Calculators" description="Clinical, renal, chemistry, and hematology calculators.">
+    <PageContainer title="Calculators" description="Clinical, renal, dosing, chemistry, hematology, and laboratory calculators.">
       <div className="grid gap-4 sm:grid-cols-2">
-        {calculatorCategories.map((cat) => {
+        {[...calculatorCategories]
+          .sort((a, b) => a.label.localeCompare(b.label))
+          .map((cat) => {
           const tools = getCalculatorsByCategory(cat.id)
           return (
             <Link key={cat.id} href={`/calculators/${cat.id}`}>

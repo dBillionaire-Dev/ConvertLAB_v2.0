@@ -50,6 +50,7 @@ export type CalculatorGroup =
   | "microbiology"
   | "lab-solutions"
   | "spectrophotometry"
+  | "dosing"
 
 export interface CalculatorDefinition {
   id: string
@@ -75,6 +76,7 @@ export const CALCULATOR_CATEGORY_LABELS: Record<CalculatorGroup, string> = {
   microbiology: "Microbiology",
   "lab-solutions": "Laboratory Solutions",
   spectrophotometry: "Spectrophotometry",
+  dosing: "Drug Dosing",
 }
 
 /** Standard disclaimer shown on every calculator result. */

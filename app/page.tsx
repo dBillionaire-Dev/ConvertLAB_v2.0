@@ -20,7 +20,7 @@ const quickLinks = [
 ]
 
 // Curated highlights for discovery is shown to everyone, not derived from personal history.
-const POPULAR_CALCULATOR_IDS = ["bmi", "egfr-ckd-epi", "ldl-friedewald"]
+const POPULAR_CALCULATOR_IDS = ["bmi", "red-cell-indices", "ldl-friedewald"]
 
 function getGreeting(hour: number) {
   if (hour < 5) return "Good evening"
@@ -59,7 +59,7 @@ export default function HomePage() {
         {greeting ? <p className="text-sm text-muted-foreground mb-1">{greeting}</p> : "ConvertLAB"}
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Your Clinical Toolkit</h1>
         <p className="text-muted-foreground mt-2 text-sm sm:text-base max-w-xl mx-auto">
-          Calculators, conversions, and lab tools, all stored locally on your device.
+          Calculators, conversions, and clinical tools, all stored locally on your device.
         </p>
         <Button
           variant="outline"

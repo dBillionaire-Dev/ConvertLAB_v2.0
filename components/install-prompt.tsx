@@ -127,8 +127,8 @@ export function InstallPrompt() {
               <DialogTitle>Install ConvertLAB</DialogTitle>
               <DialogDescription>
                 {platform === "ios"
-                  ? "Safari doesn't offer an automatic install button — a few taps does it:"
-                  : "Safari doesn't offer an automatic install button — a couple of clicks does it:"}
+                  ? "Safari doesn't offer an automatic install button, a few taps does it:"
+                  : "Safari doesn't offer an automatic install button, a couple of clicks does it:"}
               </DialogDescription>
             </DialogHeader>
 
