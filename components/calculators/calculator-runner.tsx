@@ -17,6 +17,8 @@ import { recordUsage } from "@/lib/recently-used"
 import { trackCalculation } from "@/lib/analytics/track-calculation"
 import { useHistory } from "@/lib/history/use-history"
 import { cn } from "@/lib/utils"
+import { getDosingSafetyWarnings, validateCalculatorInputBounds } from "@/lib/calculators/dosing-safety"
+import { getCalculatorReferences } from "@/lib/calculators/dosing-references"
 
 function defaultValues(def: CalculatorDefinition | undefined): Record<string, string> {
   if (!def) return {}
@@ -39,6 +41,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
   const { toast } = useToast()
   const { record } = useHistory()
   const related = useMemo(() => (definition ? getRelatedCalculators(definition) : []), [definition])
+  const references = useMemo(() => (definition ? getCalculatorReferences(definition) : []), [definition])
 
   if (!definition) {
     return (
@@ -74,31 +77,20 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
       const parsed: Record<string, number | string> = {}
       for (const input of definition.inputs) {
         const raw = values[input.id]
-        if (input.kind === "number") {
-          parsed[input.id] = raw === "" ? "" : raw
-        } else {
-          parsed[input.id] = raw
-        }
+        parsed[input.id] = input.kind === "number" ? (raw === "" ? "" : raw) : raw
       }
+
+      validateCalculatorInputBounds(definition, parsed)
       const calcResult = definition.calculate(parsed)
-      setResult(calcResult)
-      recordUsage(definition.id)
-      void trackCalculation({
-        calculatorId: definition.id,
-        calculatorName: definition.name,
-        category: definition.category,
-      })
-      record({
-        calculatorId: definition.id,
-        calculatorName: definition.name,
-        category: definition.category,
-        inputs: values,
-        result: calcResult.value,
-        unit: calcResult.unit,
+      const safetyWarnings = getDosingSafetyWarnings(definition, parsed, calcResult)
+      const mergedWarnings = [...(calcResult.warnings ?? []), ...safetyWarnings]
+
+      setResult({
+        ...calcResult,
+        warnings: mergedWarnings.length ? Array.from(new Set(mergedWarnings)) : undefined,
       })
     } catch (err) {
-      setResult(null)
-      setError(err instanceof Error ? err.message : "Unable to calculate result")
+      setError(err instanceof Error ? err.message : "Unable to calculate this result.")
     }
   }
 
@@ -272,6 +264,37 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
               </div>
             ) : null}
 
+            {references.length ? (
+              <div>
+                <Separator className="mb-3" />
+                <h4 className="text-sm font-medium text-muted-foreground mb-2">Reference &amp; protocol</h4>
+                <div className="space-y-3 text-sm">
+                  {references.map((reference, index) => (
+                    <div key={`${reference.source}-${index}`} className="rounded-md border bg-muted/30 p-3 space-y-1.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="font-medium">{reference.source}</p>
+                        {reference.status ? (
+                          <Badge variant={reference.status === "current" ? "secondary" : "outline"}>
+                            {reference.status === "current" ? "Current" : reference.status === "supporting" ? "Supporting" : "Review needed"}
+                          </Badge>
+                        ) : null}
+                      </div>
+                      <p className="text-muted-foreground">Version: {reference.version}</p>
+                      {reference.applicablePopulation ? <p><span className="font-medium">Population:</span> {reference.applicablePopulation}</p> : null}
+                      {reference.indication ? <p><span className="font-medium">Indication:</span> {reference.indication}</p> : null}
+                      <p className="text-muted-foreground">Last verified: {reference.lastVerified}</p>
+                      {reference.note ? <p className="text-muted-foreground">{reference.note}</p> : null}
+                      {reference.url ? (
+                        <a href={reference.url} target="_blank" rel="noreferrer" className="text-primary underline underline-offset-2">
+                          Open source
+                        </a>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
             {(definition.notes?.length || definition.limitations?.length) ? (
               <div>
                 <Separator className="mb-3" />
@@ -303,7 +326,16 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
               </Button>
             </div>
 
+            {definition.category === "dosing" ? (
+              <div className="rounded-md border border-amber-300/50 bg-amber-50 dark:bg-amber-950/20 p-3 text-sm">
+                <p className="font-medium text-amber-900 dark:text-amber-200">Dose safety check</p>
+                <p className="mt-1 text-amber-800 dark:text-amber-300">This result has been checked for input bounds and basic plausibility. It does not replace drug-specific dosing guidance, clinical assessment or therapeutic monitoring.</p>
+              </div>
+            ) : null}
             <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>
+            {definition.category === "dosing" ? (
+              <p className="text-xs text-amber-700 dark:text-amber-300">Drug-dose results are calculation aids, not prescriptions. Verify the indication, patient population, route, formulation, maximum dose, current guideline and local protocol before administration.</p>
+            ) : null}
           </CardContent>
         </Card>
       ) : null}
