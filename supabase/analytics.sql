@@ -267,11 +267,14 @@ language sql
 security definer
 set search_path = public
 as $$
-  with totals as (
+  with bounds as (
+    select (now() at time zone 'Africa/Lagos')::date as local_today
+  ),
+  totals as (
     select
       count(*)::int as total,
-      count(*) filter (where occurred_at >= current_date)::int as today,
-      count(*) filter (where occurred_at >= current_date - interval '13 days')::int as last_14_days,
+      count(*) filter (where occurred_at >= ((select local_today from bounds)::timestamp at time zone 'Africa/Lagos'))::int as today,
+      count(*) filter (where occurred_at >= (((select local_today from bounds) - 13)::timestamp at time zone 'Africa/Lagos'))::int as last_14_days,
       count(*) filter (where was_offline = true)::int as offline_synced,
       count(*) filter (where app_version = '2.0.0-history-backfill')::int as history_backfilled
     from public.calculation_events
@@ -279,8 +282,8 @@ as $$
   users as (
     select
       count(*)::int as total_users,
-      count(*) filter (where last_seen_at >= current_date)::int as users_today,
-      count(*) filter (where last_seen_at >= current_date - interval '13 days')::int as users_last_14_days,
+      count(*) filter (where last_seen_at >= ((select local_today from bounds)::timestamp at time zone 'Africa/Lagos'))::int as users_today,
+      count(*) filter (where last_seen_at >= (((select local_today from bounds) - 13)::timestamp at time zone 'Africa/Lagos'))::int as users_last_14_days,
       count(*) filter (
         where greatest(
           last_seen_at,
@@ -301,7 +304,15 @@ as $$
         d.first_seen_at as "firstSeenAt",
         d.last_seen_at as "lastSeenAt",
         d.last_calculation_at as "lastCalculationAt",
-        count(e.id) filter (where e.occurred_at >= current_date)::int as "calculationsToday"
+        count(e.id) filter (
+          where e.occurred_at >= ((select local_today from bounds)::timestamp at time zone 'Africa/Lagos')
+        )::int as "calculationsToday",
+        count(e.id) filter (
+          where e.occurred_at >= (((select local_today from bounds) - 13)::timestamp at time zone 'Africa/Lagos')
+        )::int as "calculationsLast14Days",
+        count(e.id)::int as "totalCalculations",
+        (array_agg(e.calculator_name order by e.occurred_at desc)
+          filter (where e.id is not null))[1] as "lastCalculatorName"
       from public.convertlab_devices d
       left join public.calculation_events e on e.anonymous_id = d.anonymous_id
       where greatest(
@@ -327,8 +338,8 @@ as $$
         d.last_seen_at as "lastSeenAt",
         latest.last_calculation_at as "lastCalculationAt",
         latest.calculator_name as "lastCalculatorName",
-        count(e.id) filter (where e.occurred_at >= current_date)::int as "calculationsToday",
-        count(e.id) filter (where e.occurred_at >= current_date - interval '13 days')::int as "calculationsLast14Days",
+        count(e.id) filter (where e.occurred_at >= ((select local_today from bounds)::timestamp at time zone 'Africa/Lagos'))::int as "calculationsToday",
+        count(e.id) filter (where e.occurred_at >= (((select local_today from bounds) - 13)::timestamp at time zone 'Africa/Lagos'))::int as "calculationsLast14Days",
         count(e.id)::int as "totalCalculations"
       from public.convertlab_devices d
       left join public.calculation_events e on e.anonymous_id = d.anonymous_id
@@ -394,11 +405,16 @@ as $$
   daily as (
     select coalesce(json_agg(row_to_json(x) order by x.date), '[]'::json)
     from (
-      select to_char(d.day, 'YYYY-MM-DD') as date,
+      select to_char(d.day::date, 'YYYY-MM-DD') as date,
              count(e.id)::int as uses
-      from generate_series(current_date - interval '13 days', current_date, interval '1 day') d(day)
+      from generate_series(
+        (select local_today from bounds) - 13,
+        (select local_today from bounds),
+        interval '1 day'
+      ) d(day)
       left join public.calculation_events e
-        on e.occurred_at >= d.day and e.occurred_at < d.day + interval '1 day'
+        on e.occurred_at >= (d.day::date::timestamp at time zone 'Africa/Lagos')
+       and e.occurred_at < ((d.day::date + 1)::timestamp at time zone 'Africa/Lagos')
       group by d.day
       order by d.day
     ) x
