@@ -94,6 +94,32 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
     }
   }
 
+  const regimenSummary = useMemo(() => {
+    if (definition.category !== "dosing" || !result) return []
+
+    const fields = result.secondary ?? []
+    const wanted = [
+      "Dose per administration",
+      "Calculated dose",
+      "Dose",
+      "Dose frequency",
+      "Frequency",
+      "Route",
+      "Duration",
+      "Treatment duration",
+      "Doses",
+      "Total tablets",
+      "Total units",
+      "Total course dose",
+      "Daily total",
+    ]
+
+    return wanted
+      .map((label) => fields.find((field) => field.label === label))
+      .filter((field): field is NonNullable<typeof field> => Boolean(field))
+      .slice(0, 8)
+  }, [definition.category, result])
+
   const resultText = () => {
     if (!result) return ""
     const lines = [
@@ -201,21 +227,59 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
             <CardTitle className="text-sm font-medium text-muted-foreground">Result</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
-            <div className="text-3xl font-bold tracking-tight">{result.display}</div>
-
-            {result.secondary?.length ? (
-              <dl className="grid gap-1.5 text-sm">
-                {result.secondary.map((field) => (
-                  <div key={field.label} className="flex justify-between gap-4">
-                    <dt className="text-muted-foreground">{field.label}</dt>
-                    <dd className="font-medium">{field.value}</dd>
+            {definition.category === "dosing" ? (
+              <div className="rounded-lg border bg-muted/20 p-4 space-y-3">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Calculated result</p>
+                  <p className="mt-1 text-3xl font-bold tracking-tight">{result.display}</p>
+                </div>
+                {result.secondary?.length ? (
+                  <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {result.secondary.map((field) => (
+                      <div key={field.label} className="rounded-md border bg-background p-3">
+                        <p className="text-xs text-muted-foreground">{field.label}</p>
+                        <p className="mt-1 text-sm font-semibold break-words">{field.value}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </dl>
+                ) : null}
+              </div>
+            ) : (
+              <>
+                <div className="text-3xl font-bold tracking-tight">{result.display}</div>
+                {result.secondary?.length ? (
+                  <dl className="grid gap-1.5 text-sm">
+                    {result.secondary.map((field) => (
+                      <div key={field.label} className="flex justify-between gap-4">
+                        <dt className="text-muted-foreground">{field.label}</dt>
+                        <dd className="font-medium">{field.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                ) : null}
+              </>
+            )}
+
+            {regimenSummary.length ? (
+              <div className="rounded-lg border bg-background p-4 space-y-3">
+                <div>
+                  <h4 className="text-sm font-semibold">Regimen summary</h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">Reference details returned by this calculator; no regimen details are inferred.</p>
+                </div>
+                <dl className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                  {regimenSummary.map((field) => (
+                    <div key={`regimen-${field.label}`} className="rounded-md border bg-muted/20 p-2.5">
+                      <dt className="text-xs text-muted-foreground">{field.label}</dt>
+                      <dd className="mt-1 text-sm font-semibold break-words">{field.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             ) : null}
 
             {result.warnings?.length ? (
-              <div className="space-y-1.5">
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium">Safety &amp; warnings</h4>
                 {result.warnings.map((w, i) => (
                   <div key={i} className="flex items-start gap-2 rounded-md border border-amber-300/50 bg-amber-50 dark:bg-amber-950/20 p-2.5 text-sm text-amber-800 dark:text-amber-300">
                     <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" aria-hidden />

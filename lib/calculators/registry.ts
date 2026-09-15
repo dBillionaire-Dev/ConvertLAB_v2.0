@@ -88,10 +88,16 @@ import {
   piperacillinTazobactamPediatricCalculator,
   clindamycinPediatricCalculator,
   cefazolinPediatricCalculator,
+  linezolidPediatricCalculator,
+  doxycyclinePediatricCalculator,
   loadingDoseCalculator,
   maintenanceDoseCalculator,
   infusionDurationCalculator,
   courseTotalDoseCalculator,
+  whoPediatricPneumoniaRegimenCalculator,
+  whoPediatricDiarrhoeaZincCalculator,
+  whoPediatricOrsPlanBCalculator,
+  whoPediatricOrsOngoingLossCalculator,
 } from "./definitions/dosing"
 
 export const calculators: CalculatorDefinition[] = [
@@ -177,10 +183,16 @@ export const calculators: CalculatorDefinition[] = [
   piperacillinTazobactamPediatricCalculator,
   clindamycinPediatricCalculator,
   cefazolinPediatricCalculator,
+  linezolidPediatricCalculator,
+  doxycyclinePediatricCalculator,
   loadingDoseCalculator,
   maintenanceDoseCalculator,
   infusionDurationCalculator,
   courseTotalDoseCalculator,
+  whoPediatricPneumoniaRegimenCalculator,
+  whoPediatricDiarrhoeaZincCalculator,
+  whoPediatricOrsPlanBCalculator,
+  whoPediatricOrsOngoingLossCalculator,
 ]
 
 export function getCalculatorById(id: string): CalculatorDefinition | undefined {

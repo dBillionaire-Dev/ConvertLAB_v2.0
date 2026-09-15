@@ -152,7 +152,7 @@ export const doseVolumeCalculator: CalculatorDefinition = {
       unit: "mL",
       display: fmt(volume, 3, "mL"),
       calculationSteps: [`${dose} mg ÷ ${concentration} mg/mL = ${volume} mL`],
-      warnings: volume < 0.1 ? ["Very small volume. Verify the concentration, syringe accuracy and applicable administration protocol."] : undefined,
+      warnings: volume < 0.1 ? ["Very small volume, kindly verify the concentration, syringe accuracy and applicable administration protocol."] : undefined,
     }
   },
 }
@@ -279,7 +279,7 @@ export const maximumDoseCheckCalculator: CalculatorDefinition = {
 
 export const artesunateAmodiaquineCalculator: CalculatorDefinition = {
   id: "artesunate-amodiaquine-uncomplicated-malaria",
-  name: "Artesunate–Amodiaquine —> Uncomplicated Malaria",
+  name: "Artesunate–Amodiaquine → Uncomplicated Malaria",
   shortName: "Artesunate–Amodiaquine",
   category: "dosing",
   description: "Provides the WHO weight-band daily dose of artesunate–amodiaquine for uncomplicated malaria over 3 days.",
@@ -340,7 +340,7 @@ export const artesunateAmodiaquineCalculator: CalculatorDefinition = {
 
 export const artesunateMefloquineCalculator: CalculatorDefinition = {
   id: "artesunate-mefloquine-uncomplicated-malaria",
-  name: "Artesunate–Mefloquine —> Uncomplicated Malaria",
+  name: "Artesunate–Mefloquine → Uncomplicated Malaria",
   shortName: "Artesunate–Mefloquine",
   category: "dosing",
   description: "Provides the WHO weight-band daily dose of artesunate–mefloquine for uncomplicated malaria over 3 days.",
@@ -398,7 +398,7 @@ export const artesunateMefloquineCalculator: CalculatorDefinition = {
 
 export const dihydroartemisininPiperaquineCalculator: CalculatorDefinition = {
   id: "dihydroartemisinin-piperaquine-uncomplicated-malaria",
-  name: "Dihydroartemisinin–Piperaquine —> Uncomplicated Malaria",
+  name: "Dihydroartemisinin–Piperaquine → Uncomplicated Malaria",
   shortName: "DHA–Piperaquine",
   category: "dosing",
   description: "Provides the WHO weight-band daily dose of dihydroartemisinin–piperaquine for uncomplicated malaria over 3 days.",
@@ -463,7 +463,7 @@ export const dihydroartemisininPiperaquineCalculator: CalculatorDefinition = {
 
 export const artemetherLumefantrineCalculator: CalculatorDefinition = {
   id: "artemether-lumefantrine-uncomplicated-malaria",
-  name: "Artemether–Lumefantrine —> Uncomplicated Malaria",
+  name: "Artemether–Lumefantrine → Uncomplicated Malaria",
   shortName: "Artemether–Lumefantrine",
   category: "dosing",
   description: "Provides the standard six-dose artemether–lumefantrine tablet regimen by patient weight for uncomplicated malaria.",
@@ -523,7 +523,7 @@ export const artemetherLumefantrineCalculator: CalculatorDefinition = {
 
 export const artesunateSulfadoxinePyrimethamineCalculator: CalculatorDefinition = {
   id: "artesunate-sulfadoxine-pyrimethamine-uncomplicated-malaria",
-  name: "Artesunate–Sulfadoxine/Pyrimethamine —> Uncomplicated Malaria",
+  name: "Artesunate–Sulfadoxine/Pyrimethamine → Uncomplicated Malaria",
   shortName: "Artesunate–SP",
   category: "dosing",
   description: "Provides the WHO weight-band regimen of artesunate plus sulfadoxine–pyrimethamine for uncomplicated malaria.",
@@ -580,7 +580,7 @@ export const artesunateSulfadoxinePyrimethamineCalculator: CalculatorDefinition 
 
 export const artesunatePyronaridineCalculator: CalculatorDefinition = {
   id: "artesunate-pyronaridine-uncomplicated-malaria",
-  name: "Artesunate–Pyronaridine —> Uncomplicated Malaria",
+  name: "Artesunate–Pyronaridine → Uncomplicated Malaria",
   shortName: "Artesunate–Pyronaridine",
   category: "dosing",
   description: "Provides a weight-band artesunate–pyronaridine regimen for uncomplicated malaria using the available oral suspension and tablet strengths.",
@@ -781,7 +781,7 @@ export const doseVolumeRoundingCalculator: CalculatorDefinition = {
 
 export const artesunateSevereMalariaCalculator: CalculatorDefinition = {
   id: "artesunate-severe-malaria",
-  name: "Artesunate —> Severe Malaria",
+  name: "Artesunate → Severe Malaria",
   shortName: "Artesunate",
   category: "dosing",
   description: "Calculates the weight-based parenteral artesunate dose used for severe malaria and shows the initial 0, 12 and 24-hour schedule.",
@@ -837,7 +837,7 @@ export const artesunateSevereMalariaCalculator: CalculatorDefinition = {
 
 export const amoxicillinPediatricCalculator: CalculatorDefinition = {
   id: "amoxicillin-pediatric-dose",
-  name: "Amoxicillin —> Pediatric Dose",
+  name: "Amoxicillin → Pediatric Dose",
   shortName: "Amoxicillin",
   category: "dosing",
   description: "Calculates a WHO reference pediatric amoxicillin dose range for children older than 28 days.",
@@ -878,7 +878,7 @@ export const amoxicillinPediatricCalculator: CalculatorDefinition = {
 
 export const amoxicillinClavulanatePediatricCalculator: CalculatorDefinition = {
   id: "amoxicillin-clavulanate-pediatric-dose",
-  name: "Amoxicillin/Clavulanate —> Pediatric Dose",
+  name: "Amoxicillin/Clavulanate → Pediatric Dose",
   shortName: "Amox/Clav",
   category: "dosing",
   description: "Calculates a pediatric amoxicillin-component dose range for amoxicillin/clavulanate.",
@@ -919,7 +919,7 @@ export const amoxicillinClavulanatePediatricCalculator: CalculatorDefinition = {
 
 export const azithromycinPediatricCalculator: CalculatorDefinition = {
   id: "azithromycin-pediatric-dose",
-  name: "Azithromycin —> Pediatric Dose",
+  name: "Azithromycin → Pediatric Dose",
   shortName: "Azithromycin",
   category: "dosing",
   description: "Calculates the WHO reference pediatric azithromycin dose for children older than 28 days.",
@@ -946,7 +946,7 @@ export const azithromycinPediatricCalculator: CalculatorDefinition = {
 
 export const ceftriaxonePediatricCalculator: CalculatorDefinition = {
   id: "ceftriaxone-pediatric-dose",
-  name: "Ceftriaxone —> Pediatric Dose",
+  name: "Ceftriaxone → Pediatric Dose",
   shortName: "Ceftriaxone",
   category: "dosing",
   description: "Calculates a WHO reference ceftriaxone dose for children older than 28 days, with a meningitis option.",
@@ -978,7 +978,7 @@ export const ceftriaxonePediatricCalculator: CalculatorDefinition = {
 
 export const cephalexinPediatricCalculator: CalculatorDefinition = {
   id: "cephalexin-pediatric-dose",
-  name: "Cephalexin —> Pediatric Dose",
+  name: "Cephalexin → Pediatric Dose",
   shortName: "Cephalexin",
   category: "dosing",
   description: "Calculates the WHO reference pediatric cephalexin daily dose range.",
@@ -1006,7 +1006,7 @@ export const cephalexinPediatricCalculator: CalculatorDefinition = {
 
 export const metronidazolePediatricCalculator: CalculatorDefinition = {
   id: "metronidazole-pediatric-dose",
-  name: "Metronidazole —> Pediatric Dose",
+  name: "Metronidazole → Pediatric Dose",
   shortName: "Metronidazole",
   category: "dosing",
   description: "Calculates the WHO reference pediatric metronidazole dose range for children older than 28 days.",
@@ -1034,7 +1034,7 @@ export const metronidazolePediatricCalculator: CalculatorDefinition = {
 
 export const cefuroximeSurgicalProphylaxisCalculator: CalculatorDefinition = {
   id: "cefuroxime-surgical-prophylaxis",
-  name: "Cefuroxime —> Surgical Prophylaxis",
+  name: "Cefuroxime → Surgical Prophylaxis",
   shortName: "Cefuroxime",
   category: "dosing",
   description: "Calculates the WHO reference pediatric cefuroxime single-dose regimen for surgical prophylaxis.",
@@ -1062,7 +1062,7 @@ export const cefuroximeSurgicalProphylaxisCalculator: CalculatorDefinition = {
 
 export const ampicillinPediatricCalculator: CalculatorDefinition = {
   id: "ampicillin-pediatric-dose",
-  name: "Ampicillin —> Pediatric Dose",
+  name: "Ampicillin → Pediatric Dose",
   shortName: "Ampicillin",
   category: "dosing",
   description: "Calculates the WHO reference ampicillin dose for neonates and children using age-group-specific frequency.",
@@ -1097,7 +1097,7 @@ export const ampicillinPediatricCalculator: CalculatorDefinition = {
 
 export const cefotaximePediatricCalculator: CalculatorDefinition = {
   id: "cefotaxime-pediatric-dose",
-  name: "Cefotaxime —> Pediatric Dose",
+  name: "Cefotaxime → Pediatric Dose",
   shortName: "Cefotaxime",
   category: "dosing",
   description: "Calculates a WHO reference cefotaxime dose for children, with a meningitis frequency option.",
@@ -1132,7 +1132,7 @@ export const cefotaximePediatricCalculator: CalculatorDefinition = {
 
 export const cloxacillinPediatricCalculator: CalculatorDefinition = {
   id: "cloxacillin-pediatric-dose",
-  name: "Cloxacillin —> Pediatric Dose",
+  name: "Cloxacillin → Pediatric Dose",
   shortName: "Cloxacillin",
   category: "dosing",
   description: "Calculates the WHO reference cloxacillin dose for neonates and children in selected serious bacterial infections.",
@@ -1179,7 +1179,7 @@ export const cloxacillinPediatricCalculator: CalculatorDefinition = {
 
 export const ciprofloxacinPediatricCalculator: CalculatorDefinition = {
   id: "ciprofloxacin-pediatric-dose",
-  name: "Ciprofloxacin —> Pediatric Dose",
+  name: "Ciprofloxacin → Pediatric Dose",
   shortName: "Ciprofloxacin",
   category: "dosing",
   description: "Provides WHO oral weight-band ciprofloxacin dosing used in selected pediatric hospital infections.",
@@ -1212,7 +1212,7 @@ export const ciprofloxacinPediatricCalculator: CalculatorDefinition = {
 
 export const gentamicinPediatricCalculator: CalculatorDefinition = {
   id: "gentamicin-pediatric-dose",
-  name: "Gentamicin —> Pediatric Dose",
+  name: "Gentamicin → Pediatric Dose",
   shortName: "Gentamicin",
   category: "dosing",
   description: "Calculates the WHO reference once-daily gentamicin dose for neonates and children with normal renal function.",
@@ -1248,7 +1248,7 @@ export const gentamicinPediatricCalculator: CalculatorDefinition = {
 
 export const meropenemPediatricCalculator: CalculatorDefinition = {
   id: "meropenem-pediatric-dose",
-  name: "Meropenem —> Pediatric Dose",
+  name: "Meropenem → Pediatric Dose",
   shortName: "Meropenem",
   category: "dosing",
   description: "Calculates the WHO reference meropenem dose used in selected pediatric hospital infections.",
@@ -1276,7 +1276,7 @@ export const meropenemPediatricCalculator: CalculatorDefinition = {
 
 export const vancomycinPediatricCalculator: CalculatorDefinition = {
   id: "vancomycin-pediatric-dose",
-  name: "Vancomycin —> Pediatric Dose",
+  name: "Vancomycin → Pediatric Dose",
   shortName: "Vancomycin",
   category: "dosing",
   description: "Calculates the WHO reference IV vancomycin dose for neonates and children with normal renal function.",
@@ -1317,7 +1317,7 @@ export const vancomycinPediatricCalculator: CalculatorDefinition = {
  */
 export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "amoxicillin-clavulanate-renal-adjustment",
-  name: "Amoxicillin/Clavulanate —> Renal Adjustment",
+  name: "Amoxicillin/Clavulanate → Renal Adjustment",
   shortName: "Amox/Clav Renal",
   category: "dosing",
   description: "Applies the product-label renal restrictions and interval changes for immediate-release amoxicillin/clavulanate oral formulations.",
@@ -1404,7 +1404,7 @@ export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefiniti
 
 export const ciprofloxacinRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "ciprofloxacin-renal-adjustment",
-  name: "Ciprofloxacin —> Renal Adjustment",
+  name: "Ciprofloxacin → Renal Adjustment",
   shortName: "Ciprofloxacin Renal",
   category: "dosing",
   description: "Applies the adult oral ciprofloxacin renal dosing intervals from the current product label.",
@@ -1466,7 +1466,7 @@ export const ciprofloxacinRenalAdjustmentCalculator: CalculatorDefinition = {
 
 export const cefotaximeRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "cefotaxime-renal-adjustment",
-  name: "Cefotaxime —> Renal Adjustment",
+  name: "Cefotaxime → Renal Adjustment",
   shortName: "Cefotaxime Renal",
   category: "dosing",
   description: "Applies the cefotaxime product-label recommendation to halve the dose when estimated creatinine clearance is below 20 mL/min/1.73 m².",
@@ -1499,7 +1499,7 @@ export const cefotaximeRenalAdjustmentCalculator: CalculatorDefinition = {
 
 export const cefuroximeAxetilRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "cefuroxime-axetil-renal-adjustment",
-  name: "Cefuroxime Axetil —> Renal Adjustment",
+  name: "Cefuroxime Axetil → Renal Adjustment",
   shortName: "Cefuroxime Axetil Renal",
   category: "dosing",
   description: "Applies the adult cefuroxime axetil tablet-label interval adjustment for renal impairment.",
@@ -1551,7 +1551,7 @@ export const cefuroximeAxetilRenalAdjustmentCalculator: CalculatorDefinition = {
 
 export const meropenemRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "meropenem-renal-adjustment",
-  name: "Meropenem —> Renal Adjustment",
+  name: "Meropenem → Renal Adjustment",
   shortName: "Meropenem Renal",
   category: "dosing",
   description: "Applies the adult meropenem injection label for dose and interval changes across creatinine-clearance bands.",
@@ -1565,9 +1565,9 @@ export const meropenemRenalAdjustmentCalculator: CalculatorDefinition = {
       label: "Adult labeled regimen",
       kind: "select",
       options: [
-        { value: "csssi", label: "cSSSI —> 500 mg" },
-        { value: "intra-abdominal", label: "Intra-abdominal —> 1 g" },
-        { value: "pseudomonas-csssi", label: "P. aeruginosa cSSSI —> 1 g" },
+        { value: "csssi", label: "cSSSI → 500 mg" },
+        { value: "intra-abdominal", label: "Intra-abdominal → 1 g" },
+        { value: "pseudomonas-csssi", label: "P. aeruginosa cSSSI → 1 g" },
       ],
     },
     {
@@ -1621,7 +1621,7 @@ export const meropenemRenalAdjustmentCalculator: CalculatorDefinition = {
  */
 export const vancomycinAuc24TargetCalculator: CalculatorDefinition = {
   id: "vancomycin-auc24-target-check",
-  name: "Vancomycin —> AUC24 Target Check",
+  name: "Vancomycin → AUC24 Target Check",
   shortName: "Vancomycin AUC24",
   category: "dosing",
   description: "Checks a measured vancomycin 24-hour AUC against the consensus target used for serious invasive MRSA infections.",
@@ -1638,7 +1638,7 @@ export const vancomycinAuc24TargetCalculator: CalculatorDefinition = {
     return {
       value: auc24,
       unit: "mg·h/L",
-      display: `${fmt(auc24)} mg·h/L —> ${status}`,
+      display: `${fmt(auc24)} mg·h/L → ${status}`,
       secondary: [
         { label: "Consensus target", value: "400–600 mg·h/L" },
         { label: "Assumed MIC", value: "1 mg/L" },
@@ -1663,7 +1663,7 @@ export const vancomycinAuc24TargetCalculator: CalculatorDefinition = {
 
 export const gentamicinPeakTroughCheckerCalculator: CalculatorDefinition = {
   id: "gentamicin-peak-trough-check",
-  name: "Gentamicin —> Peak/Trough Check",
+  name: "Gentamicin → Peak/Trough Check",
   shortName: "Gentamicin TDM",
   category: "dosing",
   description: "Checks measured gentamicin peak and trough concentrations against conventional intermittent-dosing reference targets from product labeling.",
@@ -1730,7 +1730,7 @@ export const gentamicinPeakTroughCheckerCalculator: CalculatorDefinition = {
  */
 export const whoYoungInfantSepsisPneumoniaCalculator: CalculatorDefinition = {
   id: "who-young-infant-sepsis-pneumonia",
-  name: "WHO 0–59 Days —> Sepsis/Pneumonia Regimen",
+  name: "WHO 0–59 Days → Sepsis/Pneumonia Regimen",
   shortName: "0–59 Days Sepsis",
   category: "dosing",
   description: "Calculates the WHO 2024 first-line ampicillin + gentamicin reference regimen for hospitalized young infants with suspected sepsis or pneumonia.",
@@ -1801,7 +1801,7 @@ export const whoYoungInfantSepsisPneumoniaCalculator: CalculatorDefinition = {
 
 export const whoYoungInfantMeningitisCalculator: CalculatorDefinition = {
   id: "who-young-infant-meningitis",
-  name: "WHO 0–59 Days —> Meningitis Regimen",
+  name: "WHO 0–59 Days → Meningitis Regimen",
   shortName: "0–59 Days Meningitis",
   category: "dosing",
   description: "Calculates WHO 2024 reference doses for suspected meningitis in young infants aged 0–59 days.",
@@ -1838,9 +1838,9 @@ export const whoYoungInfantMeningitisCalculator: CalculatorDefinition = {
       unit: "mg ampicillin/dose",
       display: `${ampicillin} mg ampicillin + ${gentamicin} mg gentamicin`,
       secondary: [
-        { label: "Option 1 —> Ampicillin", value: `${ampicillin} mg IM/IV ${ampicillinInterval} + gentamicin ${gentamicin} mg once daily` },
-        { label: "Option 2 —> Cefotaxime", value: `${cefotaxime} mg IM/IV ${cefotaximeInterval} + gentamicin ${gentamicin} mg once daily` },
-        { label: "Option 3 —> Ceftriaxone", value: `${ceftriaxone} mg IM/IV once daily + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 1 → Ampicillin", value: `${ampicillin} mg IM/IV ${ampicillinInterval} + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 2 → Cefotaxime", value: `${cefotaxime} mg IM/IV ${cefotaximeInterval} + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 3 → Ceftriaxone", value: `${ceftriaxone} mg IM/IV once daily + gentamicin ${gentamicin} mg once daily` },
         { label: "Treatment duration", value: "At least 3 weeks" },
       ],
       calculationSteps: [
@@ -1872,7 +1872,7 @@ export const whoYoungInfantMeningitisCalculator: CalculatorDefinition = {
  */
 export const piperacillinTazobactamPediatricCalculator: CalculatorDefinition = {
   id: "piperacillin-tazobactam-pediatric-dose",
-  name: "Piperacillin–Tazobactam —> Pediatric Dose",
+  name: "Piperacillin–Tazobactam → Pediatric Dose",
   shortName: "Piperacillin–Tazobactam",
   category: "dosing",
   description: "Calculates a WHO reference pediatric dose of piperacillin–tazobactam for selected severe hospital infections.",
@@ -1915,7 +1915,7 @@ export const piperacillinTazobactamPediatricCalculator: CalculatorDefinition = {
 /** WHO AWaRe reference regimen for selected pediatric infections. */
 export const clindamycinPediatricCalculator: CalculatorDefinition = {
   id: "clindamycin-pediatric-dose",
-  name: "Clindamycin —> Pediatric Dose",
+  name: "Clindamycin → Pediatric Dose",
   shortName: "Clindamycin",
   category: "dosing",
   description: "Calculates a WHO reference clindamycin dose for selected pediatric hospital infections.",
@@ -1963,7 +1963,7 @@ export const clindamycinPediatricCalculator: CalculatorDefinition = {
 /** WHO AWaRe reference regimen for selected pediatric bone/joint infections. */
 export const cefazolinPediatricCalculator: CalculatorDefinition = {
   id: "cefazolin-pediatric-dose",
-  name: "Cefazolin —> Pediatric Dose",
+  name: "Cefazolin → Pediatric Dose",
   shortName: "Cefazolin",
   category: "dosing",
   description: "Calculates a WHO reference cefazolin dose for selected pediatric hospital infections.",
@@ -1991,6 +1991,104 @@ export const cefazolinPediatricCalculator: CalculatorDefinition = {
   },
   notes: [
     "WHO AWaRe lists cefazolin 25 mg/kg/dose q12h IV as a treatment option for selected pediatric bone and joint infections.",
+  ],
+}
+
+
+/** WHO AWaRe reference regimen for selected pediatric reserve-antibiotic use. */
+export const linezolidPediatricCalculator: CalculatorDefinition = {
+  id: "linezolid-pediatric-dose",
+  name: "Linezolid → Pediatric Dose",
+  shortName: "Linezolid",
+  category: "dosing",
+  description: "Calculates a WHO AWaRe reference linezolid dose for selected pediatric invasive Gram-positive infections.",
+  formula: "Dose = 10 mg/kg/dose IV/ORAL every 8 hours",
+  keywords: ["linezolid", "pediatric", "MRSA", "VRE", "reserve antibiotic"],
+  relatedTools: ["vancomycin-pediatric-dose", "mg-per-kg-dose"],
+  inputs: [
+    { id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 0, step: 0.1 },
+    { id: "ageGroup", label: "Age group", kind: "select", options: [
+      { value: "neonate-first-week", label: "Neonate → first week of life" },
+      { value: "neonate-after-first-week", label: "Neonate → after first week" },
+      { value: "child", label: "Child" },
+    ] },
+  ],
+  calculate: (inputs) => {
+    const weight = num(inputs, "weight")
+    const ageGroup = str(inputs, "ageGroup")
+    assertPositive(weight, "Patient weight")
+    const interval = ageGroup === "neonate-first-week" ? "every 12 hours" : "every 8 hours"
+    const dose = round(weight * 10, 2)
+    return {
+      value: dose,
+      unit: "mg/dose",
+      display: fmt(dose, 2, `mg IV/ORAL ${interval}`),
+      secondary: [
+        { label: "Route", value: "IV or oral" },
+        { label: "Interval", value: interval },
+      ],
+      calculationSteps: [`10 mg/kg × ${weight} kg = ${dose} mg/dose`],
+      interpretation: "WHO AWaRe reference regimen for selected pediatric reserve-antibiotic use. The neonatal interval differs in the first week of life.",
+      warnings: [
+        "Linezolid is a reserve antibiotic and should be used only for appropriate, selected indications with microbiology/clinical guidance.",
+        "WHO notes that pediatric empiric use is only for very selected seriously ill patients with invasive infections known to be colonized with VRE or VRSA.",
+        "Monitor for myelosuppression with prolonged therapy and verify indication, duration and local antimicrobial-stewardship protocol.",
+      ],
+    }
+  },
+  notes: [
+    "WHO AWaRe: children 10 mg/kg/dose q8h IV/ORAL; neonates 10 mg/kg/dose q12h in the first week and q8h after the first week.",
+    "WHO AWaRe states no renal dose adjustment is required for linezolid in the reference regimen.",
+  ],
+}
+
+/** WHO Model Formulary for Children reference regimen for selected bacterial infections. */
+export const doxycyclinePediatricCalculator: CalculatorDefinition = {
+  id: "doxycycline-pediatric-dose",
+  name: "Doxycycline → Pediatric Dose",
+  shortName: "Doxycycline",
+  category: "dosing",
+  description: "Calculates the WHO Model Formulary for Children reference doxycycline regimen for children over 8 years.",
+  formula: "Day 1: 2 mg/kg/dose twice daily; then 2 mg/kg once daily; maximum 100 mg/dose and 200 mg/day",
+  keywords: ["doxycycline", "pediatric", "children", "antibiotic"],
+  relatedTools: ["mg-per-kg-dose", "loading-dose"],
+  inputs: [
+    { id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 0, step: 0.1 },
+    { id: "day", label: "Treatment day", kind: "select", options: [
+      { value: "day1", label: "Day 1" },
+      { value: "after-day1", label: "After day 1" },
+    ] },
+  ],
+  calculate: (inputs) => {
+    const weight = num(inputs, "weight")
+    const day = str(inputs, "day")
+    assertPositive(weight, "Patient weight")
+    const perDose = Math.min(round(weight * 2, 2), 100)
+    const frequency = day === "day1" ? "twice daily" : "once daily"
+    const daily = Math.min(round(perDose * (day === "day1" ? 2 : 1), 2), 200)
+    return {
+      value: perDose,
+      unit: "mg/dose",
+      display: fmt(perDose, 2, `mg ${frequency}`),
+      secondary: [
+        { label: "Daily total", value: fmt(daily, 2, "mg/day") },
+        { label: "Maximum per dose", value: "100 mg" },
+        { label: "Maximum daily dose", value: "200 mg/day" },
+      ],
+      calculationSteps: [
+        `2 mg/kg × ${weight} kg = ${round(weight * 2, 2)} mg/dose`,
+        `Dose capped at ${perDose} mg when the 100 mg per-dose maximum applies`,
+      ],
+      interpretation: "WHO Model Formulary for Children reference regimen for bacterial infections in children over 8 years.",
+      warnings: [
+        "Do not use this calculator for children 8 years or younger unless a current, indication-specific guideline explicitly supports doxycycline.",
+        "Verify pregnancy, hepatic/renal considerations, interactions and indication-specific guidance before use.",
+        "This source is older supporting guidance; verify against the current indication-specific guideline and local protocol.",
+      ],
+    }
+  },
+  notes: [
+    "WHO Model Formulary for Children: over 8 years, 2 mg/kg (maximum 100 mg) twice daily on day 1, then 2 mg/kg (maximum 100 mg) daily; maximum daily dose 200 mg.",
   ],
 }
 
@@ -2138,4 +2236,362 @@ export const courseTotalDoseCalculator: CalculatorDefinition = {
       warnings: ["Do not use this calculator to determine treatment duration or to extend a prescribed course."],
     }
   },
+}
+
+/** WHO 2024 oral zinc regimen for children up to 10 years with diarrhoea. */
+export const whoPediatricDiarrhoeaZincCalculator: CalculatorDefinition = {
+  id: "who-pediatric-diarrhoea-zinc",
+  name: "WHO Pediatric Diarrhoea → Zinc Regimen",
+  shortName: "Diarrhoea Zinc",
+  category: "dosing",
+  description: "Calculates the WHO 2024 oral zinc reference regimen for children up to 10 years with acute watery or persistent diarrhoea.",
+  formula: "Zinc = 5 mg elemental zinc once daily; duration = 10–14 days",
+  keywords: ["diarrhoea", "diarrhea", "zinc", "pediatric", "WHO", "protocol", "regimen"],
+  relatedTools: ["dose-to-volume", "oral-liquid-dose-volume", "course-total-dose"],
+  inputs: [
+    {
+      id: "ageYears",
+      label: "Age",
+      kind: "number",
+      unit: "years",
+      min: 0,
+      max: 10,
+      step: 0.01,
+      helpText: "WHO 2024 recommendation covered here applies to children up to 10 years.",
+    },
+    {
+      id: "diarrhoeaType",
+      label: "Diarrhoea type",
+      kind: "select",
+      options: [
+        { value: "acute-watery", label: "Acute watery diarrhoea" },
+        { value: "persistent", label: "Persistent diarrhoea" },
+      ],
+    },
+    {
+      id: "duration",
+      label: "Treatment duration",
+      kind: "select",
+      options: [
+        { value: "10", label: "10 days" },
+        { value: "11", label: "11 days" },
+        { value: "12", label: "12 days" },
+        { value: "13", label: "13 days" },
+        { value: "14", label: "14 days" },
+      ],
+      helpText: "WHO recommends referring to the existing 10–14 day duration recommendation.",
+    },
+  ],
+  calculate: (inputs) => {
+    const ageYears = num(inputs, "ageYears")
+    const diarrhoeaType = str(inputs, "diarrhoeaType")
+    const duration = Number(str(inputs, "duration"))
+    if (ageYears < 0) throw new Error("Age must be 0 years or greater")
+    if (ageYears > 10) throw new Error("Age must be 10 years or less for this WHO reference calculator")
+    if (!Number.isInteger(duration) || duration < 10 || duration > 14) {
+      throw new Error("Treatment duration must be between 10 and 14 days")
+    }
+
+    const dailyDose = 5
+    const total = dailyDose * duration
+    const typeLabel = diarrhoeaType === "persistent" ? "Persistent diarrhoea" : "Acute watery diarrhoea"
+
+    return {
+      value: dailyDose,
+      unit: "mg elemental zinc/day",
+      display: `${dailyDose} mg elemental zinc orally once daily for ${duration} days`,
+      secondary: [
+        { label: "Protocol condition", value: typeLabel },
+        { label: "Daily dose", value: "5 mg elemental zinc" },
+        { label: "Frequency", value: "Once daily" },
+        { label: "Duration", value: `${duration} days` },
+        { label: "Calculated course total", value: `${total} mg elemental zinc` },
+        { label: "Population", value: "Children up to 10 years" },
+      ],
+      calculationSteps: [
+        "WHO 2024 reference dose = 5 mg elemental zinc once daily",
+        `5 mg/day × ${duration} days = ${total} mg elemental zinc total course dose`,
+      ],
+      interpretation: `WHO 2024 reference regimen for children up to 10 years with ${typeLabel.toLowerCase()}: oral zinc 5 mg once daily for 10–14 days.`,
+      warnings: [
+        "This calculator covers the WHO 2024 oral-zinc recommendation for acute watery or persistent diarrhoea; it is not a dehydration assessment or complete diarrhoea-management algorithm.",
+        "Use elemental zinc content when converting to a tablet, dispersible tablet or liquid formulation; verify the actual product strength before administration.",
+        "ORS, continued feeding and assessment for dehydration remain part of diarrhoea management. Blood in stool, severe dehydration, persistent symptoms or other danger signs require clinical assessment.",
+      ],
+    }
+  },
+  notes: [
+    "WHO 2024 recommends adjunctive oral zinc for acute watery and persistent diarrhoea in children up to 10 years and suggests a 5 mg dose; duration follows the existing 10–14 day recommendation.",
+  ],
+  limitations: [
+    "This is a protocol-reference calculator and does not diagnose diarrhoea, assess dehydration or determine whether zinc is appropriate for an individual child.",
+    "Product formulation and elemental-zinc content must be verified separately.",
+  ],
+}
+
+/** WHO pediatric diarrhoea Plan B oral rehydration reference. */
+export const whoPediatricOrsPlanBCalculator: CalculatorDefinition = {
+  id: "who-pediatric-ors-plan-b",
+  name: "WHO Pediatric ORS → Plan B Volume",
+  shortName: "ORS Plan B",
+  category: "dosing",
+  description: "Calculates the WHO reference volume of oral rehydration solution for children with some dehydration: 75 mL/kg over 4 hours.",
+  formula: "ORS volume = 75 mL/kg × body weight; administer over 4 hours",
+  keywords: ["ORS", "oral rehydration", "diarrhoea", "diarrhea", "dehydration", "Plan B", "pediatric", "WHO"],
+  relatedTools: ["who-pediatric-diarrhoea-zinc"],
+  inputs: [
+    {
+      id: "weight",
+      label: "Patient weight",
+      kind: "number",
+      unit: "kg",
+      min: 0.5,
+      max: 60,
+      step: 0.1,
+      helpText: "Use the measured current body weight whenever possible.",
+    },
+  ],
+  calculate: (inputs) => {
+    const weight = num(inputs, "weight")
+    assertPositive(weight, "Patient weight")
+
+    const totalVolume = round(weight * 75, 1)
+    const hourlyVolume = round(totalVolume / 4, 1)
+
+    return {
+      value: totalVolume,
+      unit: "mL ORS",
+      display: `${totalVolume} mL ORS over 4 hours`,
+      secondary: [
+        { label: "Dose basis", value: "75 mL/kg" },
+        { label: "Hourly average", value: `${hourlyVolume} mL/hour` },
+        { label: "Duration", value: "4 hours" },
+        { label: "Protocol", value: "WHO Plan B → some dehydration" },
+      ],
+      calculationSteps: [
+        `75 mL/kg × ${weight} kg = ${totalVolume} mL ORS`,
+        `${totalVolume} mL ÷ 4 hours = ${hourlyVolume} mL/hour average`,
+      ],
+      interpretation: "WHO Plan B reference volume for a child with some dehydration. Give ORS in small, frequent amounts and reassess after 4 hours.",
+      warnings: [
+        "Use this calculator only when the child has been clinically assessed as having some dehydration and oral/enteral rehydration is appropriate.",
+        "Do not use this result for severe dehydration, shock or a child unable to drink; those situations require the applicable emergency/IV rehydration protocol.",
+        "This is a volume reference, not a diagnosis of dehydration. Reassess the child after 4 hours and account for ongoing losses according to the applicable protocol.",
+        "Use correctly prepared low-osmolarity ORS and follow the product instructions for preparation and storage.",
+      ],
+    }
+  },
+  notes: [
+    "WHO clinical tools describe Plan B as 75 mL/kg of ORS over 4 hours for children with some dehydration, with reassessment after 4 hours.",
+  ],
+  limitations: [
+    "Does not assess dehydration severity or determine whether Plan B is appropriate.",
+    "Does not replace emergency management for severe dehydration or shock.",
+    "Does not calculate ongoing stool/vomit replacement or maintenance fluids.",
+  ],
+}
+
+/** WHO Plan A home/ongoing ORS reference after each loose stool. */
+export const whoPediatricOrsOngoingLossCalculator: CalculatorDefinition = {
+  id: "who-pediatric-ors-ongoing-loss",
+  name: "WHO Pediatric ORS → Ongoing Losses",
+  shortName: "ORS Ongoing Loss",
+  category: "dosing",
+  description: "Estimates the WHO home-treatment ORS volume to offer after each loose stool and the cumulative amount for a selected number of stools.",
+  formula: "<2 years: 50–100 mL per loose stool; 2–<10 years: 100–200 mL per loose stool; ≥10 years: as much as wanted",
+  keywords: ["ORS", "oral rehydration", "diarrhoea", "diarrhea", "ongoing losses", "Plan A", "pediatric", "WHO", "stool"],
+  relatedTools: ["who-pediatric-ors-plan-b", "who-pediatric-diarrhoea-zinc"],
+  inputs: [
+    {
+      id: "ageYears",
+      label: "Age",
+      kind: "number",
+      unit: "years",
+      min: 0,
+      max: 18,
+      step: 0.1,
+      helpText: "Use the child's current age. For children under 1 year, enter the age in decimal years (for example, 0.5).",
+    },
+    {
+      id: "looseStools",
+      label: "Number of loose stools",
+      kind: "number",
+      min: 1,
+      max: 20,
+      step: 1,
+      helpText: "Optional planning count: this calculates the cumulative reference amount across this many loose stools; actual intake should follow clinical assessment and tolerance.",
+    },
+  ],
+  calculate: (inputs) => {
+    const ageYears = num(inputs, "ageYears")
+    const looseStools = num(inputs, "looseStools")
+    if (!Number.isFinite(ageYears) || ageYears < 0) throw new Error("Age must be 0 years or greater")
+    assertPositive(looseStools, "Number of loose stools")
+    if (ageYears > 18) throw new Error("Age must be 18 years or less")
+    if (!Number.isInteger(looseStools) || looseStools < 1 || looseStools > 20) {
+      throw new Error("Number of loose stools must be a whole number from 1 to 20")
+    }
+
+    if (ageYears < 2) {
+      const min = 50 * looseStools
+      const max = 100 * looseStools
+      return {
+        value: `${50}–${100}`,
+        unit: "mL per loose stool",
+        display: `Offer 50–100 mL ORS after each loose stool; ${min}–${max} mL across ${looseStools} stool${looseStools === 1 ? "" : "s"}`,
+        secondary: [
+          { label: "Per-stool reference", value: "50–100 mL ORS" },
+          { label: "Planned stool count", value: String(looseStools) },
+          { label: "Cumulative reference range", value: `${min}–${max} mL` },
+          { label: "Protocol", value: "WHO Plan A → home/ongoing fluid replacement" },
+        ],
+        calculationSteps: [
+          `50–100 mL × ${looseStools} loose stool${looseStools === 1 ? "" : "s"} = ${min}–${max} mL`,
+        ],
+        interpretation: "WHO home-treatment reference for children under 2 years: offer 50–100 mL ORS after each loose stool, using frequent small sips.",
+        warnings: [
+          "This is an ongoing-loss/home-treatment reference, not a dehydration assessment or a replacement for Plan B or Plan C.",
+          "The cumulative range is a planning calculation, not a requirement to force the entire amount if the child cannot tolerate it.",
+          "If the child becomes unable to drink, drinks poorly, repeatedly vomits, becomes more unwell, develops blood in stool or shows signs of dehydration, seek clinical assessment promptly.",
+          "Continue breastfeeding/feeding as appropriate and use correctly prepared ORS.",
+        ],
+      }
+    }
+
+    if (ageYears < 10) {
+      const min = 100 * looseStools
+      const max = 200 * looseStools
+      return {
+        value: `${100}–${200}`,
+        unit: "mL per loose stool",
+        display: `Offer 100–200 mL ORS after each loose stool; ${min}–${max} mL across ${looseStools} stool${looseStools === 1 ? "" : "s"}`,
+        secondary: [
+          { label: "Per-stool reference", value: "100–200 mL ORS" },
+          { label: "Planned stool count", value: String(looseStools) },
+          { label: "Cumulative reference range", value: `${min}–${max} mL` },
+          { label: "Protocol", value: "WHO Plan A → home/ongoing fluid replacement" },
+        ],
+        calculationSteps: [
+          `100–200 mL × ${looseStools} loose stool${looseStools === 1 ? "" : "s"} = ${min}–${max} mL`,
+        ],
+        interpretation: "WHO home-treatment reference for children aged 2 to under 10 years: offer 100–200 mL ORS after each loose stool, using frequent sips.",
+        warnings: [
+          "This is an ongoing-loss/home-treatment reference, not a dehydration assessment or a replacement for Plan B or Plan C.",
+          "The cumulative range is a planning calculation, not a requirement to force the entire amount if the child cannot tolerate it.",
+          "If the child becomes unable to drink, drinks poorly, repeatedly vomits, becomes more unwell, develops blood in stool or shows signs of dehydration, seek clinical assessment promptly.",
+          "Continue feeding as appropriate and use correctly prepared ORS.",
+        ],
+      }
+    }
+
+    return {
+      value: "as tolerated",
+      unit: "mL",
+      display: `Offer ORS after each loose stool as much as the child wants; ${looseStools} stool${looseStools === 1 ? "" : "s"} recorded`,
+      secondary: [
+        { label: "Per-stool reference", value: "As much as wanted/tolerated" },
+        { label: "Planned stool count", value: String(looseStools) },
+        { label: "Cumulative calculation", value: "Not numerically prescribed by this reference" },
+        { label: "Protocol", value: "WHO Plan A → home/ongoing fluid replacement" },
+      ],
+      calculationSteps: [
+        "For children aged 10 years or older, WHO home-treatment guidance uses thirst/tolerance rather than a fixed numeric volume per stool.",
+      ],
+      interpretation: "For children aged 10 years or older, offer extra ORS/fluids as much as wanted and tolerated rather than applying the younger-child fixed volume bands.",
+      warnings: [
+        "This is an ongoing-loss/home-treatment reference, not a dehydration assessment or a replacement for Plan B or Plan C.",
+        "Do not force a fixed volume in older children; thirst and tolerance guide intake.",
+        "If the child becomes unable to drink, drinks poorly, repeatedly vomits, becomes more unwell, develops blood in stool or shows signs of dehydration, seek clinical assessment promptly.",
+        "Continue feeding as appropriate and use correctly prepared ORS.",
+      ],
+    }
+  },
+  notes: [
+    "WHO home-treatment guidance gives 50–100 mL after each loose stool for children under 2 years and 100–200 mL for children 2–10 years; older children and adults should take as much as wanted.",
+  ],
+  limitations: [
+    "The fixed age-band volumes are supporting WHO home-treatment guidance rather than a substitute for a current national or facility protocol.",
+    "Does not assess dehydration, calculate Plan B/Plan C therapy, or prescribe maintenance fluids.",
+    "The cumulative stool-count calculation is only a planning aid; actual intake depends on clinical status, thirst, vomiting and tolerance.",
+  ],
+}
+
+/** WHO 2024 pneumonia regimen selector for children aged 2–59 months. */
+export const whoPediatricPneumoniaRegimenCalculator: CalculatorDefinition = {
+  id: "who-pediatric-pneumonia-regimen",
+  name: "WHO Pediatric Pneumonia → Regimen Reference",
+  shortName: "Pneumonia Regimen",
+  category: "dosing",
+  description: "Selects a WHO 2024 pneumonia presentation and returns the corresponding pediatric amoxicillin reference regimen for children aged 2–59 months.",
+  formula: "Dose = 40 mg/kg per dose × weight; twice daily",
+  keywords: ["pneumonia", "amoxicillin", "pediatric", "WHO", "protocol", "regimen"],
+  relatedTools: ["amoxicillin-pediatric-dose", "course-total-dose"],
+  inputs: [
+    { id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 0.1, step: 0.1 },
+    {
+      id: "presentation",
+      label: "Pneumonia presentation",
+      kind: "select",
+      options: [
+        { value: "fast-breathing", label: "Fast breathing only" },
+        { value: "chest-indrawing", label: "Chest indrawing" },
+      ],
+    },
+    {
+      id: "fastBreathingDuration",
+      label: "Fast-breathing duration protocol",
+      kind: "select",
+      options: [
+        { value: "3-days", label: "3 days" },
+        { value: "5-days", label: "5 days" },
+      ],
+      helpText: "For fast breathing only, use the duration adopted by the applicable local/national protocol.",
+    },
+  ],
+  calculate: (inputs) => {
+    const weight = num(inputs, "weight")
+    const presentation = str(inputs, "presentation")
+    const duration = str(inputs, "fastBreathingDuration")
+    assertPositive(weight, "Patient weight")
+
+    const dose = round(weight * 40, 1)
+    const days = presentation === "chest-indrawing" ? 5 : duration === "3-days" ? 3 : 5
+    const administrationsPerDay = 2
+    const total = round(dose * administrationsPerDay * days, 1)
+    const presentationLabel = presentation === "chest-indrawing" ? "Chest indrawing" : "Fast breathing only"
+
+    return {
+      value: dose,
+      unit: "mg/dose",
+      display: `${dose} mg oral amoxicillin twice daily for ${days} days`,
+      secondary: [
+        { label: "Protocol presentation", value: presentationLabel },
+        { label: "Dose basis", value: "40 mg/kg/dose" },
+        { label: "Route", value: "Oral" },
+        { label: "Frequency", value: "Twice daily (about every 12 hours)" },
+        { label: "Duration", value: `${days} days` },
+        { label: "Calculated course total", value: `${total} mg amoxicillin` },
+        { label: "Population", value: "Children aged 2–59 months" },
+      ],
+      calculationSteps: [
+        `40 mg/kg × ${weight} kg = ${dose} mg/dose`,
+        `${dose} mg/dose × 2 doses/day × ${days} days = ${total} mg total course dose`,
+      ],
+      interpretation: presentation === "chest-indrawing"
+        ? "WHO 2024 reference regimen for children aged 2–59 months with chest indrawing and no general danger signs: oral amoxicillin for 5 days."
+        : "WHO 2024 reference regimen for children aged 2–59 months with pneumonia presenting with fast breathing only. The guideline permits 3 or 5 days; the applicable local/national protocol should determine the duration.",
+      warnings: [
+        "This selector applies only to children aged 2–59 months and the presentations described by the WHO guideline.",
+        "Do not use this calculator for general danger signs, very severe illness, infants under 2 months, HIV-specific management or treatment failure; those situations require the applicable clinical protocol.",
+        "Confirm the diagnosis, formulation, allergy status and current local/national guideline before administration.",
+      ],
+    }
+  },
+  notes: [
+    "WHO 2024 pneumonia guidance recommends oral amoxicillin for 2–59 month children with fast breathing only, with a 3- or 5-day course, and for chest indrawing with no general danger signs, for 5 days.",
+  ],
+  limitations: [
+    "This is a protocol-reference calculator, not a diagnostic tool or universal pneumonia treatment algorithm.",
+    "It does not cover children with general danger signs, very severe illness, HIV-specific treatment, treatment failure or complications.",
+  ],
 }

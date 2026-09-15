@@ -51,6 +51,75 @@ const TDM_VANCOMYCIN: CalculatorReference = {
   note: "AUC targets and monitoring strategy require patient-specific pharmacokinetic context; this calculator is a target/check aid, not a dosing model.",
 }
 
+
+const LINEZOLID_REFERENCE: CalculatorReference = {
+  source: "World Health Organization — AWaRe antibiotic book",
+  version: "2022 edition",
+  url: "https://www.who.int/publications/i/item/9789240062382",
+  applicablePopulation: "Selected pediatric and neonatal patients for reserve-antibiotic use.",
+  indication: "Selected serious invasive Gram-positive infections; use only when the specific indication is appropriate.",
+  lastVerified: VERIFIED_ON,
+  status: "supporting",
+  note: "WHO states pediatric empiric use should be limited to very selected seriously ill patients with invasive infections known to be colonized with VRE or VRSA. Verify current local stewardship guidance.",
+}
+
+const DOXYCYCLINE_REFERENCE: CalculatorReference = {
+  source: "WHO Model Formulary for Children",
+  version: "2010 edition",
+  url: "https://iris.who.int/bitstream/10665/44309/1/9789241599320_eng.pdf",
+  applicablePopulation: "Children over 8 years for bacterial infections covered by the source.",
+  indication: "Bacterial infections; indication-specific current guidance takes precedence.",
+  lastVerified: VERIFIED_ON,
+  status: "supporting",
+  note: "This is older supporting guidance. Verify against a current indication-specific guideline before use.",
+}
+
+
+const WHO_PNEUMONIA_2024: CalculatorReference = {
+  source: "World Health Organization — Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+  version: "31 December 2024 guideline",
+  url: "https://www.who.int/publications/i/item/9789240103412",
+  applicablePopulation: "Children aged 2–59 months with pneumonia presentations covered by the guideline.",
+  indication: "Fast breathing only or chest indrawing without general danger signs.",
+  lastVerified: VERIFIED_ON,
+  status: "current",
+  note: "The calculator exposes only the specific oral-amoxicillin regimens represented by the guideline and does not cover general danger signs, treatment failure or HIV-specific management.",
+}
+
+
+const WHO_ORS_2025: CalculatorReference = {
+  source: "World Health Organization — Clinical tools for cholera / diarrhoeal rehydration",
+  version: "2025 clinical tool",
+  url: "https://iris.who.int/bitstream/handle/10665/379760/B09194-eng.pdf?sequence=1",
+  applicablePopulation: "Children with some dehydration for whom oral rehydration is appropriate.",
+  indication: "WHO Plan B oral rehydration: 75 mL/kg ORS over 4 hours.",
+  lastVerified: VERIFIED_ON,
+  status: "current",
+  note: "Use after clinical assessment confirms some dehydration and suitability for oral/enteral rehydration; reassess after 4 hours. Severe dehydration or shock requires the applicable emergency rehydration protocol.",
+}
+
+const WHO_ORS_HOME_SUPPORTING: CalculatorReference = {
+  source: "World Health Organization — The treatment of diarrhoea",
+  version: "4th revision, 2005; supporting home-treatment guidance",
+  url: "https://www.who.int/publications/i/item/9241593180",
+  applicablePopulation: "Children receiving home/maintenance oral rehydration after loose stools.",
+  indication: "Extra ORS after each loose stool: 50–100 mL under 2 years; 100–200 mL from 2 to under 10 years; older children take as much as wanted.",
+  lastVerified: VERIFIED_ON,
+  status: "supporting",
+  note: "Older WHO guidance retained here as supporting protocol context. Verify the current national/facility Plan A protocol before use; this calculator does not assess dehydration.",
+}
+
+const WHO_DIARRHOEA_2024: CalculatorReference = {
+  source: "World Health Organization — Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+  version: "31 December 2024 guideline",
+  url: "https://www.who.int/publications/i/item/9789240103412",
+  applicablePopulation: "Children up to 10 years with acute watery or persistent diarrhoea.",
+  indication: "Adjunctive oral zinc treatment for acute watery or persistent diarrhoea.",
+  lastVerified: VERIFIED_ON,
+  status: "current",
+  note: "The 2024 guideline suggests 5 mg oral zinc; treatment duration follows the existing 10–14 day recommendation. Verify the actual product's elemental-zinc content.",
+}
+
 const GENERIC: CalculatorReference = {
   source: "ConvertLAB calculation method",
   version: "Mathematical reference",
@@ -99,7 +168,13 @@ const GENERIC_DOSING_IDS = new Set([
 export function getCalculatorReferences(definition: CalculatorDefinition): CalculatorReference[] {
   if (MALARIA_IDS.has(definition.id)) return [WHO_MALARIA]
   if (INFANT_IDS.has(definition.id)) return [WHO_INFANTS]
+  if (definition.id === "who-pediatric-pneumonia-regimen") return [WHO_PNEUMONIA_2024]
+  if (definition.id === "who-pediatric-ors-plan-b") return [WHO_ORS_2025]
+  if (definition.id === "who-pediatric-ors-ongoing-loss") return [WHO_ORS_HOME_SUPPORTING]
+  if (definition.id === "who-pediatric-diarrhoea-zinc") return [WHO_DIARRHOEA_2024]
   if (VANCOMYCIN_IDS.has(definition.id)) return [TDM_VANCOMYCIN]
+  if (definition.id === "linezolid-pediatric-dose") return [LINEZOLID_REFERENCE]
+  if (definition.id === "doxycycline-pediatric-dose") return [DOXYCYCLINE_REFERENCE]
   if (GENERIC_DOSING_IDS.has(definition.id)) return [GENERIC]
   if (definition.category === "dosing") return [WHO_AWARE]
   return [GENERIC]
