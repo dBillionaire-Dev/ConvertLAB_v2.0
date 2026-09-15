@@ -71,6 +71,7 @@ export default async function CalculatorCategoryPage({
     "gentamicin-peak-trough-check",
     "who-young-infant-sepsis-pneumonia",
     "who-young-infant-meningitis",
+    "who-pediatric-pneumonia-regimen",
   "piperacillin-tazobactam-pediatric-dose",
   "clindamycin-pediatric-dose",
   "cefazolin-pediatric-dose",

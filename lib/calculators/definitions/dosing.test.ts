@@ -49,6 +49,12 @@ import {
   maintenanceDoseCalculator,
   infusionDurationCalculator,
   courseTotalDoseCalculator,
+  linezolidPediatricCalculator,
+  doxycyclinePediatricCalculator,
+  whoPediatricPneumoniaRegimenCalculator,
+  whoPediatricDiarrhoeaZincCalculator,
+  whoPediatricOrsPlanBCalculator,
+  whoPediatricOrsOngoingLossCalculator,
 } from "./dosing"
 
 describe("dosing calculators", () => {
@@ -328,4 +334,59 @@ it("calculates infusion duration", () => {
 
 it("calculates total course dose", () => {
   expect(courseTotalDoseCalculator.calculate({ dose: 500, administrationsPerDay: 2, days: 7 }).value).toBe(7000)
+})
+
+
+it("calculates Phase 17 specialized antibiotic references", () => {
+  expect(linezolidPediatricCalculator.calculate({ weight: 12, ageGroup: "child" }).value).toBe(120)
+  expect(linezolidPediatricCalculator.calculate({ weight: 12, ageGroup: "neonate-first-week" }).secondary?.find((x) => x.label === "Interval")?.value).toBe("every 12 hours")
+  expect(doxycyclinePediatricCalculator.calculate({ weight: 40, day: "day1" }).value).toBe(80)
+  expect(doxycyclinePediatricCalculator.calculate({ weight: 80, day: "after-day1" }).value).toBe(100)
+})
+
+it("selects the WHO 2024 pediatric pneumonia regimen by presentation", () => {
+  const fastBreathing = whoPediatricPneumoniaRegimenCalculator.calculate({
+    weight: 12,
+    presentation: "fast-breathing",
+    fastBreathingDuration: "3-days",
+  })
+  expect(fastBreathing.value).toBe(480)
+  expect(fastBreathing.display).toContain("480 mg oral amoxicillin twice daily for 3 days")
+  expect(fastBreathing.secondary?.find((x) => x.label === "Calculated course total")?.value).toBe("2880 mg amoxicillin")
+
+  const chestIndrawing = whoPediatricPneumoniaRegimenCalculator.calculate({
+    weight: 12,
+    presentation: "chest-indrawing",
+    fastBreathingDuration: "3-days",
+  })
+  expect(chestIndrawing.display).toContain("480 mg oral amoxicillin twice daily for 5 days")
+  expect(chestIndrawing.secondary?.find((x) => x.label === "Duration")?.value).toBe("5 days")
+})
+
+
+it("calculates the WHO 2024 pediatric diarrhoea zinc regimen", () => {
+  const result = whoPediatricDiarrhoeaZincCalculator.calculate({
+    ageYears: 2,
+    diarrhoeaType: "acute-watery",
+    duration: "10",
+  })
+  expect(result.value).toBe(5)
+  expect(result.display).toContain("5 mg elemental zinc orally once daily for 10 days")
+  expect(result.secondary?.find((x) => x.label === "Calculated course total")?.value).toBe("50 mg elemental zinc")
+
+  const persistent = whoPediatricDiarrhoeaZincCalculator.calculate({
+    ageYears: 8,
+    diarrhoeaType: "persistent",
+    duration: "14",
+  })
+  expect(persistent.secondary?.find((x) => x.label === "Calculated course total")?.value).toBe("70 mg elemental zinc")
+})
+
+
+it("calculates the WHO pediatric ORS Plan B volume", () => {
+  const result = whoPediatricOrsPlanBCalculator.calculate({ weight: 12 })
+  expect(result.value).toBe(900)
+  expect(result.display).toBe("900 mL ORS over 4 hours")
+  expect(result.secondary?.find((x) => x.label === "Hourly average")?.value).toBe("225 mL/hour")
+  expect(result.secondary?.find((x) => x.label === "Protocol")?.value).toContain("Plan B")
 })
