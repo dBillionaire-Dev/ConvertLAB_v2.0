@@ -39,9 +39,39 @@ import {
   absoluteCellCountCalculator,
   correctedWbcCalculator,
   hematocritEstimateCalculator,
+  inrCalculator,
+  correctedCountIncrementCalculator,
+  estimatedBloodVolumeCalculator,
+  internationalPrognosticIndexCalculator,
 } from "./definitions/hematology"
 import { molarityCalculator, normalityCalculator } from "./definitions/lab-solutions"
+import { beerLambertCalculator } from "./definitions/spectrophotometry"
+import {
+  oncologyBsaDoseCalculator,
+  oncologyDoseIntensityCalculator,
+  oncologyRelativeDoseIntensityCalculator,
+  oncologyCumulativeDoseCalculator,
+  oncologyCycleTotalCalculator,
+  carboplatinCalvertCalculator,
+  oncologyDoseCapCalculator,
+  oncologyRegimenDoseCalculator,
+  oncologyHematologicModificationCalculator,
+  oncologyOrganFunctionModificationCalculator,
+  oncologyToxicitySafetyCalculator,
+  oncologyAntiemeticRiskCalculator,
+  oncologyFebrileNeutropeniaRiskCalculator,
+  oncologyCycleProgressCalculator,
+  oncologyCourseCompletionCalculator,
+} from "./definitions/oncology"
 import { cfuCalculator, dilutionFactorCalculator, concentrationAfterDilutionCalculator } from "./definitions/microbiology"
+import {
+  meanArterialPressureCalculator, ejectionFractionCalculator, cha2ds2VascCalculator,
+  daptScoreCalculator, qtcCalculator, atherogenicIndexCalculator,
+} from "./definitions/cardiovascular"
+import {
+  hctCiCalculator, conditioningDayCalculator, stemCellCollectionYieldCalculator,
+  cd34CellDoseCalculator, neutrophilEngraftmentDayCalculator, donorChimerismCalculator,
+} from "./definitions/stem-cell-transplant"
 import {
   mgPerKgDoseCalculator,
   oralLiquidDoseVolumeCalculator,
@@ -98,6 +128,8 @@ import {
   whoPediatricDiarrhoeaZincCalculator,
   whoPediatricOrsPlanBCalculator,
   whoPediatricOrsOngoingLossCalculator,
+  whoPediatricMaintenanceFluidCalculator,
+  pediatricFluidDeficitCalculator,
 } from "./definitions/dosing"
 
 export const calculators: CalculatorDefinition[] = [
@@ -133,8 +165,13 @@ export const calculators: CalculatorDefinition[] = [
   absoluteCellCountCalculator,
   correctedWbcCalculator,
   hematocritEstimateCalculator,
+  inrCalculator,
+  correctedCountIncrementCalculator,
+  estimatedBloodVolumeCalculator,
+  internationalPrognosticIndexCalculator,
   molarityCalculator,
   normalityCalculator,
+  beerLambertCalculator,
   cfuCalculator,
   dilutionFactorCalculator,
   concentrationAfterDilutionCalculator,
@@ -193,6 +230,35 @@ export const calculators: CalculatorDefinition[] = [
   whoPediatricDiarrhoeaZincCalculator,
   whoPediatricOrsPlanBCalculator,
   whoPediatricOrsOngoingLossCalculator,
+  whoPediatricMaintenanceFluidCalculator,
+  pediatricFluidDeficitCalculator,
+  meanArterialPressureCalculator,
+  ejectionFractionCalculator,
+  cha2ds2VascCalculator,
+  daptScoreCalculator,
+  qtcCalculator,
+  atherogenicIndexCalculator,
+  hctCiCalculator,
+  conditioningDayCalculator,
+  stemCellCollectionYieldCalculator,
+  cd34CellDoseCalculator,
+  neutrophilEngraftmentDayCalculator,
+  donorChimerismCalculator,
+  oncologyBsaDoseCalculator,
+  oncologyDoseIntensityCalculator,
+  oncologyRelativeDoseIntensityCalculator,
+  oncologyCumulativeDoseCalculator,
+  oncologyCycleTotalCalculator,
+  carboplatinCalvertCalculator,
+  oncologyDoseCapCalculator,
+  oncologyRegimenDoseCalculator,
+  oncologyHematologicModificationCalculator,
+  oncologyOrganFunctionModificationCalculator,
+  oncologyToxicitySafetyCalculator,
+  oncologyAntiemeticRiskCalculator,
+  oncologyFebrileNeutropeniaRiskCalculator,
+  oncologyCycleProgressCalculator,
+  oncologyCourseCompletionCalculator,
 ]
 
 export function getCalculatorById(id: string): CalculatorDefinition | undefined {
@@ -208,15 +274,19 @@ export function getRelatedCalculators(def: CalculatorDefinition): CalculatorDefi
   return def.relatedTools.map((id) => getCalculatorById(id)).filter((c): c is CalculatorDefinition => Boolean(c))
 }
 
-export const calculatorCategories: { id: CalculatorGroup; label: string; count: number }[] = (
+export const calculatorCatalog: { id: CalculatorGroup; label: string; count: number }[] = (
   Object.keys(CALCULATOR_CATEGORY_LABELS) as CalculatorGroup[]
-)
-  .map((id) => ({
-    id,
-    label: CALCULATOR_CATEGORY_LABELS[id],
-    count: getCalculatorsByCategory(id).length,
-  }))
-  .filter((c) => c.count > 0)
+).map((id) => ({
+  id,
+  label: CALCULATOR_CATEGORY_LABELS[id],
+  count: getCalculatorsByCategory(id).length,
+}))
+
+export const calculatorCategories = calculatorCatalog.filter((c) => c.count > 0)
+
+export function getCalculatorsByCategoryAndSubcategory(category: CalculatorGroup, subcategory: string): CalculatorDefinition[] {
+  return getCalculatorsByCategory(category).filter((calculator) => calculator.subcategory === subcategory)
+}
 
 export function searchCalculators(query: string): CalculatorDefinition[] {
   const q = query.trim().toLowerCase()

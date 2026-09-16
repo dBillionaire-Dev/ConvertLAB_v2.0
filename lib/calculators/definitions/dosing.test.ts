@@ -55,6 +55,8 @@ import {
   whoPediatricDiarrhoeaZincCalculator,
   whoPediatricOrsPlanBCalculator,
   whoPediatricOrsOngoingLossCalculator,
+  whoPediatricMaintenanceFluidCalculator,
+  pediatricFluidDeficitCalculator,
 } from "./dosing"
 
 describe("dosing calculators", () => {
@@ -389,4 +391,20 @@ it("calculates the WHO pediatric ORS Plan B volume", () => {
   expect(result.display).toBe("900 mL ORS over 4 hours")
   expect(result.secondary?.find((x) => x.label === "Hourly average")?.value).toBe("225 mL/hour")
   expect(result.secondary?.find((x) => x.label === "Protocol")?.value).toContain("Plan B")
+})
+
+
+it("calculates WHO pediatric maintenance IV fluid using the Holliday-Segar formula", () => {
+  expect(whoPediatricMaintenanceFluidCalculator.calculate({ weight: 5 }).value).toBe(20)
+  expect(whoPediatricMaintenanceFluidCalculator.calculate({ weight: 15 }).value).toBe(50)
+  expect(whoPediatricMaintenanceFluidCalculator.calculate({ weight: 25 }).value).toBe(65)
+  expect(whoPediatricMaintenanceFluidCalculator.calculate({ weight: 25 }).secondary?.find((x) => x.label === "24-hour volume")?.value).toBe("1560 mL/day")
+})
+
+
+it("calculates a clinician-entered pediatric fluid deficit", () => {
+  const result = pediatricFluidDeficitCalculator.calculate({ weight: 12, dehydrationPercent: 8 })
+  expect(result.value).toBe(960)
+  expect(result.display).toBe("960 mL estimated fluid deficit")
+  expect(result.secondary?.find((x) => x.label === "Estimated deficit")?.value).toBe("0.96 L")
 })

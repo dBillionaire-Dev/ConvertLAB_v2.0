@@ -10,6 +10,7 @@ export const mgPerKgDoseCalculator: CalculatorDefinition = {
   name: "Weight-Based Dose (mg/kg)",
   shortName: "mg/kg Dose",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates a dose from a prescribed mg/kg dose and the patient's actual weight.",
   formula: "Dose (mg) = prescribed dose (mg/kg) × weight (kg)",
   keywords: ["mg/kg", "weight based dose", "dose", "drug dosing"],
@@ -40,6 +41,7 @@ export const mgPerKgDayCalculator: CalculatorDefinition = {
   name: "Weight-Based Daily Dose (mg/kg/day)",
   shortName: "mg/kg/day",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates a total daily dose from a prescribed mg/kg/day regimen.",
   formula: "Daily dose (mg/day) = prescribed dose (mg/kg/day) × weight (kg)",
   keywords: ["mg/kg/day", "daily dose", "weight based", "drug dosing"],
@@ -76,6 +78,7 @@ export const mgPerM2DoseCalculator: CalculatorDefinition = {
   name: "Body Surface Area Dose (mg/m²)",
   shortName: "mg/m² Dose",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates a dose from a prescribed mg/m² dose and an existing BSA value.",
   formula: "Dose (mg) = prescribed dose (mg/m²) × BSA (m²)",
   keywords: ["mg/m2", "mg/m²", "bsa dose", "body surface area dosing", "chemotherapy"],
@@ -105,6 +108,7 @@ export const dosePerAdministrationCalculator: CalculatorDefinition = {
   name: "Dose per Administration",
   shortName: "Dose/Frequency",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Divides a prescribed total daily dose across the specified number of administrations.",
   formula: "Dose per administration = total daily dose ÷ administrations per day",
   keywords: ["dose frequency", "dose per administration", "daily dose", "frequency"],
@@ -133,6 +137,7 @@ export const doseVolumeCalculator: CalculatorDefinition = {
   name: "Dose to Volume",
   shortName: "Dose → Volume",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Converts a required drug dose into a volume when the available concentration is known.",
   formula: "Volume (mL) = required dose (mg) ÷ concentration (mg/mL)",
   keywords: ["dose volume", "mg/ml", "mg/mL", "liquid dose", "injection volume"],
@@ -162,6 +167,7 @@ export const drugConcentrationCalculator: CalculatorDefinition = {
   name: "Drug Concentration",
   shortName: "Drug Concentration",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates drug concentration from the amount of drug and final solution volume.",
   formula: "Concentration (mg/mL) = drug amount (mg) ÷ final volume (mL)",
   keywords: ["drug concentration", "mg/ml", "mg/mL", "solution concentration"],
@@ -190,6 +196,7 @@ export const infusionRateCalculator: CalculatorDefinition = {
   name: "Infusion Rate",
   shortName: "mL/hr",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates an infusion rate from volume and infusion time.",
   formula: "Rate (mL/hr) = volume (mL) ÷ time (hr)",
   keywords: ["infusion rate", "iv rate", "mL/hr", "ml/hr", "drip rate"],
@@ -217,6 +224,7 @@ export const dropsPerMinuteCalculator: CalculatorDefinition = {
   name: "IV Drops per Minute",
   shortName: "Drops/min",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates an approximate gravity infusion rate using the tubing drop factor.",
   formula: "Drops/min = volume(mL) × drop factor(gtt/mL) ÷ time(min)",
   keywords: ["drops per minute", "gtt/min", "drip rate", "iv", "drop factor"],
@@ -250,6 +258,7 @@ export const maximumDoseCheckCalculator: CalculatorDefinition = {
   name: "Maximum Dose Check",
   shortName: "Max Dose",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Compares a calculated dose with a specified maximum single or daily dose.",
   formula: "Final dose = min(calculated dose, specified maximum)",
   keywords: ["maximum dose", "dose cap", "dose limit", "max dose"],
@@ -282,6 +291,7 @@ export const artesunateAmodiaquineCalculator: CalculatorDefinition = {
   name: "Artesunate–Amodiaquine → Uncomplicated Malaria",
   shortName: "Artesunate–Amodiaquine",
   category: "dosing",
+  subcategory: "antimalarial",
   description: "Provides the WHO weight-band daily dose of artesunate–amodiaquine for uncomplicated malaria over 3 days.",
   formula: "Weight band → fixed-dose combination per day for 3 days",
   keywords: ["artesunate", "amodiaquine", "AS-AQ", "ACT", "malaria", "weight band"],
@@ -343,6 +353,7 @@ export const artesunateMefloquineCalculator: CalculatorDefinition = {
   name: "Artesunate–Mefloquine → Uncomplicated Malaria",
   shortName: "Artesunate–Mefloquine",
   category: "dosing",
+  subcategory: "antimalarial",
   description: "Provides the WHO weight-band daily dose of artesunate–mefloquine for uncomplicated malaria over 3 days.",
   formula: "Weight band → fixed-dose combination per day for 3 days",
   keywords: ["artesunate", "mefloquine", "AS-MQ", "ACT", "malaria", "weight band"],
@@ -401,6 +412,7 @@ export const dihydroartemisininPiperaquineCalculator: CalculatorDefinition = {
   name: "Dihydroartemisinin–Piperaquine → Uncomplicated Malaria",
   shortName: "DHA–Piperaquine",
   category: "dosing",
+  subcategory: "antimalarial",
   description: "Provides the WHO weight-band daily dose of dihydroartemisinin–piperaquine for uncomplicated malaria over 3 days.",
   formula: "Weight band → fixed-dose combination once daily for 3 days",
   keywords: ["dihydroartemisinin", "piperaquine", "DHA-PPQ", "ACT", "malaria", "weight band"],
@@ -466,6 +478,7 @@ export const artemetherLumefantrineCalculator: CalculatorDefinition = {
   name: "Artemether–Lumefantrine → Uncomplicated Malaria",
   shortName: "Artemether–Lumefantrine",
   category: "dosing",
+  subcategory: "antimalarial",
   description: "Provides the standard six-dose artemether–lumefantrine tablet regimen by patient weight for uncomplicated malaria.",
   formula: "Weight band → tablets per dose; 6 doses at 0, 8, 24, 36, 48 and 60 hours",
   keywords: ["artemether", "lumefantrine", "AL", "ACT", "malaria", "uncomplicated malaria", "weight band"],
@@ -526,6 +539,7 @@ export const artesunateSulfadoxinePyrimethamineCalculator: CalculatorDefinition 
   name: "Artesunate–Sulfadoxine/Pyrimethamine → Uncomplicated Malaria",
   shortName: "Artesunate–SP",
   category: "dosing",
+  subcategory: "antimalarial",
   description: "Provides the WHO weight-band regimen of artesunate plus sulfadoxine–pyrimethamine for uncomplicated malaria.",
   formula: "Weight band → artesunate daily for 3 days + single SP dose on day 1",
   keywords: ["artesunate", "sulfadoxine", "pyrimethamine", "AS-SP", "ASSP", "ACT", "malaria", "weight band"],
@@ -583,6 +597,7 @@ export const artesunatePyronaridineCalculator: CalculatorDefinition = {
   name: "Artesunate–Pyronaridine → Uncomplicated Malaria",
   shortName: "Artesunate–Pyronaridine",
   category: "dosing",
+  subcategory: "antimalarial",
   description: "Provides a weight-band artesunate–pyronaridine regimen for uncomplicated malaria using the available oral suspension and tablet strengths.",
   formula: "Weight band → fixed-dose combination once daily for 3 days",
   keywords: ["artesunate", "pyronaridine", "AS-PY", "ASPY", "ACT", "malaria", "weight band"],
@@ -658,6 +673,7 @@ export const oralLiquidDoseVolumeCalculator: CalculatorDefinition = {
   name: "Oral Liquid Dose Volume",
   shortName: "Liquid Dose → mL",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Converts a required oral liquid dose in mg to mL when the product concentration is stated as mg per 5 mL.",
   formula: "Volume (mL) = required dose (mg) ÷ concentration (mg/mL)",
   keywords: ["oral liquid", "mg/5 mL", "mg/5mL", "syrup dose", "dose volume", "mL dose"],
@@ -693,6 +709,7 @@ export const tabletCapsuleCountCalculator: CalculatorDefinition = {
   name: "Tablet/Capsule Dose Count",
   shortName: "Dose → Units",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates the number of tablets or capsules needed for a required dose when the unit strength is known.",
   formula: "Units = required dose ÷ strength per unit",
   keywords: ["tablet count", "capsule count", "tablet dose", "capsule dose", "unit strength"],
@@ -725,6 +742,7 @@ export const doseVolumeRoundingCalculator: CalculatorDefinition = {
   name: "Dose Volume Rounding",
   shortName: "Round Dose Volume",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Rounds a calculated liquid dose volume to a selected measurable increment without changing the prescribed concentration.",
   formula: "Rounded volume = exact volume adjusted to the selected measuring increment",
   keywords: ["dose rounding", "volume rounding", "oral syringe", "measuring increment", "dose volume"],
@@ -784,6 +802,7 @@ export const artesunateSevereMalariaCalculator: CalculatorDefinition = {
   name: "Artesunate → Severe Malaria",
   shortName: "Artesunate",
   category: "dosing",
+  subcategory: "antimalarial",
   description: "Calculates the weight-based parenteral artesunate dose used for severe malaria and shows the initial 0, 12 and 24-hour schedule.",
   formula: "WHO dose: 3 mg/kg per dose for children <20 kg; 2.4 mg/kg per dose for patients ≥20 kg",
   keywords: ["artesunate", "severe malaria", "malaria", "antimalarial", "3 mg/kg", "2.4 mg/kg"],
@@ -840,6 +859,7 @@ export const amoxicillinPediatricCalculator: CalculatorDefinition = {
   name: "Amoxicillin → Pediatric Dose",
   shortName: "Amoxicillin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates a WHO reference pediatric amoxicillin dose range for children older than 28 days.",
   formula: "Daily dose = 25–50 mg/kg/day × weight; divided into 3 doses/day",
   keywords: ["amoxicillin", "antibiotic", "pediatric", "mg/kg/day", "Access"],
@@ -881,6 +901,7 @@ export const amoxicillinClavulanatePediatricCalculator: CalculatorDefinition = {
   name: "Amoxicillin/Clavulanate → Pediatric Dose",
   shortName: "Amox/Clav",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates a pediatric amoxicillin-component dose range for amoxicillin/clavulanate.",
   formula: "Amoxicillin component = 25–50 mg/kg/day × weight; divided 3 times daily",
   keywords: ["amoxicillin clavulanate", "co-amoxiclav", "antibiotic", "pediatric"],
@@ -922,6 +943,7 @@ export const azithromycinPediatricCalculator: CalculatorDefinition = {
   name: "Azithromycin → Pediatric Dose",
   shortName: "Azithromycin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference pediatric azithromycin dose for children older than 28 days.",
   formula: "Dose = 10 mg/kg once daily",
   keywords: ["azithromycin", "antibiotic", "macrolide", "pediatric"],
@@ -949,6 +971,7 @@ export const ceftriaxonePediatricCalculator: CalculatorDefinition = {
   name: "Ceftriaxone → Pediatric Dose",
   shortName: "Ceftriaxone",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates a WHO reference ceftriaxone dose for children older than 28 days, with a meningitis option.",
   formula: "General dose = 50 mg/kg/day; meningitis = 100 mg/kg/day",
   keywords: ["ceftriaxone", "cephalosporin", "antibiotic", "meningitis", "pediatric"],
@@ -981,6 +1004,7 @@ export const cephalexinPediatricCalculator: CalculatorDefinition = {
   name: "Cephalexin → Pediatric Dose",
   shortName: "Cephalexin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference pediatric cephalexin daily dose range.",
   formula: "Daily dose = 50–100 mg/kg/day × weight; divided into 4 doses",
   keywords: ["cephalexin", "cefalexin", "antibiotic", "pediatric"],
@@ -1009,6 +1033,7 @@ export const metronidazolePediatricCalculator: CalculatorDefinition = {
   name: "Metronidazole → Pediatric Dose",
   shortName: "Metronidazole",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference pediatric metronidazole dose range for children older than 28 days.",
   formula: "Daily dose = 15–30 mg/kg/day × weight; divided into 2 doses",
   keywords: ["metronidazole", "anaerobic", "antibiotic", "pediatric"],
@@ -1037,6 +1062,7 @@ export const cefuroximeSurgicalProphylaxisCalculator: CalculatorDefinition = {
   name: "Cefuroxime → Surgical Prophylaxis",
   shortName: "Cefuroxime",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference pediatric cefuroxime single-dose regimen for surgical prophylaxis.",
   formula: "Dose = 50 mg/kg × weight",
   keywords: ["cefuroxime", "antibiotic", "surgical prophylaxis", "pediatric"],
@@ -1065,6 +1091,7 @@ export const ampicillinPediatricCalculator: CalculatorDefinition = {
   name: "Ampicillin → Pediatric Dose",
   shortName: "Ampicillin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference ampicillin dose for neonates and children using age-group-specific frequency.",
   formula: "Dose = 50 mg/kg per administration",
   keywords: ["ampicillin", "antibiotic", "pediatric", "neonate"],
@@ -1100,6 +1127,7 @@ export const cefotaximePediatricCalculator: CalculatorDefinition = {
   name: "Cefotaxime → Pediatric Dose",
   shortName: "Cefotaxime",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates a WHO reference cefotaxime dose for children, with a meningitis frequency option.",
   formula: "Dose = 50 mg/kg per administration",
   keywords: ["cefotaxime", "cephalosporin", "antibiotic", "meningitis", "pediatric"],
@@ -1135,6 +1163,7 @@ export const cloxacillinPediatricCalculator: CalculatorDefinition = {
   name: "Cloxacillin → Pediatric Dose",
   shortName: "Cloxacillin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference cloxacillin dose for neonates and children in selected serious bacterial infections.",
   formula: "Neonates: 25–50 mg/kg/dose q12h; children: 25 mg/kg/dose q6h",
   keywords: ["cloxacillin", "flucloxacillin", "antistaphylococcal", "antibiotic", "pediatric"],
@@ -1182,6 +1211,7 @@ export const ciprofloxacinPediatricCalculator: CalculatorDefinition = {
   name: "Ciprofloxacin → Pediatric Dose",
   shortName: "Ciprofloxacin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Provides WHO oral weight-band ciprofloxacin dosing used in selected pediatric hospital infections.",
   formula: "Weight band → fixed dose every 12 hours",
   keywords: ["ciprofloxacin", "antibiotic", "quinolone", "pediatric", "weight band"],
@@ -1215,6 +1245,7 @@ export const gentamicinPediatricCalculator: CalculatorDefinition = {
   name: "Gentamicin → Pediatric Dose",
   shortName: "Gentamicin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference once-daily gentamicin dose for neonates and children with normal renal function.",
   formula: "Neonates: 5 mg/kg/dose; children: 7.5 mg/kg/dose",
   keywords: ["gentamicin", "aminoglycoside", "antibiotic", "neonate", "pediatric", "renal"],
@@ -1251,6 +1282,7 @@ export const meropenemPediatricCalculator: CalculatorDefinition = {
   name: "Meropenem → Pediatric Dose",
   shortName: "Meropenem",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference meropenem dose used in selected pediatric hospital infections.",
   formula: "Dose = 20 mg/kg per administration every 8 hours",
   keywords: ["meropenem", "carbapenem", "antibiotic", "pediatric", "hospital"],
@@ -1279,6 +1311,7 @@ export const vancomycinPediatricCalculator: CalculatorDefinition = {
   name: "Vancomycin → Pediatric Dose",
   shortName: "Vancomycin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO reference IV vancomycin dose for neonates and children with normal renal function.",
   formula: "Dose = 15 mg/kg per administration",
   keywords: ["vancomycin", "glycopeptide", "antibiotic", "MRSA", "pediatric", "renal", "TDM"],
@@ -1320,6 +1353,7 @@ export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefiniti
   name: "Amoxicillin/Clavulanate → Renal Adjustment",
   shortName: "Amox/Clav Renal",
   category: "dosing",
+  subcategory: "renal-adjustment",
   description: "Applies the product-label renal restrictions and interval changes for immediate-release amoxicillin/clavulanate oral formulations.",
   formula: "GFR >30: usual regimen; GFR 10–30: 250 or 500 mg q12h; GFR <10: 250 or 500 mg q24h",
   keywords: ["amoxicillin", "clavulanate", "augmentin", "renal", "renal adjustment", "GFR"],
@@ -1407,6 +1441,7 @@ export const ciprofloxacinRenalAdjustmentCalculator: CalculatorDefinition = {
   name: "Ciprofloxacin → Renal Adjustment",
   shortName: "Ciprofloxacin Renal",
   category: "dosing",
+  subcategory: "renal-adjustment",
   description: "Applies the adult oral ciprofloxacin renal dosing intervals from the current product label.",
   formula: "CrCl >50: q12h; 30–50: q12h; 5–29: q18h; dialysis: q24h after dialysis",
   keywords: ["ciprofloxacin", "renal", "renal adjustment", "creatinine clearance", "Cipro"],
@@ -1469,6 +1504,7 @@ export const cefotaximeRenalAdjustmentCalculator: CalculatorDefinition = {
   name: "Cefotaxime → Renal Adjustment",
   shortName: "Cefotaxime Renal",
   category: "dosing",
+  subcategory: "renal-adjustment",
   description: "Applies the cefotaxime product-label recommendation to halve the dose when estimated creatinine clearance is below 20 mL/min/1.73 m².",
   formula: "CrCl ≥20: usual dose; CrCl <20: 50% of usual dose",
   keywords: ["cefotaxime", "renal", "renal adjustment", "creatinine clearance"],
@@ -1502,6 +1538,7 @@ export const cefuroximeAxetilRenalAdjustmentCalculator: CalculatorDefinition = {
   name: "Cefuroxime Axetil → Renal Adjustment",
   shortName: "Cefuroxime Axetil Renal",
   category: "dosing",
+  subcategory: "renal-adjustment",
   description: "Applies the adult cefuroxime axetil tablet-label interval adjustment for renal impairment.",
   formula: "CrCl ≥30: no adjustment; 10–<30: q24h; <10: q48h; hemodialysis: extra standard dose after dialysis",
   keywords: ["cefuroxime", "cefuroxime axetil", "renal", "renal adjustment", "creatinine clearance"],
@@ -1554,6 +1591,7 @@ export const meropenemRenalAdjustmentCalculator: CalculatorDefinition = {
   name: "Meropenem → Renal Adjustment",
   shortName: "Meropenem Renal",
   category: "dosing",
+  subcategory: "renal-adjustment",
   description: "Applies the adult meropenem injection label for dose and interval changes across creatinine-clearance bands.",
   formula: "CrCl >50: usual q8h; 26–50: usual q12h; 10–25: half-dose q12h; <10: half-dose q24h",
   keywords: ["meropenem", "renal", "renal adjustment", "creatinine clearance", "carbapenem"],
@@ -1624,6 +1662,7 @@ export const vancomycinAuc24TargetCalculator: CalculatorDefinition = {
   name: "Vancomycin → AUC24 Target Check",
   shortName: "Vancomycin AUC24",
   category: "dosing",
+  subcategory: "therapeutic-drug-monitoring",
   description: "Checks a measured vancomycin 24-hour AUC against the consensus target used for serious invasive MRSA infections.",
   formula: "Target AUC24 = 400–600 mg·h/L (assuming MIC = 1 mg/L)",
   keywords: ["vancomycin", "AUC", "AUC24", "therapeutic drug monitoring", "TDM", "MRSA"],
@@ -1666,6 +1705,7 @@ export const gentamicinPeakTroughCheckerCalculator: CalculatorDefinition = {
   name: "Gentamicin → Peak/Trough Check",
   shortName: "Gentamicin TDM",
   category: "dosing",
+  subcategory: "therapeutic-drug-monitoring",
   description: "Checks measured gentamicin peak and trough concentrations against conventional intermittent-dosing reference targets from product labeling.",
   formula: "Conventional reference: peak 4–6 mcg/mL (adult) or 3–5 mcg/mL (pediatric); trough <2 mcg/mL",
   keywords: ["gentamicin", "peak", "trough", "therapeutic drug monitoring", "TDM", "aminoglycoside"],
@@ -1733,6 +1773,7 @@ export const whoYoungInfantSepsisPneumoniaCalculator: CalculatorDefinition = {
   name: "WHO 0–59 Days → Sepsis/Pneumonia Regimen",
   shortName: "0–59 Days Sepsis",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO 2024 first-line ampicillin + gentamicin reference regimen for hospitalized young infants with suspected sepsis or pneumonia.",
   formula: "Ampicillin 50 mg/kg/dose + gentamicin 5 or 7.5 mg/kg once daily",
   keywords: ["neonate", "neonatal", "young infant", "0-59 days", "sepsis", "pneumonia", "ampicillin", "gentamicin", "WHO"],
@@ -1804,6 +1845,7 @@ export const whoYoungInfantMeningitisCalculator: CalculatorDefinition = {
   name: "WHO 0–59 Days → Meningitis Regimen",
   shortName: "0–59 Days Meningitis",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates WHO 2024 reference doses for suspected meningitis in young infants aged 0–59 days.",
   formula: "Ampicillin 50 mg/kg/dose or cefotaxime 50 mg/kg/dose or ceftriaxone 100 mg/kg + gentamicin",
   keywords: ["neonate", "neonatal", "young infant", "0-59 days", "meningitis", "ampicillin", "cefotaxime", "ceftriaxone", "gentamicin", "WHO"],
@@ -1875,6 +1917,7 @@ export const piperacillinTazobactamPediatricCalculator: CalculatorDefinition = {
   name: "Piperacillin–Tazobactam → Pediatric Dose",
   shortName: "Piperacillin–Tazobactam",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates a WHO reference pediatric dose of piperacillin–tazobactam for selected severe hospital infections.",
   formula: "Piperacillin dose = 100 mg/kg/dose × weight; IV every 8 hours",
   keywords: ["piperacillin", "tazobactam", "pip-tazo", "pediatric", "antibiotic", "hospital infection"],
@@ -1918,6 +1961,7 @@ export const clindamycinPediatricCalculator: CalculatorDefinition = {
   name: "Clindamycin → Pediatric Dose",
   shortName: "Clindamycin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates a WHO reference clindamycin dose for selected pediatric hospital infections.",
   formula: "Neonate: 5 mg/kg/dose q8h; child: 10 mg/kg/dose q8h",
   keywords: ["clindamycin", "pediatric", "MRSA", "antibiotic"],
@@ -1966,6 +2010,7 @@ export const cefazolinPediatricCalculator: CalculatorDefinition = {
   name: "Cefazolin → Pediatric Dose",
   shortName: "Cefazolin",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates a WHO reference cefazolin dose for selected pediatric hospital infections.",
   formula: "Dose = 25 mg/kg/dose IV every 12 hours",
   keywords: ["cefazolin", "pediatric", "bone joint infection", "antibiotic"],
@@ -2001,6 +2046,7 @@ export const linezolidPediatricCalculator: CalculatorDefinition = {
   name: "Linezolid → Pediatric Dose",
   shortName: "Linezolid",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates a WHO AWaRe reference linezolid dose for selected pediatric invasive Gram-positive infections.",
   formula: "Dose = 10 mg/kg/dose IV/ORAL every 8 hours",
   keywords: ["linezolid", "pediatric", "MRSA", "VRE", "reserve antibiotic"],
@@ -2048,6 +2094,7 @@ export const doxycyclinePediatricCalculator: CalculatorDefinition = {
   name: "Doxycycline → Pediatric Dose",
   shortName: "Doxycycline",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Calculates the WHO Model Formulary for Children reference doxycycline regimen for children over 8 years.",
   formula: "Day 1: 2 mg/kg/dose twice daily; then 2 mg/kg once daily; maximum 100 mg/dose and 200 mg/day",
   keywords: ["doxycycline", "pediatric", "children", "antibiotic"],
@@ -2099,6 +2146,7 @@ export const loadingDoseCalculator: CalculatorDefinition = {
   name: "Loading Dose",
   shortName: "Loading Dose",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates a loading dose from a prescribed loading-dose rate and patient weight, with an optional maximum cap.",
   formula: "Loading dose = loading dose rate (mg/kg) × weight (kg)",
   keywords: ["loading dose", "mg/kg", "weight", "maximum dose"],
@@ -2143,6 +2191,7 @@ export const maintenanceDoseCalculator: CalculatorDefinition = {
   name: "Maintenance Dose",
   shortName: "Maintenance Dose",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates an individual maintenance dose from a prescribed total daily dose and dosing frequency.",
   formula: "Dose per administration = total daily dose ÷ administrations per day",
   keywords: ["maintenance dose", "daily dose", "frequency", "interval"],
@@ -2176,6 +2225,7 @@ export const infusionDurationCalculator: CalculatorDefinition = {
   name: "Infusion Duration",
   shortName: "Infusion Duration",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates how long an infusion will run from total volume and infusion rate.",
   formula: "Time (hours) = volume (mL) ÷ rate (mL/hour)",
   keywords: ["infusion", "duration", "mL/hour", "IV", "time"],
@@ -2208,6 +2258,7 @@ export const courseTotalDoseCalculator: CalculatorDefinition = {
   name: "Course Total Dose",
   shortName: "Course Total",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates total drug exposure from dose per administration, frequency and treatment duration.",
   formula: "Total course dose = dose per administration × administrations per day × treatment days",
   keywords: ["course dose", "total dose", "duration", "treatment course"],
@@ -2244,6 +2295,7 @@ export const whoPediatricDiarrhoeaZincCalculator: CalculatorDefinition = {
   name: "WHO Pediatric Diarrhoea → Zinc Regimen",
   shortName: "Diarrhoea Zinc",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates the WHO 2024 oral zinc reference regimen for children up to 10 years with acute watery or persistent diarrhoea.",
   formula: "Zinc = 5 mg elemental zinc once daily; duration = 10–14 days",
   keywords: ["diarrhoea", "diarrhea", "zinc", "pediatric", "WHO", "protocol", "regimen"],
@@ -2329,12 +2381,143 @@ export const whoPediatricDiarrhoeaZincCalculator: CalculatorDefinition = {
   ],
 }
 
+/** Pediatric estimated fluid deficit from a clinician-entered dehydration percentage. */
+export const pediatricFluidDeficitCalculator: CalculatorDefinition = {
+  id: "pediatric-fluid-deficit",
+  name: "Pediatric Fluid Deficit → Assessed Dehydration",
+  shortName: "Fluid Deficit",
+  category: "dosing",
+  subcategory: "general-dosing",
+  description: "Calculates estimated fluid deficit from patient weight and a clinician-entered dehydration percentage; it does not assess dehydration.",
+  formula: "Deficit (mL) = weight (kg) × dehydration (%) × 10",
+  keywords: ["fluid", "deficit", "dehydration", "pediatric", "rehydration"],
+  relatedTools: ["who-pediatric-ors-plan-b", "who-pediatric-maintenance-fluid"],
+  inputs: [
+    { id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 0.1, step: 0.1 },
+    { id: "dehydrationPercent", label: "Clinician-assessed dehydration", kind: "number", unit: "%", min: 0, max: 20, step: 0.1, helpText: "Enter the clinically assessed percentage; do not use this calculator to diagnose dehydration." },
+  ],
+  calculate: (inputs) => {
+    const weight = num(inputs, "weight")
+    const dehydrationPercent = num(inputs, "dehydrationPercent")
+    assertPositive(weight, "Patient weight")
+    if (!Number.isFinite(dehydrationPercent) || dehydrationPercent < 0 || dehydrationPercent > 20) {
+      throw new Error("Clinician-assessed dehydration must be between 0% and 20%.")
+    }
+
+    const deficit = round(weight * dehydrationPercent * 10, 1)
+    const deficitLitres = round(deficit / 1000, 3)
+
+    return {
+      value: deficit,
+      unit: "mL",
+      display: `${deficit} mL estimated fluid deficit`,
+      secondary: [
+        { label: "Weight", value: `${weight} kg` },
+        { label: "Assessed dehydration", value: `${dehydrationPercent}%` },
+        { label: "Estimated deficit", value: `${deficitLitres} L` },
+      ],
+      calculationSteps: [
+        `${weight} kg × ${dehydrationPercent}% × 10 = ${deficit} mL`,
+      ],
+      interpretation: "This is an estimated deficit based only on the dehydration percentage entered by the clinician. It does not determine the rehydration route, rate, fluid type or treatment schedule.",
+      warnings: [
+        "This calculator does not diagnose or grade dehydration; the percentage must come from clinical assessment.",
+        "Do not use this result alone to prescribe oral or intravenous fluids. Rehydration route, rate, fluid type, ongoing losses and reassessment depend on the clinical condition and applicable protocol.",
+        "Severe dehydration, shock, severe acute malnutrition and important comorbidities require condition-specific fluid management and close monitoring.",
+      ],
+    }
+  },
+  notes: [
+    "Estimated fluid deficit is expressed as weight × dehydration percentage × 10 mL/kg per percentage point.",
+  ],
+  limitations: [
+    "Requires a clinician-assessed dehydration percentage and is not a diagnostic tool.",
+    "Does not replace an applicable WHO, national or facility rehydration protocol.",
+  ],
+}
+
+/** WHO pediatric normal maintenance IV fluid reference using the Holliday-Segar method. */
+export const whoPediatricMaintenanceFluidCalculator: CalculatorDefinition = {
+  id: "who-pediatric-maintenance-fluid",
+  name: "WHO Pediatric Maintenance IV Fluid",
+  shortName: "Maintenance Fluid",
+  category: "dosing",
+  subcategory: "general-dosing",
+  description: "Calculates a normal pediatric maintenance IV fluid rate using the WHO-described Holliday-Segar weight formula.",
+  formula: "4 mL/kg/hour for first 10 kg + 2 mL/kg/hour for next 10 kg + 1 mL/kg/hour for each subsequent kg",
+  keywords: ["maintenance fluid", "IV fluid", "pediatric", "paediatric", "Holliday-Segar", "4-2-1", "WHO"],
+  relatedTools: ["who-pediatric-ors-plan-b", "who-pediatric-ors-ongoing-loss"],
+  inputs: [
+    {
+      id: "weight",
+      label: "Patient weight",
+      kind: "number",
+      unit: "kg",
+      min: 0.5,
+      max: 100,
+      step: 0.1,
+      helpText: "Use the clinically appropriate dosing/maintenance weight. In overweight or obese patients, the source notes that ideal body weight may be appropriate.",
+    },
+  ],
+  calculate: (inputs) => {
+    const weight = num(inputs, "weight")
+    assertPositive(weight, "Patient weight")
+
+    let hourlyRate: number
+    if (weight <= 10) {
+      hourlyRate = 4 * weight
+    } else if (weight <= 20) {
+      hourlyRate = 40 + 2 * (weight - 10)
+    } else {
+      hourlyRate = 60 + (weight - 20)
+    }
+
+    const dailyVolume = round(hourlyRate * 24, 1)
+    const ratePerKg = round(hourlyRate / weight, 2)
+
+    return {
+      value: round(hourlyRate, 1),
+      unit: "mL/hour",
+      display: `${round(hourlyRate, 1)} mL/hour maintenance`,
+      secondary: [
+        { label: "24-hour volume", value: `${dailyVolume} mL/day` },
+        { label: "Average rate", value: `${ratePerKg} mL/kg/hour` },
+        { label: "Method", value: "Holliday-Segar / WHO maintenance formula" },
+      ],
+      calculationSteps: [
+        weight <= 10
+          ? `4 mL/kg/hour × ${weight} kg = ${round(hourlyRate, 1)} mL/hour`
+          : weight <= 20
+            ? `4 mL/kg/hour × first 10 kg = 40 mL/hour; 2 mL/kg/hour × ${(weight - 10).toFixed(1)} kg = ${round(2 * (weight - 10), 1)} mL/hour; total = ${round(hourlyRate, 1)} mL/hour`
+            : `4 mL/kg/hour × first 10 kg = 40 mL/hour; 2 mL/kg/hour × next 10 kg = 20 mL/hour; 1 mL/kg/hour × ${(weight - 20).toFixed(1)} kg = ${round(weight - 20, 1)} mL/hour; total = ${round(hourlyRate, 1)} mL/hour`,
+        `${round(hourlyRate, 1)} mL/hour × 24 hours = ${dailyVolume} mL/day`,
+      ],
+      interpretation: "Normal maintenance-fluid calculation only. The actual fluid type, rate and monitoring plan must be individualized to the child's clinical condition.",
+      warnings: [
+        "This calculates normal maintenance needs; it does not calculate resuscitation, dehydration deficit, ongoing stool/vomit replacement or shock treatment.",
+        "Do not use the result as an automatic IV prescription for an acutely ill child. Fluid requirements may need adjustment for the clinical condition, oral intake, urine output, renal/cardiac function and other losses.",
+        "For overweight or obese patients, the WHO source notes that ideal body weight may be used for normal maintenance calculations; this calculator does not calculate ideal body weight automatically.",
+        "Verify the appropriate IV fluid composition and local pediatric protocol before administration.",
+      ],
+    }
+  },
+  notes: [
+    "WHO describes normal pediatric maintenance IV fluid using 4 mL/kg/hour for the first 10 kg, 2 mL/kg/hour for the next 10 kg and 1 mL/kg/hour for subsequent kilograms.",
+  ],
+  limitations: [
+    "Does not determine whether IV maintenance fluid is indicated.",
+    "Does not account for dehydration deficit, resuscitation, replacement of abnormal ongoing losses or disease-specific fluid restrictions.",
+    "Fluid composition and clinical monitoring require a separate clinical decision.",
+  ],
+}
+
 /** WHO pediatric diarrhoea Plan B oral rehydration reference. */
 export const whoPediatricOrsPlanBCalculator: CalculatorDefinition = {
   id: "who-pediatric-ors-plan-b",
   name: "WHO Pediatric ORS → Plan B Volume",
   shortName: "ORS Plan B",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Calculates the WHO reference volume of oral rehydration solution for children with some dehydration: 75 mL/kg over 4 hours.",
   formula: "ORS volume = 75 mL/kg × body weight; administer over 4 hours",
   keywords: ["ORS", "oral rehydration", "diarrhoea", "diarrhea", "dehydration", "Plan B", "pediatric", "WHO"],
@@ -2397,6 +2580,7 @@ export const whoPediatricOrsOngoingLossCalculator: CalculatorDefinition = {
   name: "WHO Pediatric ORS → Ongoing Losses",
   shortName: "ORS Ongoing Loss",
   category: "dosing",
+  subcategory: "general-dosing",
   description: "Estimates the WHO home-treatment ORS volume to offer after each loose stool and the cumulative amount for a selected number of stools.",
   formula: "<2 years: 50–100 mL per loose stool; 2–<10 years: 100–200 mL per loose stool; ≥10 years: as much as wanted",
   keywords: ["ORS", "oral rehydration", "diarrhoea", "diarrhea", "ongoing losses", "Plan A", "pediatric", "WHO", "stool"],
@@ -2522,6 +2706,7 @@ export const whoPediatricPneumoniaRegimenCalculator: CalculatorDefinition = {
   name: "WHO Pediatric Pneumonia → Regimen Reference",
   shortName: "Pneumonia Regimen",
   category: "dosing",
+  subcategory: "antibiotic",
   description: "Selects a WHO 2024 pneumonia presentation and returns the corresponding pediatric amoxicillin reference regimen for children aged 2–59 months.",
   formula: "Dose = 40 mg/kg per dose × weight; twice daily",
   keywords: ["pneumonia", "amoxicillin", "pediatric", "WHO", "protocol", "regimen"],

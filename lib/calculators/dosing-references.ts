@@ -11,7 +11,7 @@ export interface CalculatorReference {
   note?: string
 }
 
-const VERIFIED_ON = "2026-09-14"
+const VERIFIED_ON = "2026-09-15"
 
 const WHO_MALARIA: CalculatorReference = {
   source: "World Health Organization — WHO guidelines for malaria",
@@ -120,6 +120,42 @@ const WHO_DIARRHOEA_2024: CalculatorReference = {
   note: "The 2024 guideline suggests 5 mg oral zinc; treatment duration follows the existing 10–14 day recommendation. Verify the actual product's elemental-zinc content.",
 }
 
+
+const WHO_MAINTENANCE_FLUID: CalculatorReference = {
+  source: "World Health Organization — Handbook for clinical management of dengue / normal maintenance IV fluid calculation",
+  version: "WHO clinical handbook",
+  url: "https://iris.who.int/bitstream/handle/10665/76887/9789241504713_eng.pdf?sequence=1",
+  applicablePopulation: "Children requiring normal maintenance intravenous fluid calculation.",
+  indication: "Normal maintenance IV fluid rate using the Holliday-Segar weight formula.",
+  lastVerified: VERIFIED_ON,
+  status: "supporting",
+  note: "WHO describes 4 mL/kg/hour for the first 10 kg, 2 mL/kg/hour for the next 10 kg and 1 mL/kg/hour for subsequent kg. The source notes that ideal body weight may be used for overweight/obese patients. Clinical condition and local protocol determine the actual fluid plan.",
+}
+
+
+const PEDIATRIC_FLUID_DEFICIT: CalculatorReference = {
+  source: "World Health Organization — The treatment of diarrhoea",
+  version: "4th revision, 2005; supporting fluid-deficit calculation guidance",
+  url: "https://www.who.int/publications/i/item/9241593180",
+  applicablePopulation: "Children with clinically assessed dehydration requiring an estimated fluid deficit calculation.",
+  indication: "Estimated fluid deficit from clinician-assessed dehydration percentage.",
+  lastVerified: VERIFIED_ON,
+  status: "supporting",
+  note: "This reference supports the mathematical deficit estimate. It does not determine dehydration severity, route, fluid type, rate or replacement schedule; use the current applicable WHO, national or facility rehydration protocol.",
+}
+
+const ONCOLOGY_REGIMEN: CalculatorReference = {
+  source: "eviQ — Calculating anti-cancer drug doses / source protocol registry",
+  version: "Current eviQ education and ConvertLAB protocol registry",
+  url: "https://education.eviq.org.au/getmedia/aa5ddb9b-b698-4cdd-91de-9c0564ec775e/ADAC-V4-M4-Workbook-Adult-v2.aspx",
+  applicablePopulation: "Patients receiving a specifically selected source-backed oncology regimen in ConvertLAB.",
+  lastVerified: VERIFIED_ON,
+  status: "supporting",
+  note: "BSA-based anti-cancer dosing is protocol-dependent. The selected regimen source remains authoritative for indication, population, schedule, dose modifications and administration requirements.",
+}
+
+const ONCOLOGY_REGIMEN_IDS = new Set(["oncology-regimen-dose"])
+
 const GENERIC: CalculatorReference = {
   source: "ConvertLAB calculation method",
   version: "Mathematical reference",
@@ -171,10 +207,13 @@ export function getCalculatorReferences(definition: CalculatorDefinition): Calcu
   if (definition.id === "who-pediatric-pneumonia-regimen") return [WHO_PNEUMONIA_2024]
   if (definition.id === "who-pediatric-ors-plan-b") return [WHO_ORS_2025]
   if (definition.id === "who-pediatric-ors-ongoing-loss") return [WHO_ORS_HOME_SUPPORTING]
+  if (definition.id === "who-pediatric-maintenance-fluid") return [WHO_MAINTENANCE_FLUID]
+  if (definition.id === "pediatric-fluid-deficit") return [PEDIATRIC_FLUID_DEFICIT]
   if (definition.id === "who-pediatric-diarrhoea-zinc") return [WHO_DIARRHOEA_2024]
   if (VANCOMYCIN_IDS.has(definition.id)) return [TDM_VANCOMYCIN]
   if (definition.id === "linezolid-pediatric-dose") return [LINEZOLID_REFERENCE]
   if (definition.id === "doxycycline-pediatric-dose") return [DOXYCYCLINE_REFERENCE]
+  if (ONCOLOGY_REGIMEN_IDS.has(definition.id)) return [ONCOLOGY_REGIMEN]
   if (GENERIC_DOSING_IDS.has(definition.id)) return [GENERIC]
   if (definition.category === "dosing") return [WHO_AWARE]
   return [GENERIC]
