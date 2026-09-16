@@ -6,6 +6,7 @@ export const redCellIndicesCalculator: CalculatorDefinition = {
   name: "Red Cell Indices",
   shortName: "RBC Indices",
   category: "hematology",
+  subcategory: "anemia",
   description:
     "Calculates MCV, MCH, and MCHC from hemoglobin, hematocrit, and RBC count.",
   formula:
@@ -100,6 +101,7 @@ export const mcvCalculator: CalculatorDefinition = {
   name: "Mean Corpuscular Volume",
   shortName: "MCV",
   category: "hematology",
+  subcategory: "anemia",
   description: "Calculates mean corpuscular volume from hematocrit and RBC count.",
   formula: "MCV (fL) = (Hct[%] x 10) / RBC(10¹²/L)",
   keywords: ["mcv", "mean corpuscular volume", "red cell indices"],
@@ -128,6 +130,7 @@ export const mchCalculator: CalculatorDefinition = {
   name: "Mean Corpuscular Hemoglobin",
   shortName: "MCH",
   category: "hematology",
+  subcategory: "anemia",
   description: "Calculates mean corpuscular hemoglobin from hemoglobin and RBC count.",
   formula: "MCH (pg) = (Hgb[g/dL] x 10) / RBC(10¹²/L)",
   keywords: ["mch", "mean corpuscular hemoglobin", "red cell indices"],
@@ -156,6 +159,7 @@ export const mchcCalculator: CalculatorDefinition = {
   name: "Mean Corpuscular Hemoglobin Concentration",
   shortName: "MCHC",
   category: "hematology",
+  subcategory: "anemia",
   description: "Calculates mean corpuscular hemoglobin concentration from hemoglobin and hematocrit.",
   formula: "MCHC (g/dL) = (Hgb[g/dL] / Hct[%]) x 100",
   keywords: ["mchc", "hemoglobin concentration", "red cell indices"],
@@ -192,6 +196,7 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
   name: "Absolute Cell Count",
   shortName: "Abs. Count",
   category: "hematology",
+  subcategory: "anemia",
   description: "Calculates an absolute white cell count (e.g. ANC, ALC) from total WBC and differential percentage.",
   formula: "Absolute count = WBC(x10⁹/L) x (differential % / 100)",
   keywords: ["anc", "absolute neutrophil count", "alc", "aec", "amc", "differential"],
@@ -242,6 +247,7 @@ export const correctedWbcCalculator: CalculatorDefinition = {
   name: "Corrected WBC Count",
   shortName: "Corr. WBC",
   category: "hematology",
+  subcategory: "anemia",
   description: "Corrects the total WBC count for the presence of nucleated red blood cells (nRBCs).",
   formula: "Corrected WBC = (Uncorrected WBC x 100) / (100 + nRBC per 100 WBC)",
   keywords: ["corrected wbc", "nucleated red blood cells", "nrbc"],
@@ -275,6 +281,7 @@ export const hematocritEstimateCalculator: CalculatorDefinition = {
   name: "Hematocrit Estimation",
   shortName: "Est. Hct",
   category: "hematology",
+  subcategory: "anemia",
   description: "Estimates hematocrit from hemoglobin using the commonly cited 'rule of three'.",
   isEstimator: true,
   formula: "Hct (%) ≈ Hgb (g/dL) x 3",
@@ -298,4 +305,82 @@ export const hematocritEstimateCalculator: CalculatorDefinition = {
   },
   notes: ["The 'rule of three' (Hct ≈ 3 x Hgb) is a bedside approximation, not a substitute for a measured hematocrit."],
   limitations: ["Less accurate with abnormal MCV (microcytosis/macrocytosis) or abnormal red cell morphology."],
+}
+
+export const inrCalculator: CalculatorDefinition = {
+  id: "inr",
+  name: "International Normalized Ratio",
+  shortName: "INR",
+  category: "hematology",
+  subcategory: "coagulation",
+  description: "Calculates INR from prothrombin time, laboratory mean normal PT, and the reagent ISI.",
+  formula: "INR = (PT / mean normal PT)^ISI",
+  inputs: [
+    { id: "pt", label: "Patient PT", kind: "number", unit: "seconds", min: 0.1, step: 0.1 },
+    { id: "meanNormalPt", label: "Mean normal PT", kind: "number", unit: "seconds", min: 0.1, step: 0.1 },
+    { id: "isi", label: "ISI", kind: "number", min: 0.1, max: 5, step: 0.01 },
+  ],
+  calculate: (inputs) => {
+    const pt = num(inputs, "pt"), mean = num(inputs, "meanNormalPt"), isi = num(inputs, "isi")
+    assertPositive(pt, "Patient PT"); assertPositive(mean, "Mean normal PT"); assertPositive(isi, "ISI")
+    const inr = round(Math.pow(pt / mean, isi), 2)
+    return { value: inr, display: `INR: ${inr}`, calculationSteps: [`(${pt} ÷ ${mean})^${isi} = ${inr}`], warnings: ["Use the laboratory's validated mean normal PT and reagent-specific ISI. Do not substitute a generic PT reference interval."] }
+  },
+  notes: ["INR standardizes prothrombin-time results using the reagent ISI; interpretation depends on the clinical indication and anticoagulant context."]
+}
+
+export const correctedCountIncrementCalculator: CalculatorDefinition = {
+  id: "corrected-count-increment",
+  name: "Platelet Corrected Count Increment",
+  shortName: "CCI",
+  category: "hematology",
+  subcategory: "transfusion",
+  description: "Calculates platelet corrected count increment after transfusion using platelet increment, body surface area, and platelet dose.",
+  formula: "CCI = platelet increment (/µL) × BSA (m²) ÷ platelet dose (×10¹¹)",
+  inputs: [
+    { id: "prePlatelet", label: "Pre-transfusion platelets", kind: "number", unit: "/µL", min: 0, step: 1000 },
+    { id: "postPlatelet", label: "Post-transfusion platelets", kind: "number", unit: "/µL", min: 0, step: 1000 },
+    { id: "bsa", label: "Body surface area", kind: "number", unit: "m²", min: 0.1, max: 5, step: 0.01 },
+    { id: "plateletDose", label: "Platelet dose transfused", kind: "number", unit: "×10¹¹ platelets", min: 0.01, step: 0.01 },
+  ],
+  calculate: (inputs) => {
+    const pre=num(inputs,"prePlatelet"), post=num(inputs,"postPlatelet"), bsa=num(inputs,"bsa"), dose=num(inputs,"plateletDose")
+    if (pre<0 || post<0) throw new Error("Platelet counts cannot be negative.")
+    assertPositive(bsa,"BSA"); assertPositive(dose,"Platelet dose")
+    if (post < pre) throw new Error("Post-transfusion platelet count must not be lower than the pre-transfusion count for this increment calculation.")
+    const increment=post-pre, cci=round(increment*bsa/dose,0)
+    return { value:cci, unit:"platelets/µL", display:`CCI: ${cci.toLocaleString()} /µL`, secondary:[{label:"Platelet increment",value:`${increment.toLocaleString()} /µL`}], calculationSteps:[`${post.toLocaleString()} − ${pre.toLocaleString()} = ${increment.toLocaleString()} /µL increment`,`(${increment.toLocaleString()} × ${bsa}) ÷ ${dose} = ${cci.toLocaleString()} /µL`], warnings:["Timing after transfusion and the clinical definition being applied matter when assessing platelet refractoriness."] }
+  },
+  notes:["ASH describes CCI as platelet increment × BSA divided by the platelet dose; use the platelet product's documented dose rather than assuming a universal unit content."]
+}
+
+export const estimatedBloodVolumeCalculator: CalculatorDefinition = {
+  id: "estimated-blood-volume",
+  name: "Estimated Blood Volume",
+  shortName: "EBV",
+  category: "hematology",
+  subcategory: "blood-products",
+  description: "Estimates circulating blood volume from body weight using an explicitly selected adult estimate.",
+  inputs:[
+    {id:"weightKg",label:"Weight",kind:"number",unit:"kg",min:0.1,step:0.1},
+    {id:"bloodVolumePerKg",label:"Blood volume factor",kind:"number",unit:"mL/kg",min:1, max:120,step:1,defaultValue:70,helpText:"Enter the factor specified by your validated method or local protocol."}
+  ],
+  calculate:(inputs)=>{const w=num(inputs,"weightKg"),f=num(inputs,"bloodVolumePerKg");assertPositive(w,"Weight");assertPositive(f,"Blood volume factor");const v=round(w*f,0);return {value:v,unit:"mL",display:fmt(v,0,"mL"),calculationSteps:[`${w} kg × ${f} mL/kg = ${v} mL`],warnings:["Blood-volume factors vary with age, sex, body composition and clinical setting. This tool intentionally uses the factor you provide rather than silently selecting one."]}}
+}
+
+export const internationalPrognosticIndexCalculator: CalculatorDefinition = {
+  id: "international-prognostic-index",
+  name: "International Prognostic Index",
+  shortName: "IPI",
+  category: "hematology",
+  subcategory: "hematologic-malignancy",
+  description: "Calculates the five-factor International Prognostic Index used in aggressive non-Hodgkin lymphoma risk assessment.",
+  inputs:[
+    {id:"age",label:"Age",kind:"number",unit:"years",min:0,max:120,step:1},
+    {id:"stage34",label:"Ann Arbor stage III/IV",kind:"select",options:[{value:"no",label:"No"},{value:"yes",label:"Yes"}]},
+    {id:"performance",label:"Performance status 2–4",kind:"select",options:[{value:"no",label:"No"},{value:"yes",label:"Yes"}]},
+    {id:"ldh",label:"LDH relative to upper limit of normal",kind:"select",options:[{value:"normal",label:"Normal"},{value:"1to3",label:">1× to 3× ULN"},{value:"gt3",label:">3× ULN"}]},
+    {id:"extranodal",label:"≥2 extranodal sites",kind:"select",options:[{value:"no",label:"No"},{value:"yes",label:"Yes"}]},
+  ],
+  calculate:(inputs)=>{const age=num(inputs,"age");const agePoints=age>=76?3:age>=61?2:age>=41?1:0;const score=agePoints+(inputs.stage34==="yes"?1:0)+(inputs.performance==="yes"?1:0)+(inputs.ldh==="normal"?0:inputs.ldh==="1to3"?1:2)+(inputs.extranodal==="yes"?1:0);return {value:score,display:`IPI score: ${score}`,secondary:[{label:"Age points",value:String(agePoints)}],interpretation:"The score is a prognostic classification tool for the population in which the selected IPI version applies; do not use it alone to determine treatment.",calculationSteps:["Age, stage III/IV, performance status, LDH elevation and ≥2 extranodal sites contribute to the score."]}}
 }

@@ -9,10 +9,10 @@ export const metadata = { title: "Estimators - ConvertLAB" }
 
 // Estimators are grouped by clinical purpose rather than the raw data
 // category, anthropometric/energy estimates (BSA, IBW, BMR, TDEE) read
-// better as "Metabolic" here even though they're filed under "clinical"
-// elsewhere in the app.
+// better as "Metabolic" here even though they live in the General/Oncology
+// calculator domains.
 const ESTIMATOR_GROUP_LABELS: Partial<Record<CalculatorGroup, string>> = {
-  clinical: "Metabolic",
+  general: "Metabolic",
 }
 
 export default function EstimatorsPage() {
