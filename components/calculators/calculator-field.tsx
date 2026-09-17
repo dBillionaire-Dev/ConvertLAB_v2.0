@@ -16,9 +16,20 @@ export function CalculatorField({ input, value, onChange, onEnter }: CalculatorF
   if (input.kind === "select") {
     return (
       <div className="space-y-1.5">
-        <Label htmlFor={input.id}>{input.label}</Label>
-        <Select value={value} onValueChange={onChange}>
-          <SelectTrigger id={input.id}>
+        <Label htmlFor={input.id}>
+          {input.label}
+          {input.optional ? <span className="text-muted-foreground font-normal"> (optional)</span> : <span className="text-muted-foreground font-normal"> (required)</span>}
+        </Label>
+        <Select
+          value={value}
+          onValueChange={onChange}
+          required={!input.optional}
+        >
+          <SelectTrigger
+            id={input.id}
+            aria-required={!input.optional}
+            aria-describedby={input.helpText ? `${input.id}-help` : undefined}
+          >
             <SelectValue placeholder="Select..." />
           </SelectTrigger>
           <SelectContent>
@@ -29,6 +40,9 @@ export function CalculatorField({ input, value, onChange, onEnter }: CalculatorF
             ))}
           </SelectContent>
         </Select>
+        {input.helpText ? (
+          <p id={`${input.id}-help`} className="text-xs text-muted-foreground">{input.helpText}</p>
+        ) : null}
       </div>
     )
   }
@@ -49,6 +63,9 @@ export function CalculatorField({ input, value, onChange, onEnter }: CalculatorF
           min={input.min}
           max={input.max}
           step={input.step ?? "any"}
+          aria-required={!input.optional}
+          aria-invalid={value !== "" && ((input.min !== undefined && Number(value) < input.min) || (input.max !== undefined && Number(value) > input.max))}
+          aria-describedby={input.helpText ? `${input.id}-help` : undefined}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") onEnter?.()
@@ -61,7 +78,7 @@ export function CalculatorField({ input, value, onChange, onEnter }: CalculatorF
           </span>
         ) : null}
       </div>
-      {input.helpText ? <p className="text-xs text-muted-foreground">{input.helpText}</p> : null}
+      {input.helpText ? <p id={`${input.id}-help`} className="text-xs text-muted-foreground">{input.helpText}</p> : null}
     </div>
   )
 }

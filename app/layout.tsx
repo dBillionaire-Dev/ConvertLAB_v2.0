@@ -58,7 +58,7 @@ export default function RootLayout({
           <SkipToContent />
           <div className="min-h-screen flex flex-col bg-background">
             <Header />
-            <main id="main-content" className="flex-1">
+            <main id="main-content" tabIndex={-1} className="flex-1 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
               {children}
             </main>
             <Footer />

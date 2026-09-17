@@ -16,7 +16,7 @@ export default function HistoryPage() {
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading...</p>
       ) : items.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No calculations yet. Results are saved here automatically.</p>
+        <p className="text-sm text-muted-foreground">No calculations yet. Results can be saved here locally on this device.</p>
       ) : (
         <div className="space-y-3">
           <div className="flex justify-end">

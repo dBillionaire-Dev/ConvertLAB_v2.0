@@ -7,3 +7,9 @@ describe("calculator clinical-definition audit", () => {
     expect(auditCalculatorRegistry(calculators)).toEqual([])
   })
 })
+
+describe("phase 49 calculator safety/validation", () => {
+  it("audits registry uniqueness and structure without throwing", () => {
+    expect(auditCalculatorRegistry(calculators).filter((issue) => issue.message.includes("Duplicate calculator id")).length).toBe(0)
+  })
+})

@@ -53,21 +53,26 @@ export default async function CalculatorCategoryPage({ params }: { params: Promi
 
   return (
     <PageContainer title={category.label} description="Choose a clinical calculator area.">
-      <nav aria-label={`${category.label} sections`} className="mb-6 flex flex-wrap gap-2">
-        {buckets.map((bucket) => (
-          <a
-            key={bucket.id}
-            href={`#${bucket.id}`}
-            className="rounded-md border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
-          >
-            {bucket.label}
-          </a>
-        ))}
+      <nav
+        aria-label={`${category.label} sections`}
+        className="sticky top-16 z-30 mb-6 -mx-4 border-border/80 bg-background/95 px-4 py-2 shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/80 sm:-mx-0 sm:rounded-lg sm:px-2"
+      >
+        <div className="flex gap-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {buckets.map((bucket) => (
+            <a
+              key={bucket.id}
+              href={`#${bucket.id}`}
+              className="shrink-0 whitespace-nowrap rounded-md border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              {bucket.label}
+            </a>
+          ))}
+        </div>
       </nav>
 
       <div className="space-y-8">
         {buckets.map((bucket) => (
-          <section key={bucket.id} id={bucket.id} className="scroll-mt-20">
+          <section key={bucket.id} id={bucket.id} className="scroll-mt-36 sm:scroll-mt-32">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
                 <h2 className="text-lg font-semibold tracking-tight">{bucket.label}</h2>

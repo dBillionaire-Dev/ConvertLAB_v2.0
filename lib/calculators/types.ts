@@ -92,8 +92,16 @@ export const CALCULATOR_SUBCATEGORY_LABELS: Record<CalculatorGroup, Record<strin
   renal: {},
   chemistry: {},
   microbiology: {},
-  "lab-solutions": {},
-  spectrophotometry: {},
+  "lab-solutions": {
+    "dilution-preparation": "Dilution & Preparation",
+    "concentration-preparation": "Concentration & Reagent Preparation",
+  },
+  spectrophotometry: {
+    "absorbance-transmittance": "Absorbance & Transmittance",
+    "calibration-curves": "Calibration Curves",
+    "wavelength-photon": "Wavelength & Photon Calculations",
+    "photometric-quality": "Photometric Quality & Precision",
+  },
   hematology: {
     anemia: "Anemia",
     coagulation: "Coagulation",

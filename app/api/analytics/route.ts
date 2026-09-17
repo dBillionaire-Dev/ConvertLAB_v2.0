@@ -69,30 +69,28 @@ export async function POST(request: Request) {
       }
     }
 
-    const deviceRows = Array.from(latestByDevice.values()).map((event) => ({
-      anonymous_id: event.anonymousId,
-      display_name: `User-${event.anonymousId.replace(/[^a-zA-Z0-9]/g, "").slice(-8).toUpperCase().padEnd(8, "0").slice(0, 6)}`,
-      last_seen_at: new Date().toISOString(),
-      last_calculation_at: event.occurredAt,
-      source: event.source,
-      environment: event.environment,
-      app_version: event.appVersion,
-    }))
+    if (latestByDevice.size) {
+      for (const event of latestByDevice.values()) {
+        const deviceResponse = await fetch(`${url}/rest/v1/rpc/convertlab_touch_device`, {
+          method: "POST",
+          headers: {
+            apikey: key,
+            Authorization: `Bearer ${key}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            p_anonymous_id: event.anonymousId,
+            p_last_seen_at: new Date().toISOString(),
+            p_last_calculation_at: event.occurredAt,
+            p_source: event.source,
+            p_environment: event.environment,
+            p_app_version: event.appVersion,
+          }),
+        })
 
-    if (deviceRows.length) {
-      const deviceResponse = await fetch(`${url}/rest/v1/convertlab_devices?on_conflict=anonymous_id`, {
-        method: "POST",
-        headers: {
-          apikey: key,
-          Authorization: `Bearer ${key}`,
-          "Content-Type": "application/json",
-          Prefer: "resolution=merge-duplicates,return=minimal",
-        },
-        body: JSON.stringify(deviceRows),
-      })
-
-      if (!deviceResponse.ok) {
-        console.error("ConvertLAB device update failed:", await deviceResponse.text())
+        if (!deviceResponse.ok) {
+          console.error("ConvertLAB device update failed:", await deviceResponse.text())
+        }
       }
     }
 
