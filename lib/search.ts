@@ -184,11 +184,26 @@ function scoreCalculator(c: SearchableCalculator, queryTokens: string[]): number
 export function searchCalculators(query: string): SearchableCalculator[] {
   const queryTokens = tokens(query)
   if (!queryTokens.length) return []
-  return calculators
+
+  const ranked = calculators
     .map((calculator) => ({ calculator, score: scoreCalculator(calculator, queryTokens) }))
     .filter(({ score }) => score > 0)
     .sort((a, b) => b.score - a.score || a.calculator.name.localeCompare(b.calculator.name))
     .map(({ calculator }) => calculator)
+
+  // A query naming several clinical concepts ("pediatric antimalarial") is an
+  // intent, not a keyword bag: once tools satisfying every concept exist, a
+  // partial keyword match is noise rather than a useful broader result. The
+  // broad ranking is still returned when nothing satisfies the full intent.
+  const concepts = queryConcepts(queryTokens)
+  if (concepts.size > 1) {
+    const exact = ranked.filter((calculator) =>
+      [...concepts].every((concept) => calculatorConceptMatch(calculator, concept)),
+    )
+    if (exact.length) return exact
+  }
+
+  return ranked
 }
 
 export function globalSearch(query: string): SearchResult[] {

@@ -14,12 +14,17 @@ describe("calculator registry integrity", () => {
     }
   })
 
-  it("every calculator runs without throwing when given its own default values", () => {
-    for (const c of calculators) {
+  // Most calculators deliberately ship no defaults: pre-filling a patient value
+  // such as ANC or age would be unsafe. Where a calculator does default every
+  // input, though, opening it must produce a working calculation rather than an
+  // immediate "missing required value" error.
+  it("every fully-defaulted calculator runs without throwing on its own defaults", () => {
+    const fullyDefaulted = calculators.filter((c) => c.inputs.every((input) => input.defaultValue !== undefined))
+    expect(fullyDefaulted.length).toBeGreaterThan(0)
+
+    for (const c of fullyDefaulted) {
       const inputs: Record<string, number | string> = {}
-      for (const input of c.inputs) {
-        if (input.defaultValue !== undefined) inputs[input.id] = input.defaultValue
-      }
+      for (const input of c.inputs) inputs[input.id] = input.defaultValue as number | string
       expect(() => c.calculate(inputs), `${c.id} threw with its own default inputs`).not.toThrow()
     }
   })

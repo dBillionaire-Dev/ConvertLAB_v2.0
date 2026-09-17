@@ -217,7 +217,7 @@ export const carboplatinCalvertCalculator: CalculatorDefinition = {
   description: "Calculates carboplatin total dose in mg from a protocol-specified target AUC and GFR using the Calvert formula.",
   formula: "Dose (mg) = target AUC × (GFR + 25)",
   keywords: ["oncology", "carboplatin", "Calvert", "AUC", "GFR", "chemotherapy"],
-  relatedTools: ["creatinine-clearance", "egfr", "oncology-dose-intensity"],
+  relatedTools: ["creatinine-clearance", "egfr-ckd-epi", "oncology-dose-intensity"],
   inputs: [
     { id: "targetAuc", label: "Target AUC", kind: "number", unit: "mg·min/mL", min: 0.1, step: 0.1 },
     { id: "gfr", label: "GFR used by the protocol", kind: "number", unit: "mL/min", min: 0.1, step: 0.1 },

@@ -507,7 +507,7 @@ export const correctedAlbuminAnionGapCalculator: CalculatorDefinition = {
   description: "Corrects the calculated anion gap for an albumin concentration below the reference value.",
   formula: "Corrected AG = AG + 2.5 × (4.0 − albumin[g/dL])",
   inputs: [
-    { id: "sodium", label: "Sodium", kind: "number", unit: "mmol/L", min: 1, max: 250, step: 0.1 },
+    { id: "sodium", label: "Sodium", kind: "number", unit: "mmol/L", min: 1, max: 250, step: 0.1, defaultValue: 140 },
     { id: "chloride", label: "Chloride", kind: "number", unit: "mmol/L", min: 1, max: 250, step: 0.1, defaultValue: 100 },
     { id: "bicarbonate", label: "Bicarbonate", kind: "number", unit: "mmol/L", min: 1, max: 100, step: 0.1, defaultValue: 24 },
     { id: "albumin", label: "Albumin", kind: "number", unit: "g/dL", min: 0.1, max: 10, step: 0.1, defaultValue: 4 },

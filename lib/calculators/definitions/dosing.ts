@@ -1357,7 +1357,7 @@ export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefiniti
   description: "Applies the product-label renal restrictions and interval changes for immediate-release amoxicillin/clavulanate oral formulations.",
   formula: "GFR >30: usual regimen; GFR 10–30: 250 or 500 mg q12h; GFR <10: 250 or 500 mg q24h",
   keywords: ["amoxicillin", "clavulanate", "augmentin", "renal", "renal adjustment", "GFR"],
-  relatedTools: ["egfr", "creatinine-clearance", "amoxicillin-clavulanate-pediatric-dose"],
+  relatedTools: ["egfr-ckd-epi", "creatinine-clearance", "amoxicillin-clavulanate-pediatric-dose"],
   inputs: [
     { id: "gfr", label: "GFR", kind: "number", unit: "mL/min", min: 0, step: 0.1 },
     {
@@ -2299,7 +2299,7 @@ export const whoPediatricDiarrhoeaZincCalculator: CalculatorDefinition = {
   description: "Calculates the WHO 2024 oral zinc reference regimen for children up to 10 years with acute watery or persistent diarrhoea.",
   formula: "Zinc = 5 mg elemental zinc once daily; duration = 10–14 days",
   keywords: ["diarrhoea", "diarrhea", "zinc", "pediatric", "WHO", "protocol", "regimen"],
-  relatedTools: ["dose-to-volume", "oral-liquid-dose-volume", "course-total-dose"],
+  relatedTools: ["dose-volume", "oral-liquid-dose-volume", "course-total-dose"],
   inputs: [
     {
       id: "ageYears",

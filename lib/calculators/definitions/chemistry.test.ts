@@ -233,6 +233,6 @@ describe("hba1cEagCalculator", () => {
 describe("expanded chemistry calculators", () => {
   it("corrects sodium for hyperglycemia", () => expect(correctedSodiumCalculator.calculate({ sodium: 130, glucose: 300, factor: 1.6 }).value).toBe(133.2))
   it("converts urea to BUN", () => expect(correctedBunCalculator.calculate({ direction:"urea-to-bun", value:10 }).value).toBe(28))
-  it("calculates albumin-corrected anion gap", () => expect(correctedAlbuminAnionGapCalculator.calculate({ sodium:140, chloride:100, bicarbonate:20, albumin:2 }).value).toBe(27))
+  it("calculates albumin-corrected anion gap", () => expect(correctedAlbuminAnionGapCalculator.calculate({ sodium:140, chloride:100, bicarbonate:20, albumin:2 }).value).toBe(25))
   it("converts creatinine units", () => expect(creatinineUnitConversionCalculator.calculate({ direction:"mgdl-to-umol", value:1 }).value).toBe(88.4))
 })

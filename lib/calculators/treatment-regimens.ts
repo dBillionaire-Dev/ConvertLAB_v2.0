@@ -123,8 +123,8 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     drugs: [
       { id: "oxaliplatin", drug: "Oxaliplatin", doseBasis: "mg/m2", dose: 85, doseUnit: "mg/m²", route: "IV infusion", frequency: "Day 1" },
       { id: "leucovorin", drug: "Calcium folinate (Leucovorin)", doseBasis: "fixed", dose: 50, doseUnit: "mg", route: "IV bolus", frequency: "Day 1" },
-      { id: "fluorouracil-bolus", drug: "Fluorouracil", doseBasis: "mg/m2", dose: 400, doseUnit: "mg/m²", route: "IV", frequency: "Day 1" },
-      { id: "fluorouracil-infusion", drug: "Fluorouracil", doseBasis: "mg/m2", dose: 2400, doseUnit: "mg/m²", route: "Continuous IV infusion", frequency: "Over 46 hours from day 1" },
+      { id: "fluorouracil-bolus", drug: "5-Fluorouracil (bolus)", doseBasis: "mg/m2", dose: 400, doseUnit: "mg/m²", route: "IV", frequency: "Day 1" },
+      { id: "fluorouracil-infusion", drug: "5-Fluorouracil (infusion)", doseBasis: "mg/m2", dose: 2400, doseUnit: "mg/m²", route: "Continuous IV infusion", frequency: "Over 46 hours from day 1" },
     ],
     prerequisites: ["Confirm the exact FOLFOX variant and indication; FOLFOX protocols differ in agent dosing and administration schedule."],
     monitoring: ["Protocol-defined CBC, chemistry, toxicity and fluoropyrimidine/DPD considerations."],
@@ -182,8 +182,8 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     drugs: [
       { id: "irinotecan", drug: "Irinotecan", doseBasis: "mg/m2", dose: 180, doseUnit: "mg/m²", route: "IV infusion", frequency: "Day 1" },
       { id: "leucovorin", drug: "Calcium folinate (Leucovorin)", doseBasis: "fixed", dose: 50, doseUnit: "mg", route: "IV bolus", frequency: "Day 1" },
-      { id: "fluorouracil-bolus", drug: "Fluorouracil", doseBasis: "mg/m2", dose: 400, doseUnit: "mg/m²", route: "IV", frequency: "Day 1" },
-      { id: "fluorouracil-infusion", drug: "Fluorouracil", doseBasis: "mg/m2", dose: 2400, doseUnit: "mg/m²", route: "Continuous IV infusion", frequency: "Over 46 hours from day 1" },
+      { id: "fluorouracil-bolus", drug: "5-Fluorouracil (bolus)", doseBasis: "mg/m2", dose: 400, doseUnit: "mg/m²", route: "IV", frequency: "Day 1" },
+      { id: "fluorouracil-infusion", drug: "5-Fluorouracil (infusion)", doseBasis: "mg/m2", dose: 2400, doseUnit: "mg/m²", route: "Continuous IV infusion", frequency: "Over 46 hours from day 1" },
     ],
     prerequisites: ["Confirm the exact FOLFIRI protocol and indication; doses may differ in other disease settings."],
     monitoring: ["Protocol-defined CBC, chemistry, toxicity and fluoropyrimidine/DPD considerations."],

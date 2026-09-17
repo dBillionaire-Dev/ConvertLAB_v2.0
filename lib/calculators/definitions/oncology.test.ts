@@ -234,9 +234,11 @@ describe("oncology cycle / course calculations", () => {
       plannedCycles: 6,
       completedCycles: 2,
     })
-    expect(result.display).toContain("1500.00 mg completed exposure")
-    expect(result.secondary?.some((field) => field.value === "3000.00 mg")).toBe(true)
-    expect(result.secondary?.some((field) => field.value === "2250.00 mg")).toBe(true)
+    expect(result.display).toContain("1500 mg completed exposure")
+    const field = (label: string) => result.secondary?.find((entry) => entry.label === label)?.value
+    expect(field("Planned course exposure")).toBe("4500 mg")
+    expect(field("Completed exposure")).toBe("1500 mg")
+    expect(field("Remaining planned exposure")).toBe("3000 mg")
   })
 })
 
