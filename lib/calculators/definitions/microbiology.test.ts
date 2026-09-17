@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { cfuCalculator, dilutionFactorCalculator, concentrationAfterDilutionCalculator } from "./microbiology"
+import { cfuCalculator, dilutionFactorCalculator, concentrationAfterDilutionCalculator, serialDilutionFactorCalculator, concentrationAfterSerialDilutionCalculator, pooledCultureCfuCalculator } from "./microbiology"
 
 describe("cfuCalculator", () => {
   it("computes CFU/mL", () => {
@@ -66,4 +66,11 @@ describe("concentrationAfterDilutionCalculator", () => {
   it("throws for zero/negative dilution factor", () => {
     expect(() => concentrationAfterDilutionCalculator.calculate({ initialConcentration: 100, dilutionFactor: 0 })).toThrow()
   })
+})
+
+
+describe("expanded microbiology calculators", () => {
+  it("multiplies serial dilution factors", () => expect(serialDilutionFactorCalculator.calculate({ factor1:10, factor2:10, factor3:100 }).value).toBe(10000))
+  it("calculates pooled CFU/mL", () => expect(pooledCultureCfuCalculator.calculate({ totalColonies:150, totalVolumeMl:0.3, dilutionFactor:100 }).value).toBe(50000))
+  it("calculates concentration after serial dilution", () => expect(concentrationAfterSerialDilutionCalculator.calculate({ initialConcentration:100, dilutionFactor:10 }).value).toBe(10))
 })

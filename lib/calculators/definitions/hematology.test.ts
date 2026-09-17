@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { mcvCalculator, mchCalculator, mchcCalculator, absoluteCellCountCalculator, correctedWbcCalculator, hematocritEstimateCalculator } from "./hematology"
+import { mcvCalculator, mchCalculator, mchcCalculator, absoluteCellCountCalculator, correctedWbcCalculator, hematocritEstimateCalculator, reticulocyteProductionIndexCalculator, apttRatioCalculator, revisedInternationalPrognosticIndexCalculator } from "./hematology"
 
 describe("mcvCalculator", () => {
   it("computes MCV", () => {
@@ -117,5 +117,18 @@ describe("hematocritEstimateCalculator", () => {
   it("handles decimal hemoglobin", () => {
     const result = hematocritEstimateCalculator.calculate({ hgb: 13.5 })
     expect(result.value).toBeCloseTo(40.5, 1)
+  })
+})
+
+
+describe("expanded hematology calculators", () => {
+  it("calculates RPI", () => {
+    expect(reticulocyteProductionIndexCalculator.calculate({ reticPercent: 4, hematocrit: 30, referenceHematocrit: 45, maturationFactor: 2 }).value).toBe(1.33)
+  })
+  it("calculates aPTT ratio", () => {
+    expect(apttRatioCalculator.calculate({ patientAptt: 60, controlAptt: 30 }).value).toBe(2)
+  })
+  it("calculates revised IPI", () => {
+    expect(revisedInternationalPrognosticIndexCalculator.calculate({ age: 70, stage34: "yes", performance: "yes", ldh: "yes", extranodal: "no" }).value).toBe(3)
   })
 })

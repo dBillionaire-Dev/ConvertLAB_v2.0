@@ -1,5 +1,5 @@
 import type { CalculatorDefinition } from "../types"
-import { num, assertPositive, round, fmt } from "../helpers"
+import { num, assertPositive, assertNonNegative, round, fmt } from "../helpers"
 
 const yesNo = [{ value:"no", label:"No" }, { value:"yes", label:"Yes" }]
 
@@ -106,4 +106,67 @@ export const donorChimerismCalculator: CalculatorDefinition = {
   formula:"Donor chimerism (%) = donor signal ÷ total signal × 100",
   inputs:[{id:"donorSignal",label:"Donor signal / cells",kind:"number",min:0,step:0.01},{id:"totalSignal",label:"Total signal / cells",kind:"number",min:0.01,step:0.01}],
   calculate:(inputs)=>{const d=num(inputs,"donorSignal"),t=num(inputs,"totalSignal");if(d<0)throw new Error("Donor signal cannot be negative.");assertPositive(t,"Total signal");if(d>t)throw new Error("Donor signal cannot exceed total signal.");const p=round(d/t*100,1);return {value:p,unit:"%",display:fmt(p,1,"%"),calculationSteps:[`${d} ÷ ${t} × 100 = ${p}%`],warnings:["Interpret chimerism with the assay method, lineage tested, specimen timing and transplant protocol. A percentage alone does not diagnose graft failure or relapse."]}}
+}
+
+
+export const collectionTargetCalculator: CalculatorDefinition = {
+  id: "stem-cell-collection-target",
+  name: "Stem Cell Collection Target",
+  shortName: "Collection Target",
+  category: "stem-cell-transplant",
+  subcategory: "stem-cell-collection",
+  description: "Calculates the total CD34+ cell target required from a planned dose per kilogram and recipient weight.",
+  formula: "Target CD34+ cells = target dose (×10⁶/kg) × weight (kg)",
+  inputs: [
+    { id: "targetDose", label: "Target CD34+ dose", kind: "number", unit: "×10⁶/kg", min: 0.1, step: 0.1, defaultValue: 2 },
+    { id: "weightKg", label: "Recipient weight", kind: "number", unit: "kg", min: 0.1, step: 0.1, defaultValue: 70 },
+  ],
+  calculate: (inputs) => {
+    const d = num(inputs, "targetDose"), w = num(inputs, "weightKg")
+    assertPositive(d, "Target CD34+ dose"); assertPositive(w, "Weight")
+    const total = round(d * w, 2)
+    return { value: total, unit: "×10⁶ cells", display: `Target: ${total} ×10⁶ CD34+ cells`, calculationSteps: [`${d} × ${w} = ${total} ×10⁶ cells`], warnings: ["Use the transplant center's protocol-defined target and recipient-weight method. Collection targets vary by indication and graft source."] }
+  }
+}
+
+export const viableCd34CellDoseCalculator: CalculatorDefinition = {
+  id: "viable-cd34-cell-dose",
+  name: "Viable CD34+ Cell Dose",
+  shortName: "Viable CD34+ Dose",
+  category: "stem-cell-transplant",
+  subcategory: "cell-dose",
+  description: "Calculates the post-processing viable CD34+ cell dose per kilogram from total CD34+ cells, viability and recipient weight.",
+  formula: "Viable dose = total CD34+ cells × viability ÷ weight",
+  inputs: [
+    { id: "totalCd34", label: "Total CD34+ cells", kind: "number", unit: "×10⁶ cells", min: 0.01, step: 0.01, defaultValue: 140 },
+    { id: "viability", label: "CD34+ viability", kind: "number", unit: "%", min: 0, max: 100, step: 0.1, defaultValue: 90 },
+    { id: "weightKg", label: "Recipient weight", kind: "number", unit: "kg", min: 0.1, step: 0.1, defaultValue: 70 },
+  ],
+  calculate: (inputs) => {
+    const total = num(inputs, "totalCd34"), viability = num(inputs, "viability"), w = num(inputs, "weightKg")
+    assertPositive(total, "Total CD34+ cells"); assertPositive(w, "Weight"); assertNonNegative(viability, "Viability")
+    if (viability > 100) throw new Error("Viability cannot exceed 100%.")
+    const dose = round(total * (viability / 100) / w, 3)
+    return { value: dose, unit: "×10⁶/kg", display: `Viable CD34+ dose: ${dose} ×10⁶/kg`, calculationSteps: [`${total} × (${viability} ÷ 100) ÷ ${w} = ${dose} ×10⁶/kg`], warnings: ["Use the validated cell-counting and viability method for the product; assay variability and product handling affect the reported dose."] }
+  }
+}
+
+export const engraftmentDurationCalculator: CalculatorDefinition = {
+  id: "engraftment-duration",
+  name: "Engraftment Duration",
+  shortName: "Engraftment Duration",
+  category: "stem-cell-transplant",
+  subcategory: "engraftment",
+  description: "Calculates elapsed days from transplant day to a documented engraftment day.",
+  formula: "Elapsed days = engraftment day − transplant day",
+  inputs: [
+    { id: "transplantDay", label: "Transplant day", kind: "number", unit: "day", min: -100, max: 100, step: 1, defaultValue: 0 },
+    { id: "engraftmentDay", label: "Engraftment day", kind: "number", unit: "day", min: -100, max: 365, step: 1, defaultValue: 14 },
+  ],
+  calculate: (inputs) => {
+    const t = num(inputs, "transplantDay"), e = num(inputs, "engraftmentDay")
+    const days = e - t
+    if (days < 0) throw new Error("Engraftment day cannot precede transplant day.")
+    return { value: days, unit: "days", display: `Elapsed time: ${days} days`, calculationSteps: [`${e} − ${t} = ${days} days`], warnings: ["This tool performs date arithmetic only. Whether a patient meets an engraftment definition depends on the transplant protocol and laboratory criteria."] }
+  }
 }

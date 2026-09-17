@@ -30,6 +30,7 @@ import {
   deltaRatioCalculator,
   estimatedOsmolalityCalculator,
   hba1cEagCalculator,
+  correctedSodiumCalculator, correctedBunCalculator, correctedAlbuminAnionGapCalculator, creatinineUnitConversionCalculator,
 } from "./definitions/chemistry"
 import {
   // mcvCalculator,
@@ -43,6 +44,10 @@ import {
   correctedCountIncrementCalculator,
   estimatedBloodVolumeCalculator,
   internationalPrognosticIndexCalculator,
+  reticulocyteProductionIndexCalculator,
+  apttRatioCalculator,
+  estimatedRbcTransfusionVolumeCalculator,
+  revisedInternationalPrognosticIndexCalculator,
 } from "./definitions/hematology"
 import { molarityCalculator, normalityCalculator } from "./definitions/lab-solutions"
 import { beerLambertCalculator } from "./definitions/spectrophotometry"
@@ -63,14 +68,19 @@ import {
   oncologyCycleProgressCalculator,
   oncologyCourseCompletionCalculator,
 } from "./definitions/oncology"
-import { cfuCalculator, dilutionFactorCalculator, concentrationAfterDilutionCalculator } from "./definitions/microbiology"
+import {
+  cfuCalculator, dilutionFactorCalculator, concentrationAfterDilutionCalculator,
+  serialDilutionFactorCalculator, concentrationAfterSerialDilutionCalculator, pooledCultureCfuCalculator,
+} from "./definitions/microbiology"
 import {
   meanArterialPressureCalculator, ejectionFractionCalculator, cha2ds2VascCalculator,
   daptScoreCalculator, qtcCalculator, atherogenicIndexCalculator,
+  pulsePressureCalculator, cardiacIndexCalculator, hasBledCalculator, atrialFibrillationRateCalculator,
 } from "./definitions/cardiovascular"
 import {
   hctCiCalculator, conditioningDayCalculator, stemCellCollectionYieldCalculator,
   cd34CellDoseCalculator, neutrophilEngraftmentDayCalculator, donorChimerismCalculator,
+  collectionTargetCalculator, viableCd34CellDoseCalculator, engraftmentDurationCalculator,
 } from "./definitions/stem-cell-transplant"
 import {
   mgPerKgDoseCalculator,
@@ -158,6 +168,7 @@ export const calculators: CalculatorDefinition[] = [
   deltaRatioCalculator,
   estimatedOsmolalityCalculator,
   hba1cEagCalculator,
+  correctedSodiumCalculator, correctedBunCalculator, correctedAlbuminAnionGapCalculator, creatinineUnitConversionCalculator,
   // mcvCalculator,
   // mchCalculator,
   // mchcCalculator,
@@ -169,12 +180,19 @@ export const calculators: CalculatorDefinition[] = [
   correctedCountIncrementCalculator,
   estimatedBloodVolumeCalculator,
   internationalPrognosticIndexCalculator,
+  reticulocyteProductionIndexCalculator,
+  apttRatioCalculator,
+  estimatedRbcTransfusionVolumeCalculator,
+  revisedInternationalPrognosticIndexCalculator,
   molarityCalculator,
   normalityCalculator,
   beerLambertCalculator,
   cfuCalculator,
   dilutionFactorCalculator,
   concentrationAfterDilutionCalculator,
+  serialDilutionFactorCalculator,
+  concentrationAfterSerialDilutionCalculator,
+  pooledCultureCfuCalculator,
   mgPerKgDoseCalculator,
   oralLiquidDoseVolumeCalculator,
   tabletCapsuleCountCalculator,
@@ -238,12 +256,19 @@ export const calculators: CalculatorDefinition[] = [
   daptScoreCalculator,
   qtcCalculator,
   atherogenicIndexCalculator,
+  pulsePressureCalculator,
+  cardiacIndexCalculator,
+  hasBledCalculator,
+  atrialFibrillationRateCalculator,
   hctCiCalculator,
   conditioningDayCalculator,
   stemCellCollectionYieldCalculator,
   cd34CellDoseCalculator,
   neutrophilEngraftmentDayCalculator,
   donorChimerismCalculator,
+  collectionTargetCalculator,
+  viableCd34CellDoseCalculator,
+  engraftmentDurationCalculator,
   oncologyBsaDoseCalculator,
   oncologyDoseIntensityCalculator,
   oncologyRelativeDoseIntensityCalculator,

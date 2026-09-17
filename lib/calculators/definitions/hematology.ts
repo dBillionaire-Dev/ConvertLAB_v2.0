@@ -1,5 +1,5 @@
 import type { CalculatorDefinition } from "../types"
-import { num, str, assertPositive, safeDivide, round, fmt } from "../helpers"
+import { num, str, assertPositive, assertNonNegative, safeDivide, round, fmt } from "../helpers"
 
 export const redCellIndicesCalculator: CalculatorDefinition = {
   id: "red-cell-indices",
@@ -383,4 +383,99 @@ export const internationalPrognosticIndexCalculator: CalculatorDefinition = {
     {id:"extranodal",label:"≥2 extranodal sites",kind:"select",options:[{value:"no",label:"No"},{value:"yes",label:"Yes"}]},
   ],
   calculate:(inputs)=>{const age=num(inputs,"age");const agePoints=age>=76?3:age>=61?2:age>=41?1:0;const score=agePoints+(inputs.stage34==="yes"?1:0)+(inputs.performance==="yes"?1:0)+(inputs.ldh==="normal"?0:inputs.ldh==="1to3"?1:2)+(inputs.extranodal==="yes"?1:0);return {value:score,display:`IPI score: ${score}`,secondary:[{label:"Age points",value:String(agePoints)}],interpretation:"The score is a prognostic classification tool for the population in which the selected IPI version applies; do not use it alone to determine treatment.",calculationSteps:["Age, stage III/IV, performance status, LDH elevation and ≥2 extranodal sites contribute to the score."]}}
+}
+
+
+export const reticulocyteProductionIndexCalculator: CalculatorDefinition = {
+  id: "reticulocyte-production-index",
+  name: "Reticulocyte Production Index",
+  shortName: "RPI",
+  category: "hematology",
+  subcategory: "anemia",
+  description: "Adjusts the reticulocyte percentage for the patient's hematocrit and an explicit maturation correction.",
+  formula: "RPI = reticulocyte % × (patient Hct / reference Hct) ÷ maturation factor",
+  inputs: [
+    { id: "reticPercent", label: "Reticulocyte percentage", kind: "number", unit: "%", min: 0, max: 50, step: 0.1, defaultValue: 2 },
+    { id: "hematocrit", label: "Patient hematocrit", kind: "number", unit: "%", min: 1, max: 80, step: 0.1, defaultValue: 45 },
+    { id: "referenceHematocrit", label: "Reference hematocrit", kind: "number", unit: "%", min: 1, max: 80, step: 0.1, defaultValue: 45 },
+    { id: "maturationFactor", label: "Maturation correction", kind: "number", min: 1, max: 4, step: 0.5, defaultValue: 1 },
+  ],
+  calculate: (inputs) => {
+    const r = num(inputs, "reticPercent"), h = num(inputs, "hematocrit"), ref = num(inputs, "referenceHematocrit"), m = num(inputs, "maturationFactor")
+    assertNonNegative(r, "Reticulocyte percentage"); assertPositive(h, "Hematocrit"); assertPositive(ref, "Reference hematocrit"); assertPositive(m, "Maturation correction")
+    const rpi = round(r * (h / ref) / m, 2)
+    return { value: rpi, display: `RPI: ${rpi}`, calculationSteps: [`${r} × (${h} ÷ ${ref}) ÷ ${m} = ${rpi}`], warnings: ["Maturation factors vary with anemia severity and local teaching convention; select the factor appropriate to the validated method."] }
+  },
+  notes: ["RPI is an adjusted reticulocyte measure used in anemia assessment; it should be interpreted with hemoglobin, morphology, iron studies and the clinical context."]
+}
+
+export const apttRatioCalculator: CalculatorDefinition = {
+  id: "aptt-ratio",
+  name: "aPTT Ratio",
+  shortName: "aPTT Ratio",
+  category: "hematology",
+  subcategory: "coagulation",
+  description: "Calculates the ratio of patient activated partial thromboplastin time to the laboratory control or mean normal aPTT.",
+  formula: "aPTT ratio = patient aPTT ÷ control aPTT",
+  inputs: [
+    { id: "patientAptt", label: "Patient aPTT", kind: "number", unit: "seconds", min: 0.1, step: 0.1, defaultValue: 30 },
+    { id: "controlAptt", label: "Laboratory control / mean normal aPTT", kind: "number", unit: "seconds", min: 0.1, step: 0.1, defaultValue: 30 },
+  ],
+  calculate: (inputs) => {
+    const p = num(inputs, "patientAptt"), c = num(inputs, "controlAptt")
+    assertPositive(p, "Patient aPTT"); assertPositive(c, "Control aPTT")
+    const ratio = round(p / c, 2)
+    return { value: ratio, display: `aPTT ratio: ${ratio}`, calculationSteps: [`${p} ÷ ${c} = ${ratio}`], warnings: ["Use the laboratory's validated control/mean-normal value and reagent-specific interpretation. aPTT ratio targets vary by assay and indication."] }
+  },
+  notes: ["For heparin monitoring, laboratories may use an aPTT therapeutic range or anti-Xa method rather than a universal ratio."]
+}
+
+export const estimatedRbcTransfusionVolumeCalculator: CalculatorDefinition = {
+  id: "estimated-rbc-transfusion-volume",
+  name: "Estimated RBC Transfusion Volume",
+  shortName: "RBC Volume Estimate",
+  category: "hematology",
+  subcategory: "transfusion",
+  description: "Estimates packed red-cell volume from an estimated blood volume, current and target hematocrit, and product hematocrit.",
+  formula: "RBC volume ≈ EBV × (target Hct − current Hct) ÷ product Hct",
+  inputs: [
+    { id: "weightKg", label: "Weight", kind: "number", unit: "kg", min: 0.1, step: 0.1, defaultValue: 70 },
+    { id: "bloodVolumePerKg", label: "Blood volume factor", kind: "number", unit: "mL/kg", min: 1, max: 120, step: 1, defaultValue: 70 },
+    { id: "currentHct", label: "Current hematocrit", kind: "number", unit: "%", min: 1, max: 80, step: 0.1, defaultValue: 25 },
+    { id: "targetHct", label: "Target hematocrit", kind: "number", unit: "%", min: 1, max: 80, step: 0.1, defaultValue: 30 },
+    { id: "productHct", label: "RBC product hematocrit", kind: "number", unit: "%", min: 10, max: 90, step: 1, defaultValue: 60 },
+  ],
+  calculate: (inputs) => {
+    const w = num(inputs, "weightKg"), factor = num(inputs, "bloodVolumePerKg")
+    const current = num(inputs, "currentHct"), target = num(inputs, "targetHct"), product = num(inputs, "productHct")
+    assertPositive(w, "Weight"); assertPositive(factor, "Blood volume factor"); assertPositive(current, "Current hematocrit"); assertPositive(target, "Target hematocrit"); assertPositive(product, "Product hematocrit")
+    if (target <= current) throw new Error("Target hematocrit must be greater than current hematocrit for this estimate.")
+    const ebv = w * factor
+    const volume = round(ebv * ((target - current) / 100) / (product / 100), 0)
+    return { value: volume, unit: "mL", display: `Estimated RBC volume: ${volume} mL`, secondary: [{ label: "Estimated blood volume", value: `${round(ebv,0)} mL` }], calculationSteps: [`EBV = ${w} × ${factor} = ${round(ebv,0)} mL`, `RBC volume ≈ ${round(ebv,0)} × ((${target} − ${current}) ÷ 100) ÷ (${product} ÷ 100) = ${volume} mL`], warnings: ["This is an approximation. Actual transfusion volume depends on component specifications, patient factors, target, urgency and local transfusion protocol."]}
+  },
+  notes: ["Use a validated blood-volume factor and actual component hematocrit when available."]
+}
+
+export const revisedInternationalPrognosticIndexCalculator: CalculatorDefinition = {
+  id: "revised-international-prognostic-index",
+  name: "Revised International Prognostic Index",
+  shortName: "R-IPI",
+  category: "hematology",
+  subcategory: "hematologic-malignancy",
+  description: "Calculates the five-factor revised IPI score using age, stage, LDH, performance status and extranodal disease.",
+  inputs: [
+    { id: "age", label: "Age", kind: "number", unit: "years", min: 0, max: 120, step: 1, defaultValue: 60 },
+    { id: "stage34", label: "Ann Arbor stage III/IV", kind: "select", options: [{ value: "no", label: "No" }, { value: "yes", label: "Yes" }], defaultValue: "no" },
+    { id: "performance", label: "Performance status ≥2", kind: "select", options: [{ value: "no", label: "No" }, { value: "yes", label: "Yes" }], defaultValue: "no" },
+    { id: "ldh", label: "LDH above upper limit of normal", kind: "select", options: [{ value: "no", label: "No" }, { value: "yes", label: "Yes" }], defaultValue: "no" },
+    { id: "extranodal", label: "≥2 extranodal sites", kind: "select", options: [{ value: "no", label: "No" }, { value: "yes", label: "Yes" }], defaultValue: "no" },
+  ],
+  calculate: (inputs) => {
+    const age = num(inputs, "age")
+    const score = (age > 60 ? 1 : 0) + (inputs.stage34 === "yes" ? 1 : 0) + (inputs.performance === "yes" ? 1 : 0) + (inputs.ldh === "yes" ? 1 : 0) + (inputs.extranodal === "yes" ? 1 : 0)
+    const group = score <= 1 ? "Very good" : score === 2 ? "Good" : score === 3 ? "Poor" : "Very poor"
+    return { value: score, display: `R-IPI score: ${score}`, secondary: [{ label: "Risk group", value: group }], interpretation: "A prognostic classification; the applicable disease population and treatment era should match the validated R-IPI framework. Do not use the score alone to determine treatment.", calculationSteps: ["One point is assigned for each adverse factor: age >60, stage III/IV, performance status ≥2, elevated LDH, and ≥2 extranodal sites."] }
+  },
+  notes: ["R-IPI is a prognostic tool derived for diffuse large B-cell lymphoma in the rituximab-era literature; applicability outside the validated population is limited."]
 }
