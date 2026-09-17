@@ -1880,9 +1880,9 @@ export const whoYoungInfantMeningitisCalculator: CalculatorDefinition = {
       unit: "mg ampicillin/dose",
       display: `${ampicillin} mg ampicillin + ${gentamicin} mg gentamicin`,
       secondary: [
-        { label: "Option 1 → Ampicillin", value: `${ampicillin} mg IM/IV ${ampicillinInterval} + gentamicin ${gentamicin} mg once daily` },
-        { label: "Option 2 → Cefotaxime", value: `${cefotaxime} mg IM/IV ${cefotaximeInterval} + gentamicin ${gentamicin} mg once daily` },
-        { label: "Option 3 → Ceftriaxone", value: `${ceftriaxone} mg IM/IV once daily + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 1 — Ampicillin", value: `${ampicillin} mg IM/IV ${ampicillinInterval} + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 2 — Cefotaxime", value: `${cefotaxime} mg IM/IV ${cefotaximeInterval} + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 3 — Ceftriaxone", value: `${ceftriaxone} mg IM/IV once daily + gentamicin ${gentamicin} mg once daily` },
         { label: "Treatment duration", value: "At least 3 weeks" },
       ],
       calculationSteps: [

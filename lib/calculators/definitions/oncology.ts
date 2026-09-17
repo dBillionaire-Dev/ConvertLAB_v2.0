@@ -210,7 +210,7 @@ export const oncologyCycleTotalCalculator: CalculatorDefinition = {
 
 export const carboplatinCalvertCalculator: CalculatorDefinition = {
   id: "carboplatin-calvert-dose",
-  name: "Carboplatin Dose → Calvert Formula",
+  name: "Carboplatin Dose — Calvert Formula",
   shortName: "Carboplatin Calvert",
   category: "oncology",
   subcategory: "chemotherapy-dosing",
@@ -483,7 +483,7 @@ const PATIENT_SPECIFIC_REGIMENS = treatmentRegimens.filter(
 /** Phase 28: patient-specific arithmetic for the verified BSA-based oncology registry. */
 export const oncologyRegimenDoseCalculator: CalculatorDefinition = {
   id: "oncology-regimen-dose",
-  name: "Oncology Regimen → Patient-Specific Dose",
+  name: "Oncology Regimen — Patient-Specific Dose",
   shortName: "Oncology Regimen Dose",
   category: "oncology",
   subcategory: "chemotherapy-dosing",

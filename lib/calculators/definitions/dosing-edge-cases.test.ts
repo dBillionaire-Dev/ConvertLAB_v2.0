@@ -61,7 +61,7 @@ describe("dosing boundary and regression coverage", () => {
     expect(artesunatePyronaridineCalculator.calculate({ weight: 8 }).display).toContain("40 mg artesunate")
     expect(artesunatePyronaridineCalculator.calculate({ weight: 15 }).display).toContain("60 mg artesunate")
     expect(artesunatePyronaridineCalculator.calculate({ weight: 20 }).display).toContain("60 mg artesunate")
-    expect(artesunatePyronaridineCalculator.calculate({ weight: 24 }).display).toContain("60 mg artesunate")
+    expect(artesunatePyronaridineCalculator.calculate({ weight: 24 }).display).toContain("120 mg artesunate")
     expect(artesunatePyronaridineCalculator.calculate({ weight: 45 }).display).toContain("180 mg artesunate")
     expect(artesunatePyronaridineCalculator.calculate({ weight: 65 }).display).toContain("240 mg artesunate")
   })

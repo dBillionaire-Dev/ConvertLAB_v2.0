@@ -152,10 +152,10 @@ describe("organ-function dose-modification criteria", () => {
 
 
 describe("toxicity dose-modification criteria", () => {
-  it("matches FOLFIRI grade 2 diarrhoea on second occurrence", () => {
+  it("matches FOLFIRI grade 3 diarrhoea on first occurrence", () => {
     const regimen = treatmentRegimens.find((item) => item.id === "folfiri-colorectal")
     expect(regimen).toBeDefined()
-    const matches = assessToxicityDoseModifications(regimen!, { toxicityType: "diarrhoea", toxicityGrade: 2, occurrence: 2 })
+    const matches = assessToxicityDoseModifications(regimen!, { toxicityType: "diarrhoea", toxicityGrade: 3, occurrence: 1 })
     expect(matches).toHaveLength(1)
     expect(matches[0].action).toContain("25%")
   })

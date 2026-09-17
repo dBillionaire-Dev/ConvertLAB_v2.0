@@ -135,12 +135,12 @@ describe("oncology renal/hepatic dose-modification calculator", () => {
 
 
 describe("oncology toxicity / safety calculator", () => {
-  it("matches FOLFIRI grade 2 diarrhoea on second occurrence", () => {
+  it("matches FOLFIRI grade 3 diarrhoea on first occurrence", () => {
     const result = oncologyToxicitySafetyCalculator.calculate({
       regimenId: "folfiri-colorectal",
       toxicityType: "diarrhoea",
-      toxicityGrade: 2,
-      occurrence: 2,
+      toxicityGrade: 3,
+      occurrence: 1,
       persistentAtNextCycle: "no",
     })
     expect(result.display).toContain("1 toxicity rule")

@@ -164,7 +164,7 @@ export const photonEnergyCalculator: CalculatorDefinition = {
     const c = 299792458
     const energyJ = (h * c) / (wavelengthNm * 1e-9)
     const energyEv = energyJ / 1.602176634e-19
-    return { value: round(energyJ, 24), unit: "J/photon", display: `${energyJ.toExponential(6)} J/photon`, secondary: [{ label: "Energy", value: `${round(energyEv, 6)} eV/photon` }], calculationSteps: [`E = hc/λ = ${energyJ.toExponential(6)} J/photon`] }
+    return { value: energyJ, unit: "J/photon", display: `${energyJ.toExponential(6)} J/photon`, secondary: [{ label: "Energy", value: `${round(energyEv, 6)} eV/photon` }], calculationSteps: [`E = hc/λ = ${energyJ.toExponential(6)} J/photon`] }
   },
 }
 

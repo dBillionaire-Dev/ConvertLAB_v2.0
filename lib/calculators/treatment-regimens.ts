@@ -187,6 +187,14 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     prerequisites: ["Confirm the exact FOLFIRI protocol and indication; doses may differ in other disease settings."],
     monitoring: ["Protocol-defined CBC, chemistry, toxicity and fluoropyrimidine/DPD considerations."],
+    doseModifications: [
+      { id: "folfiri-diarrhoea-g3-occurrence-1", domain: "toxicity", trigger: "Diarrhoea grade 3, first occurrence", action: "Delay treatment until toxicity has resolved to Grade 1 or less; reduce irinotecan, bolus fluorouracil and infusional fluorouracil by 25% for subsequent cycles.", appliesTo: ["irinotecan", "fluorouracil-bolus", "fluorouracil-infusion"], criteria: { toxicityType: "diarrhoea", toxicityGrade: 3, occurrence: 1 } },
+      { id: "folfiri-diarrhoea-g3-occurrence-2", domain: "toxicity", trigger: "Diarrhoea grade 3, second occurrence", action: "Delay treatment until toxicity has resolved to Grade 1 or less; reduce irinotecan, bolus fluorouracil and infusional fluorouracil by 50% for subsequent cycles.", appliesTo: ["irinotecan", "fluorouracil-bolus", "fluorouracil-infusion"], criteria: { toxicityType: "diarrhoea", toxicityGrade: 3, occurrence: 2 } },
+      { id: "folfiri-diarrhoea-g3-occurrence-3", domain: "toxicity", trigger: "Diarrhoea grade 3, third occurrence", action: "Cease treatment according to the cited protocol.", appliesTo: ["irinotecan", "fluorouracil-bolus", "fluorouracil-infusion"], criteria: { toxicityType: "diarrhoea", toxicityGrade: 3, occurrence: 3 } },
+      { id: "folfiri-diarrhoea-g4-occurrence-1", domain: "toxicity", trigger: "Diarrhoea grade 4, first occurrence", action: "Delay treatment until toxicity has resolved to Grade 1 or less; reduce irinotecan and infusional fluorouracil by 25% and omit bolus fluorouracil.", appliesTo: ["irinotecan", "fluorouracil-bolus", "fluorouracil-infusion"], criteria: { toxicityType: "diarrhoea", toxicityGrade: 4, occurrence: 1 } },
+      { id: "folfiri-diarrhoea-g4-occurrence-2", domain: "toxicity", trigger: "Diarrhoea grade 4, second occurrence", action: "Delay treatment until toxicity has resolved to Grade 1 or less; reduce irinotecan and infusional fluorouracil by 50%.", appliesTo: ["irinotecan", "fluorouracil-infusion"], criteria: { toxicityType: "diarrhoea", toxicityGrade: 4, occurrence: 2 } },
+      { id: "folfiri-diarrhoea-g4-occurrence-3", domain: "toxicity", trigger: "Diarrhoea grade 4, third occurrence", action: "Cease treatment according to the cited protocol.", appliesTo: ["irinotecan", "fluorouracil-infusion"], criteria: { toxicityType: "diarrhoea", toxicityGrade: 4, occurrence: 3 } },
+    ],
     warnings: [
       "FOLFIRI is used across multiple disease settings and protocol doses can differ; this entry is tied to the cited modified protocol.",
       "Do not infer treatment selection, cycle count or dose modifications from this reference entry.",

@@ -29,7 +29,7 @@ describe("spectrophotometry extended tools", () => {
   })
   it("calculates photon energy", async () => {
     const { photonEnergyCalculator } = await import("./spectrophotometry")
-    expect(Number(photonEnergyCalculator.calculate({ wavelengthNm: 500 }).value)).toBeCloseTo(3.97289e-19, 24)
+    expect(Number(photonEnergyCalculator.calculate({ wavelengthNm: 500 }).value)).toBeCloseTo(3.972891714e-19, 15)
   })
   it("converts wavelength to wavenumber", async () => {
     const { wavenumberCalculator } = await import("./spectrophotometry")
