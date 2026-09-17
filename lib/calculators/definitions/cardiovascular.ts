@@ -15,8 +15,8 @@ export const meanArterialPressureCalculator: CalculatorDefinition = {
   description: "Estimates mean arterial pressure from systolic and diastolic blood pressure.",
   formula: "MAP ≈ (SBP + 2 × DBP) ÷ 3",
   inputs: [
-    { id: "sbp", label: "Systolic BP", kind: "number", unit: "mmHg", min: 1, max: 400, step: 1 },
-    { id: "dbp", label: "Diastolic BP", kind: "number", unit: "mmHg", min: 1, max: 300, step: 1 },
+    { id: "sbp", label: "Systolic BP", kind: "number", unit: "mmHg", min: 1, max: 400, step: 1, defaultValue: 120 },
+    { id: "dbp", label: "Diastolic BP", kind: "number", unit: "mmHg", min: 1, max: 300, step: 1, defaultValue: 80 },
   ],
   calculate: (inputs) => {
     const sbp = num(inputs, "sbp"), dbp = num(inputs, "dbp")
@@ -142,4 +142,93 @@ export const atherogenicIndexCalculator: CalculatorDefinition = {
     return { value:aip, display:`AIP: ${aip}`, interpretation:"AIP is a calculated lipid-derived marker. Published cut-points vary by population and assay context; interpret with the complete cardiovascular risk profile rather than as a stand-alone treatment trigger.", calculationSteps:[`log10(${tg} ÷ ${hdl}) = ${aip}`] }
   },
   notes:["Use mmol/L for both triglyceride and HDL inputs; do not mix units."]
+}
+
+
+export const pulsePressureCalculator: CalculatorDefinition = {
+  id: "pulse-pressure",
+  name: "Pulse Pressure",
+  shortName: "PP",
+  category: "cardiovascular",
+  subcategory: "hypertension",
+  description: "Calculates pulse pressure from systolic and diastolic blood pressure.",
+  formula: "Pulse pressure = SBP − DBP",
+  inputs: [
+    { id: "sbp", label: "Systolic BP", kind: "number", unit: "mmHg", min: 1, max: 400, step: 1, defaultValue: 120 },
+    { id: "dbp", label: "Diastolic BP", kind: "number", unit: "mmHg", min: 1, max: 300, step: 1, defaultValue: 80 },
+  ],
+  calculate: (inputs) => {
+    const s = num(inputs, "sbp"), d = num(inputs, "dbp")
+    assertPositive(s, "Systolic BP"); assertPositive(d, "Diastolic BP")
+    if (d >= s) throw new Error("Diastolic BP should be lower than systolic BP for this calculation.")
+    const pp = round(s - d, 0)
+    return { value: pp, unit: "mmHg", display: `Pulse pressure: ${pp} mmHg`, calculationSteps: [`${s} − ${d} = ${pp} mmHg`], warnings: ["Pulse pressure is a descriptive hemodynamic measure and is not, by itself, a diagnosis or treatment target."] }
+  }
+}
+
+export const cardiacIndexCalculator: CalculatorDefinition = {
+  id: "cardiac-index",
+  name: "Cardiac Index",
+  shortName: "CI",
+  category: "cardiovascular",
+  subcategory: "heart-failure",
+  description: "Calculates cardiac index from cardiac output and body surface area.",
+  formula: "Cardiac index = cardiac output ÷ BSA",
+  inputs: [
+    { id: "cardiacOutput", label: "Cardiac output", kind: "number", unit: "L/min", min: 0.1, step: 0.1, defaultValue: 5 },
+    { id: "bsa", label: "Body surface area", kind: "number", unit: "m²", min: 0.1, max: 5, step: 0.01, defaultValue: 1.8 },
+  ],
+  calculate: (inputs) => {
+    const co = num(inputs, "cardiacOutput"), bsa = num(inputs, "bsa")
+    assertPositive(co, "Cardiac output"); assertPositive(bsa, "BSA")
+    const ci = round(co / bsa, 2)
+    return { value: ci, unit: "L/min/m²", display: `Cardiac index: ${ci} L/min/m²`, calculationSteps: [`${co} ÷ ${bsa} = ${ci} L/min/m²`], warnings: ["Interpret cardiac index with the measurement method, hemodynamic state and clinical context; normal ranges vary by source and setting."] }
+  },
+  relatedTools: ["bsa", "ejection-fraction"],
+  notes: ["Cardiac index normalizes measured cardiac output to body surface area."]
+}
+
+export const hasBledCalculator: CalculatorDefinition = {
+  id: "has-bled",
+  name: "HAS-BLED Bleeding Risk Score",
+  shortName: "HAS-BLED",
+  category: "cardiovascular",
+  subcategory: "anticoagulation",
+  description: "Calculates the HAS-BLED score from its documented bleeding-risk factors.",
+  inputs: [
+    { id: "hypertension", label: "Uncontrolled hypertension (systolic >160 mmHg)", kind: "select", options: yesNo, defaultValue: "no" },
+    { id: "renal", label: "Abnormal renal function", kind: "select", options: yesNo, defaultValue: "no" },
+    { id: "liver", label: "Abnormal liver function", kind: "select", options: yesNo, defaultValue: "no" },
+    { id: "stroke", label: "Previous stroke", kind: "select", options: yesNo, defaultValue: "no" },
+    { id: "bleeding", label: "Prior major bleeding / bleeding predisposition", kind: "select", options: yesNo, defaultValue: "no" },
+    { id: "labileInr", label: "Labile INR", kind: "select", options: yesNo, defaultValue: "no" },
+    { id: "age", label: "Age >65 years", kind: "select", options: yesNo, defaultValue: "no" },
+    { id: "drugs", label: "Drugs predisposing to bleeding", kind: "select", options: yesNo, defaultValue: "no" },
+    { id: "alcohol", label: "Excess alcohol use", kind: "select", options: yesNo, defaultValue: "no" },
+  ],
+  calculate: (inputs) => {
+    const score = ["hypertension","renal","liver","stroke","bleeding","labileInr","age","drugs","alcohol"].reduce((s, k) => s + (inputs[k] === "yes" ? 1 : 0), 0)
+    return { value: score, display: `HAS-BLED score: ${score}`, interpretation: "A bleeding-risk assessment tool used in anticoagulation contexts. A higher score identifies potentially modifiable bleeding-risk factors; it should not be used alone to withhold indicated anticoagulation.", calculationSteps: ["One point is assigned for each selected HAS-BLED factor in this implementation."] }
+  },
+  notes: ["The original HAS-BLED acronym includes abnormal renal/liver function and drugs/alcohol components; definitions should follow the validated scoring framework."]
+}
+
+export const atrialFibrillationRateCalculator: CalculatorDefinition = {
+  id: "af-ventricular-rate",
+  name: "Atrial Fibrillation Ventricular Rate",
+  shortName: "AF Rate",
+  category: "cardiovascular",
+  subcategory: "arrhythmia",
+  description: "Estimates ventricular rate from an ECG strip using the number of QRS complexes and strip duration.",
+  formula: "Rate (bpm) = QRS count × 60 ÷ strip duration (seconds)",
+  inputs: [
+    { id: "qrsCount", label: "QRS complexes counted", kind: "number", min: 1, max: 100, step: 1, defaultValue: 10 },
+    { id: "durationSeconds", label: "Strip duration", kind: "number", unit: "seconds", min: 1, max: 60, step: 0.1, defaultValue: 10 },
+  ],
+  calculate: (inputs) => {
+    const q = num(inputs, "qrsCount"), t = num(inputs, "durationSeconds")
+    assertPositive(q, "QRS count"); assertPositive(t, "Strip duration")
+    const rate = round(q * 60 / t, 0)
+    return { value: rate, unit: "bpm", display: `Estimated ventricular rate: ${rate} bpm`, calculationSteps: [`${q} × 60 ÷ ${t} = ${rate} bpm`], warnings: ["This is a rate calculation only; rhythm diagnosis requires ECG interpretation."] }
+  }
 }

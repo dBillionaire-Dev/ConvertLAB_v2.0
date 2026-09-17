@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { ldlCalculator, nonHdlCalculator, vldlCalculator, anionGapCalculator, correctedCalciumCalculator, totalHdlRatioCalculator, calciumPhosphateProductCalculator, ldlHdlRatioCalculator, deltaRatioCalculator, estimatedOsmolalityCalculator, hba1cEagCalculator } from "./chemistry"
+import { ldlCalculator, nonHdlCalculator, vldlCalculator, anionGapCalculator, correctedCalciumCalculator, totalHdlRatioCalculator, calciumPhosphateProductCalculator, ldlHdlRatioCalculator, deltaRatioCalculator, estimatedOsmolalityCalculator, hba1cEagCalculator, correctedSodiumCalculator, correctedBunCalculator, correctedAlbuminAnionGapCalculator, creatinineUnitConversionCalculator } from "./chemistry"
 
 describe("ldlCalculator", () => {
   it("computes LDL via the Friedewald equation (mg/dL)", () => {
@@ -227,4 +227,12 @@ describe("hba1cEagCalculator", () => {
   it("throws for zero/negative value", () => {
     expect(() => hba1cEagCalculator.calculate({ direction: "hba1c-to-eag", value: 0 })).toThrow()
   })
+})
+
+
+describe("expanded chemistry calculators", () => {
+  it("corrects sodium for hyperglycemia", () => expect(correctedSodiumCalculator.calculate({ sodium: 130, glucose: 300, factor: 1.6 }).value).toBe(133.2))
+  it("converts urea to BUN", () => expect(correctedBunCalculator.calculate({ direction:"urea-to-bun", value:10 }).value).toBe(28))
+  it("calculates albumin-corrected anion gap", () => expect(correctedAlbuminAnionGapCalculator.calculate({ sodium:140, chloride:100, bicarbonate:20, albumin:2 }).value).toBe(27))
+  it("converts creatinine units", () => expect(creatinineUnitConversionCalculator.calculate({ direction:"mgdl-to-umol", value:1 }).value).toBe(88.4))
 })

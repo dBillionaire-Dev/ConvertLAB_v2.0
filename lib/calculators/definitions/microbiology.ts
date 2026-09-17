@@ -101,3 +101,69 @@ export const concentrationAfterDilutionCalculator: CalculatorDefinition = {
   },
   notes: ["Use the same concentration units for input and output. This tool does not convert units."],
 }
+
+
+export const serialDilutionFactorCalculator: CalculatorDefinition = {
+  id: "serial-dilution-total-factor",
+  name: "Serial Dilution Total Factor",
+  shortName: "Total Dilution",
+  category: "microbiology",
+  description: "Calculates the overall dilution factor from multiple serial dilution steps.",
+  formula: "Total dilution factor = factor₁ × factor₂ × ... × factorₙ",
+  inputs: [
+    { id: "factor1", label: "Dilution factor — step 1", kind: "number", min: 1, step: 1, defaultValue: 10 },
+    { id: "factor2", label: "Dilution factor — step 2", kind: "number", min: 1, step: 1, optional: true },
+    { id: "factor3", label: "Dilution factor — step 3", kind: "number", min: 1, step: 1, optional: true },
+    { id: "factor4", label: "Dilution factor — step 4", kind: "number", min: 1, step: 1, optional: true },
+  ],
+  calculate: (inputs) => {
+    const values = ["factor1","factor2","factor3","factor4"].map(id => inputs[id]).filter(v => v !== undefined && v !== "")
+    if (!values.length) throw new Error("At least one dilution factor is required.")
+    const factors = values.map((v, i) => {
+      const n = Number(v)
+      if (!Number.isFinite(n) || n < 1) throw new Error(`Dilution factor ${i + 1} must be at least 1.`)
+      return n
+    })
+    const total = factors.reduce((a,b) => a*b, 1)
+    return { value: total, display: `Total dilution factor: ${total}`, calculationSteps: [factors.join(" × ") + ` = ${total}`], warnings: ["Enter each step as the reciprocal dilution factor (for example, 10 for a 1:10 dilution)."] }
+  }
+}
+
+export const concentrationAfterSerialDilutionCalculator: CalculatorDefinition = {
+  id: "microbiology-concentration-dilution",
+  name: "Microbiology Concentration After Dilution",
+  shortName: "Diluted Concentration",
+  category: "microbiology",
+  description: "Calculates the concentration after a documented dilution factor; useful for serial-dilution laboratory workflows.",
+  formula: "Final concentration = initial concentration ÷ dilution factor",
+  inputs: [
+    { id: "initialConcentration", label: "Initial concentration", kind: "number", min: 0, step: 0.01 },
+    { id: "dilutionFactor", label: "Dilution factor", kind: "number", min: 1, step: 1, defaultValue: 100 },
+  ],
+  calculate: (inputs) => {
+    const c = num(inputs, "initialConcentration"), f = num(inputs, "dilutionFactor")
+    assertNonNegative(c, "Initial concentration"); assertPositive(f, "Dilution factor")
+    const out = round(c / f, 6)
+    return { value: out, display: `Final concentration: ${out}`, calculationSteps: [`${c} ÷ ${f} = ${out}`], warnings: ["Keep concentration units unchanged; this tool performs arithmetic only."] }
+  }
+}
+
+export const pooledCultureCfuCalculator: CalculatorDefinition = {
+  id: "pooled-cfu-per-ml",
+  name: "Pooled CFU/mL Estimation",
+  shortName: "Pooled CFU/mL",
+  category: "microbiology",
+  description: "Estimates CFU/mL when multiple plates from the same dilution are pooled, using total colonies and total plated volume.",
+  formula: "CFU/mL = total colonies ÷ total plated volume × dilution factor",
+  inputs: [
+    { id: "totalColonies", label: "Total colonies counted", kind: "number", min: 0, step: 1, defaultValue: 100 },
+    { id: "totalVolumeMl", label: "Total plated volume", kind: "number", unit: "mL", min: 0.001, step: 0.001, defaultValue: 0.1 },
+    { id: "dilutionFactor", label: "Dilution factor", kind: "number", min: 1, step: 1, defaultValue: 100 },
+  ],
+  calculate: (inputs) => {
+    const c = num(inputs, "totalColonies"), v = num(inputs, "totalVolumeMl"), f = num(inputs, "dilutionFactor")
+    assertNonNegative(c, "Total colonies"); assertPositive(v, "Total plated volume"); assertPositive(f, "Dilution factor")
+    const result = round((c / v) * f, 2)
+    return { value: result, unit: "CFU/mL", display: `Estimated CFU/mL: ${result}`, calculationSteps: [`(${c} ÷ ${v}) × ${f} = ${result} CFU/mL`], warnings: ["Use only plates and dilution steps that meet the laboratory's validated counting criteria."] }
+  }
+}

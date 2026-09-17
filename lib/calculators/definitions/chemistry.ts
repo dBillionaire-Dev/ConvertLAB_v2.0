@@ -453,3 +453,92 @@ export const hba1cEagCalculator: CalculatorDefinition = {
   },
   notes: ["Based on the ADAG (A1c-Derived Average Glucose) study formula; individual correlation between HbA1c and glucose varies."],
 }
+
+
+export const correctedSodiumCalculator: CalculatorDefinition = {
+  id: "corrected-sodium-hyperglycemia",
+  name: "Corrected Sodium for Hyperglycemia",
+  shortName: "Corrected Na",
+  category: "chemistry",
+  description: "Estimates corrected sodium from measured sodium and glucose using an explicitly selected correction factor.",
+  formula: "Corrected Na = measured Na + correction factor × ((glucose − 100) / 100)",
+  isEstimator: true,
+  inputs: [
+    { id: "sodium", label: "Measured sodium", kind: "number", unit: "mmol/L", min: 1, max: 250, step: 0.1, defaultValue: 140 },
+    { id: "glucose", label: "Glucose", kind: "number", unit: "mg/dL", min: 0, max: 2000, step: 1, defaultValue: 100 },
+    { id: "factor", label: "Correction factor", kind: "number", unit: "mmol/L per 100 mg/dL", min: 1.6, max: 2.4, step: 0.1, defaultValue: 2.4 },
+  ],
+  calculate: (inputs) => {
+    const na = num(inputs, "sodium"), glucose = num(inputs, "glucose"), factor = num(inputs, "factor")
+    assertPositive(na, "Sodium"); assertNonNegative(glucose, "Glucose"); assertPositive(factor, "Correction factor")
+    const corrected = round(na + factor * ((glucose - 100) / 100), 1)
+    return { value: corrected, unit: "mmol/L", display: `Corrected sodium: ${corrected} mmol/L`, calculationSteps: [`${na} + ${factor} × ((${glucose} − 100) ÷ 100) = ${corrected}`], warnings: ["Published sodium correction factors differ; this is an estimate. Use the method specified by the clinical/laboratory protocol."] }
+  },
+  notes: ["The correction factor is explicitly user-selected because published conventions vary."]
+}
+
+export const correctedBunCalculator: CalculatorDefinition = {
+  id: "bun-from-urea",
+  name: "Urea ↔ BUN Conversion",
+  shortName: "Urea/BUN",
+  category: "chemistry",
+  description: "Converts blood urea nitrogen and urea between common reporting units.",
+  inputs: [
+    { id: "direction", label: "Direction", kind: "select", options: [{ value: "urea-to-bun", label: "Urea mmol/L → BUN mg/dL" }, { value: "bun-to-urea", label: "BUN mg/dL → Urea mmol/L" }], defaultValue: "urea-to-bun" },
+    { id: "value", label: "Value", kind: "number", min: 0, step: 0.1, defaultValue: 10 },
+  ],
+  calculate: (inputs) => {
+    const v = num(inputs, "value"); assertNonNegative(v, "Value")
+    if (inputs.direction === "urea-to-bun") {
+      const bun = round(v * 2.8, 1)
+      return { value: bun, unit: "mg/dL", display: `BUN: ${bun} mg/dL`, calculationSteps: [`${v} × 2.8 = ${bun} mg/dL`] }
+    }
+    const urea = round(v / 2.8, 1)
+    return { value: urea, unit: "mmol/L", display: `Urea: ${urea} mmol/L`, calculationSteps: [`${v} ÷ 2.8 = ${urea} mmol/L`] }
+  },
+  notes: ["Approximate conversion factor: BUN mg/dL ≈ urea mmol/L × 2.8. Laboratory reporting conventions should be confirmed."]
+}
+
+export const correctedAlbuminAnionGapCalculator: CalculatorDefinition = {
+  id: "albumin-corrected-anion-gap",
+  name: "Albumin-Corrected Anion Gap",
+  shortName: "Corrected AG",
+  category: "chemistry",
+  description: "Corrects the calculated anion gap for an albumin concentration below the reference value.",
+  formula: "Corrected AG = AG + 2.5 × (4.0 − albumin[g/dL])",
+  inputs: [
+    { id: "sodium", label: "Sodium", kind: "number", unit: "mmol/L", min: 1, max: 250, step: 0.1 },
+    { id: "chloride", label: "Chloride", kind: "number", unit: "mmol/L", min: 1, max: 250, step: 0.1, defaultValue: 100 },
+    { id: "bicarbonate", label: "Bicarbonate", kind: "number", unit: "mmol/L", min: 1, max: 100, step: 0.1, defaultValue: 24 },
+    { id: "albumin", label: "Albumin", kind: "number", unit: "g/dL", min: 0.1, max: 10, step: 0.1, defaultValue: 4 },
+  ],
+  calculate: (inputs) => {
+    const na = num(inputs, "sodium"), cl = num(inputs, "chloride"), hco3 = num(inputs, "bicarbonate"), albumin = num(inputs, "albumin")
+    assertPositive(na, "Sodium"); assertPositive(cl, "Chloride"); assertPositive(hco3, "Bicarbonate"); assertPositive(albumin, "Albumin")
+    const ag = na - cl - hco3
+    const corrected = round(ag + 2.5 * (4 - albumin), 1)
+    return { value: corrected, unit: "mmol/L", display: `Albumin-corrected AG: ${corrected} mmol/L`, secondary: [{ label: "Measured anion gap", value: `${round(ag,1)} mmol/L` }], calculationSteps: [`AG = ${na} − ${cl} − ${hco3} = ${round(ag,1)}`, `Corrected AG = ${round(ag,1)} + 2.5 × (4 − ${albumin}) = ${corrected}`], warnings: ["Correction coefficients and reference albumin vary among sources; use the convention validated by your laboratory or clinical service."] }
+  }
+}
+
+export const creatinineUnitConversionCalculator: CalculatorDefinition = {
+  id: "creatinine-unit-conversion",
+  name: "Creatinine Unit Conversion",
+  shortName: "Creatinine",
+  category: "chemistry",
+  description: "Converts serum creatinine between mg/dL and µmol/L.",
+  inputs: [
+    { id: "direction", label: "Direction", kind: "select", options: [{ value: "mgdl-to-umol", label: "mg/dL → µmol/L" }, { value: "umol-to-mgdl", label: "µmol/L → mg/dL" }], defaultValue: "mgdl-to-umol" },
+    { id: "value", label: "Creatinine", kind: "number", min: 0, step: 0.01, defaultValue: 1 },
+  ],
+  calculate: (inputs) => {
+    const v = num(inputs, "value"); assertNonNegative(v, "Creatinine")
+    if (inputs.direction === "mgdl-to-umol") {
+      const out = round(v * 88.4, 1)
+      return { value: out, unit: "µmol/L", display: `Creatinine: ${out} µmol/L`, calculationSteps: [`${v} × 88.4 = ${out} µmol/L`] }
+    }
+    const out = round(v / 88.4, 2)
+    return { value: out, unit: "mg/dL", display: `Creatinine: ${out} mg/dL`, calculationSteps: [`${v} ÷ 88.4 = ${out} mg/dL`] }
+  },
+  notes: ["Conversion uses 1 mg/dL creatinine ≈ 88.4 µmol/L."]
+}
