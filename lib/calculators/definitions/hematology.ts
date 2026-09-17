@@ -200,7 +200,7 @@ export const absoluteCellCountCalculator: CalculatorDefinition = {
   description: "Calculates an absolute white cell count (e.g. ANC, ALC) from total WBC and differential percentage.",
   formula: "Absolute count = WBC(x10⁹/L) x (differential % / 100)",
   keywords: ["anc", "absolute neutrophil count", "alc", "aec", "amc", "differential"],
-  relatedTools: ["mcv", "mch", "mchc", "corrected-wbc"],
+  relatedTools: ["red-cell-indices", "corrected-wbc"],
   inputs: [
     {
       id: "cellType",
@@ -286,7 +286,7 @@ export const hematocritEstimateCalculator: CalculatorDefinition = {
   isEstimator: true,
   formula: "Hct (%) ≈ Hgb (g/dL) x 3",
   keywords: ["hematocrit estimation", "rule of three", "hgb hct relationship"],
-  relatedTools: ["mcv", "mchc"],
+  relatedTools: ["red-cell-indices"],
   inputs: [{ id: "hgb", label: "Hemoglobin", kind: "number", unit: "g/dL", min: 0, step: 0.1, defaultValue: 14 }],
   calculate: (inputs) => {
     const hgb = num(inputs, "hgb")

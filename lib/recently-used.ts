@@ -35,6 +35,10 @@ export function recordUsage(toolId: string) {
   write(next)
 }
 
+export function clearRecentlyUsed() {
+  write([])
+}
+
 export function subscribeRecentlyUsed(callback: () => void): () => void {
   if (!isBrowser()) return () => {}
   window.addEventListener("convertlab:recently-used-changed", callback)

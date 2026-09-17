@@ -49,8 +49,8 @@ import {
   estimatedRbcTransfusionVolumeCalculator,
   revisedInternationalPrognosticIndexCalculator,
 } from "./definitions/hematology"
-import { molarityCalculator, normalityCalculator } from "./definitions/lab-solutions"
-import { beerLambertCalculator } from "./definitions/spectrophotometry"
+import { molarityCalculator, normalityCalculator, c1v1c2v2Calculator, percentSolutionCalculator, molarityPreparationCalculator, reagentDilutionVolumeCalculator } from "./definitions/lab-solutions"
+import { beerLambertCalculator, absorbanceTransmittanceCalculator, spectrophotometryStandardCurveCalculator, dilutionCorrectedSpectroConcentrationCalculator, wavelengthFrequencyCalculator, photonEnergyCalculator, wavenumberCalculator, blankCorrectedAbsorbanceCalculator, replicateStatisticsCalculator, calibrationRegressionCalculator, photometricLinearityCalculator } from "./definitions/spectrophotometry"
 import {
   oncologyBsaDoseCalculator,
   oncologyDoseIntensityCalculator,
@@ -186,7 +186,21 @@ export const calculators: CalculatorDefinition[] = [
   revisedInternationalPrognosticIndexCalculator,
   molarityCalculator,
   normalityCalculator,
+  c1v1c2v2Calculator,
+  percentSolutionCalculator,
+  molarityPreparationCalculator,
+  reagentDilutionVolumeCalculator,
   beerLambertCalculator,
+  absorbanceTransmittanceCalculator,
+  spectrophotometryStandardCurveCalculator,
+  dilutionCorrectedSpectroConcentrationCalculator,
+  wavelengthFrequencyCalculator,
+  photonEnergyCalculator,
+  wavenumberCalculator,
+  blankCorrectedAbsorbanceCalculator,
+  replicateStatisticsCalculator,
+  calibrationRegressionCalculator,
+  photometricLinearityCalculator,
   cfuCalculator,
   dilutionFactorCalculator,
   concentrationAfterDilutionCalculator,
@@ -297,6 +311,27 @@ export function getCalculatorsByCategory(category: CalculatorGroup): CalculatorD
 export function getRelatedCalculators(def: CalculatorDefinition): CalculatorDefinition[] {
   if (!def.relatedTools?.length) return []
   return def.relatedTools.map((id) => getCalculatorById(id)).filter((c): c is CalculatorDefinition => Boolean(c))
+}
+
+export function getRecommendedCalculators(def: CalculatorDefinition, limit = 6): CalculatorDefinition[] {
+  const explicit = getRelatedCalculators(def)
+  const explicitIds = new Set(explicit.map((c) => c.id))
+  const tokens = new Set((def.keywords ?? []).map((k) => k.toLowerCase()).filter(Boolean))
+
+  const scored = calculators
+    .filter((c) => c.id !== def.id && !explicitIds.has(c.id))
+    .map((c) => {
+      const sharedKeywords = (c.keywords ?? []).reduce((n, keyword) => n + (tokens.has(keyword.toLowerCase()) ? 1 : 0), 0)
+      const sameSubcategory = Boolean(def.subcategory && c.category === def.category && c.subcategory === def.subcategory)
+      const sameCategory = c.category === def.category
+      return { c, score: sharedKeywords * 3 + (sameSubcategory ? 4 : 0) + (sameCategory ? 1 : 0) }
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || a.c.name.localeCompare(b.c.name))
+    .slice(0, Math.max(0, limit - explicit.length))
+    .map(({ c }) => c)
+
+  return [...explicit, ...scored].slice(0, limit)
 }
 
 export const calculatorCatalog: { id: CalculatorGroup; label: string; count: number }[] = (

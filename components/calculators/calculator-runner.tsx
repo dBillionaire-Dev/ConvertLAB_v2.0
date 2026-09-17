@@ -1,11 +1,11 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import Link from "next/link"
-import { Calculator, Copy, Save, Share2, Star, AlertTriangle, FileDown } from "lucide-react"
+import { Calculator, Copy, Save, Share2, Star, AlertTriangle, FileDown, RotateCcw } from "lucide-react"
 import type { CalculatorDefinition, CalculationResult } from "@/lib/calculators/types"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
-import { getCalculatorById, getRelatedCalculators } from "@/lib/calculators/registry"
+import { getCalculatorById, getRecommendedCalculators } from "@/lib/calculators/registry"
 import { CalculatorField } from "./calculator-field"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -18,6 +18,7 @@ import { trackCalculation } from "@/lib/analytics/track-calculation"
 import { useHistory } from "@/lib/history/use-history"
 import { cn } from "@/lib/utils"
 import { getDosingSafetyWarnings, validateCalculatorInputBounds } from "@/lib/calculators/dosing-safety"
+import { getCalculatorSafetyWarnings } from "@/lib/calculators/calculation-safety"
 import { getCalculatorReferences } from "@/lib/calculators/dosing-references"
 
 function defaultValues(def: CalculatorDefinition | undefined): Record<string, string> {
@@ -37,11 +38,15 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
   const [values, setValues] = useState<Record<string, string>>(() => defaultValues(definition))
   const [result, setResult] = useState<CalculationResult | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [savedToHistory, setSavedToHistory] = useState(false)
+  const [calculating, setCalculating] = useState(false)
   const [favorite, setFavorite] = useState(() => (definition ? isFavorite(definition.id) : false))
   const { toast } = useToast()
   const { record } = useHistory()
-  const related = useMemo(() => (definition ? getRelatedCalculators(definition) : []), [definition])
+  const related = useMemo(() => (definition ? getRecommendedCalculators(definition) : []), [definition])
   const references = useMemo(() => (definition ? getCalculatorReferences(definition) : []), [definition])
+  const resultHeadingRef = useRef<HTMLHeadingElement>(null)
+  const lastParsedInputsRef = useRef<Record<string, number | string> | null>(null)
 
   if (!definition) {
     return (
@@ -71,27 +76,66 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
     return { label: input.label, display: display || "" }
   })
 
-  const handleCalculate = () => {
+  const saveResultToHistory = async (parsed: Record<string, number | string>, calcResult: CalculationResult) => {
+    try {
+      await record({
+        calculatorId: definition.id,
+        calculatorName: definition.name,
+        category: definition.category,
+        inputs: parsed,
+        result: calcResult.value,
+        unit: calcResult.unit,
+      })
+      setSavedToHistory(true)
+    } catch {
+      setSavedToHistory(false)
+      toast({ description: "The result could not be saved to local history." })
+    }
+  }
+
+  const handleCalculate = async () => {
+    if (calculating) return
     setError(null)
+    setSavedToHistory(false)
+    setCalculating(true)
     try {
       const parsed: Record<string, number | string> = {}
       for (const input of definition.inputs) {
-        const raw = values[input.id]
+        const raw = values[input.id] ?? ""
+        if (raw === "" && !input.optional) {
+          throw new Error(`${input.label} is required.`)
+        }
         parsed[input.id] = input.kind === "number" ? (raw === "" ? "" : raw) : raw
       }
 
       validateCalculatorInputBounds(definition, parsed)
       const calcResult = definition.calculate(parsed)
       const safetyWarnings = getDosingSafetyWarnings(definition, parsed, calcResult)
-      const mergedWarnings = [...(calcResult.warnings ?? []), ...safetyWarnings]
-
-      setResult({
+      const generalSafetyWarnings = getCalculatorSafetyWarnings(definition, parsed, calcResult)
+      const mergedWarnings = [...(calcResult.warnings ?? []), ...safetyWarnings, ...generalSafetyWarnings]
+      const finalResult = {
         ...calcResult,
         warnings: mergedWarnings.length ? Array.from(new Set(mergedWarnings)) : undefined,
-      })
+      }
+
+      lastParsedInputsRef.current = parsed
+      setResult(finalResult)
+      recordUsage(definition.id)
+      await saveResultToHistory(parsed, finalResult)
+      requestAnimationFrame(() => resultHeadingRef.current?.focus())
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to calculate this result.")
+    } finally {
+      setCalculating(false)
     }
+  }
+
+  const handleReset = () => {
+    setValues(defaultValues(definition))
+    setResult(null)
+    setError(null)
+    setSavedToHistory(false)
+    lastParsedInputsRef.current = null
   }
 
   const regimenSummary = useMemo(() => {
@@ -170,7 +214,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 [content-visibility:auto]">
       <Card className="print:hidden">
         <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
           <div>
@@ -191,6 +235,15 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
           </Button>
         </CardHeader>
         <CardContent className="space-y-5">
+          <form
+            className="space-y-5"
+            onSubmit={(event) => {
+              event.preventDefault()
+              void handleCalculate()
+            }}
+            noValidate
+            aria-label={`${definition.name} calculator`}
+          >
           <div className="grid gap-4 sm:grid-cols-2">
             {definition.inputs.map((input) => (
               <CalculatorField
@@ -210,9 +263,13 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
             </div>
           ) : null}
 
-          <Button onClick={handleCalculate} className="w-full sm:w-auto">
-            Calculate
+          <Button type="submit" disabled={calculating} aria-busy={calculating} className="w-full sm:w-auto">
+            {calculating ? "Calculating…" : "Calculate"}
           </Button>
+          </form>
+          <div className="sr-only" aria-live="polite" aria-atomic="true">
+            {calculating ? "Calculating result." : result ? `Result ready: ${result.display}` : ""}
+          </div>
         </CardContent>
       </Card>
 
@@ -224,7 +281,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
               <p className="font-bold">ConvertLAB</p>
               <p className="text-xs text-muted-foreground">{definition.name} — {new Date().toLocaleDateString()}</p>
             </div>
-            <CardTitle className="text-sm font-medium text-muted-foreground">Result</CardTitle>
+            <CardTitle ref={resultHeadingRef} tabIndex={-1} className="text-sm font-medium text-muted-foreground focus:outline-none">Result</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
             {definition.category === "dosing" ? (
@@ -379,8 +436,16 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
               <Button variant="outline" size="sm" onClick={handleCopy}>
                 <Copy className="h-4 w-4 mr-1.5" /> Copy
               </Button>
-              <Button variant="outline" size="sm" onClick={() => toast({ description: "Saved to history." })}>
-                <Save className="h-4 w-4 mr-1.5" /> Save
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => result && lastParsedInputsRef.current && saveResultToHistory(lastParsedInputsRef.current, result)}
+                disabled={!result || savedToHistory}
+              >
+                <Save className="h-4 w-4 mr-1.5" /> {savedToHistory ? "Saved" : "Save to history"}
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleReset}>
+                <RotateCcw className="h-4 w-4 mr-1.5" /> Reset
               </Button>
               <Button variant="outline" size="sm" onClick={handleShare}>
                 <Share2 className="h-4 w-4 mr-1.5" /> Share
@@ -406,7 +471,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
 
       {related.length ? (
         <div className="print:hidden">
-          <h3 className="text-sm font-medium text-muted-foreground mb-2">Related Tools</h3>
+          <h3 className="text-sm font-medium text-muted-foreground mb-2">Related &amp; recommended tools</h3>
           <div className="flex flex-wrap gap-2">
             {related.map((tool) => (
               <Link key={tool.id} href={`/calculators/${tool.category}/${tool.id}`}>

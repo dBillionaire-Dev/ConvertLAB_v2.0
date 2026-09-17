@@ -129,6 +129,6 @@ describe("expanded hematology calculators", () => {
     expect(apttRatioCalculator.calculate({ patientAptt: 60, controlAptt: 30 }).value).toBe(2)
   })
   it("calculates revised IPI", () => {
-    expect(revisedInternationalPrognosticIndexCalculator.calculate({ age: 70, stage34: "yes", performance: "yes", ldh: "yes", extranodal: "no" }).value).toBe(3)
+    expect(revisedInternationalPrognosticIndexCalculator.calculate({ age: 70, stage34: "yes", performance: "yes", ldh: "yes", extranodal: "no" }).value).toBe(4)
   })
 })

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { Calculator, ArrowLeftRight, FlaskConical, Star, History, Settings } from "lucide-react"
+import { Calculator, ArrowLeftRight, FlaskConical, Star, History, Settings, Clock3 } from "lucide-react"
 import {
   CommandDialog,
   CommandEmpty,
@@ -70,6 +70,9 @@ export function CommandPalette() {
           </CommandItem>
           <CommandItem value="history" onSelect={() => go("/history")}>
             <History className="mr-2 h-4 w-4" /> History
+          </CommandItem>
+          <CommandItem value="recent calculators" onSelect={() => go("/recent")}>
+            <Clock3 className="mr-2 h-4 w-4" /> Recent Calculators
           </CommandItem>
           <CommandItem value="settings" onSelect={() => go("/settings")}>
             <Settings className="mr-2 h-4 w-4" /> Settings

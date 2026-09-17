@@ -27,21 +27,21 @@ export async function POST(request: Request) {
     const { url, key } = config()
     const displayName = displayNameFor(body.anonymousId)
 
-    const response = await fetch(`${url}/rest/v1/convertlab_devices?on_conflict=anonymous_id`, {
+    const response = await fetch(`${url}/rest/v1/rpc/convertlab_touch_device`, {
       method: "POST",
       headers: {
         apikey: key,
         Authorization: `Bearer ${key}`,
         "Content-Type": "application/json",
-        Prefer: "resolution=merge-duplicates,return=minimal",
       },
       body: JSON.stringify({
-        anonymous_id: body.anonymousId,
-        display_name: displayName,
-        last_seen_at: new Date().toISOString(),
-        source: body.source,
-        environment: body.environment,
-        app_version: body.appVersion,
+        p_anonymous_id: body.anonymousId,
+        p_display_name: displayName,
+        p_last_seen_at: new Date().toISOString(),
+        p_last_calculation_at: null,
+        p_source: body.source,
+        p_environment: body.environment,
+        p_app_version: body.appVersion,
       }),
     })
 

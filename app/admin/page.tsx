@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { clearAdminCookie, isAdminAuthenticated } from "@/lib/admin-auth"
 import type { AnalyticsSnapshot } from "@/lib/analytics/types"
+import { AdminUserManagementTable } from "@/components/admin-user-management"
 
 async function getAnalytics(): Promise<AnalyticsSnapshot> {
   const url = process.env.SUPABASE_URL
@@ -151,16 +152,15 @@ export default async function AdminPage() {
           </div>
         ) : null}
 
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             ["Total calculations", data.total],
             ["Calculations today", data.today],
             ["Calculations · 14 days", data.last14Days],
-            ["Active now", data.activeUsers],
             ["Total users/devices", data.totalUsers],
+            ["Active now", data.activeUsers],
             ["Users today", data.uniqueUsersToday],
             ["Users · 14 days", data.uniqueUsersLast14Days],
-            ["Offline synced", data.offlineSynced],
             ["Historical backlog", data.historyBackfilled],
           ].map(([label, value]) => (
             <div key={String(label)} className="rounded-xl border bg-background p-5 shadow-sm">
@@ -224,55 +224,7 @@ export default async function AdminPage() {
             <span className="text-sm font-medium">{number(data.totalUsers)} total</span>
           </div>
           <div className="mt-4 overflow-x-auto">
-            {data.allUsersList.length ? (
-              <table className="w-full min-w-[1120px] text-sm">
-                <thead>
-                  <tr className="border-b text-left text-muted-foreground">
-                    <th className="pb-3 pr-4 font-medium">User</th>
-                    <th className="pb-3 pr-4 font-medium">Status</th>
-                    <th className="pb-3 pr-4 font-medium">Last online</th>
-                    <th className="pb-3 pr-4 font-medium">Last test</th>
-                    <th className="pb-3 pr-4 font-medium">Source</th>
-                    <th className="pb-3 pr-4 font-medium">Environment</th>
-                    <th className="pb-3 pr-4 font-medium">Today</th>
-                    <th className="pb-3 pr-4 font-medium">14 days</th>
-                    <th className="pb-3 font-medium">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.allUsersList.map((item) => {
-                    const lastSeen = new Date(item.lastSeenAt).getTime()
-                    const isActive = Number.isFinite(lastSeen) && Date.now() - lastSeen <= 5 * 60 * 1000
-                    return (
-                      <tr key={item.anonymousId} className="border-b last:border-0">
-                        <td className="py-3 pr-4 font-medium">{item.displayName}</td>
-                        <td className="py-3 pr-4">
-                          <span className={isActive ? "font-medium text-emerald-600" : "text-muted-foreground"}>
-                            {isActive ? "Active" : "Offline"}
-                          </span>
-                        </td>
-                        <td className="py-3 pr-4 whitespace-nowrap">{localDateTime(item.lastSeenAt)}</td>
-                        <td className="py-3 pr-4">
-                          {item.lastCalculatorName ? (
-                            <div>
-                              <div className="max-w-[220px] truncate font-medium">{item.lastCalculatorName}</div>
-                              {item.lastCalculationAt ? <div className="text-xs text-muted-foreground">{localDateTime(item.lastCalculationAt)}</div> : null}
-                            </div>
-                          ) : <span className="text-muted-foreground">No test recorded</span>}
-                        </td>
-                        <td className="py-3 pr-4 capitalize">{item.source}</td>
-                        <td className="py-3 pr-4">{item.environment}</td>
-                        <td className="py-3 pr-4 font-medium">{number(item.calculationsToday)}</td>
-                        <td className="py-3 pr-4 font-medium">{number(item.calculationsLast14Days)}</td>
-                        <td className="py-3 font-medium">{number(item.totalCalculations)}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            ) : (
-              <p className="text-sm text-muted-foreground">No users/devices recorded yet.</p>
-            )}
+            <AdminUserManagementTable users={data.allUsersList} />
           </div>
         </section>
 

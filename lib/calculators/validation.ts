@@ -37,6 +37,9 @@ export function auditCalculatorDefinition(c: CalculatorDefinition): CalculatorAu
     issues.push({ id: c.id, field: "subcategory", message: `Unknown subcategory "${c.subcategory}" for ${CALCULATOR_CATEGORY_LABELS[c.category]}.` })
   }
   if (typeof c.calculate !== "function") issues.push({ id: c.id, field: "calculate", message: "Calculate function is missing." })
+  for (const relatedId of c.relatedTools ?? []) {
+    if (relatedId === c.id) issues.push({ id: c.id, field: "relatedTools", message: "Calculator cannot relate to itself." })
+  }
   return issues
 }
 

@@ -459,3 +459,63 @@ $$;
 revoke all on function public.convertlab_usage_summary_v3() from public;
 grant execute on function public.convertlab_usage_summary_v3() to service_role;
 notify pgrst, 'reload schema';
+
+-- Record a device heartbeat from a presence ping or an analytics upload.
+-- Aliases are deliberately preserved: display_name is assigned only when the
+-- row is first inserted, so a name set from the admin console is never
+-- overwritten by a later touch. No IP address or personal identity is stored.
+create or replace function public.convertlab_touch_device(
+  p_anonymous_id text,
+  p_display_name text default null,
+  p_last_seen_at timestamptz default null,
+  p_last_calculation_at timestamptz default null,
+  p_source text default 'web',
+  p_environment text default 'production',
+  p_app_version text default 'unknown'
+)
+returns public.convertlab_devices
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  touched_at timestamptz := coalesce(p_last_seen_at, now());
+  result public.convertlab_devices;
+begin
+  if p_anonymous_id is null or length(trim(p_anonymous_id)) = 0 then
+    raise exception 'convertlab_touch_device requires an anonymous id';
+  end if;
+
+  insert into public.convertlab_devices (
+    anonymous_id, display_name, first_seen_at, last_seen_at,
+    last_calculation_at, source, environment, app_version
+  )
+  values (
+    p_anonymous_id,
+    coalesce(nullif(trim(p_display_name), ''), public.convertlab_display_name(p_anonymous_id)),
+    touched_at,
+    touched_at,
+    p_last_calculation_at,
+    coalesce(p_source, 'web'),
+    coalesce(p_environment, 'production'),
+    coalesce(p_app_version, 'unknown')
+  )
+  on conflict (anonymous_id) do update set
+    first_seen_at = least(public.convertlab_devices.first_seen_at, excluded.first_seen_at),
+    last_seen_at = greatest(public.convertlab_devices.last_seen_at, excluded.last_seen_at),
+    last_calculation_at = greatest(
+      public.convertlab_devices.last_calculation_at,
+      excluded.last_calculation_at
+    ),
+    source = excluded.source,
+    environment = excluded.environment,
+    app_version = excluded.app_version
+  returning * into result;
+
+  return result;
+end;
+$$;
+
+revoke all on function public.convertlab_touch_device(text, text, timestamptz, timestamptz, text, text, text) from public;
+grant execute on function public.convertlab_touch_device(text, text, timestamptz, timestamptz, text, text, text) to service_role;
+notify pgrst, 'reload schema';

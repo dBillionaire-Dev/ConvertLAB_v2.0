@@ -316,7 +316,7 @@ export function calculateTreatmentRegimenDoses(
       doseUnit: calculatedDoseUnit,
       route: drug.route,
       frequency: drug.frequency,
-      schedule: drug.schedule,
+      schedule: drug.schedule ?? drug.frequency,
       capped,
       calculation: capped
         ? `${calculation} → capped at ${drug.maximum} ${drug.maximumUnit ?? drug.doseUnit ?? ""}`.trim()

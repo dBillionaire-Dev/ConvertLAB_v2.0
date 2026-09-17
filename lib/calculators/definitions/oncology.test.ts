@@ -135,12 +135,12 @@ describe("oncology renal/hepatic dose-modification calculator", () => {
 
 
 describe("oncology toxicity / safety calculator", () => {
-  it("matches FOLFIRI grade 2 diarrhoea on second occurrence", () => {
+  it("matches FOLFIRI grade 3 diarrhoea on first occurrence", () => {
     const result = oncologyToxicitySafetyCalculator.calculate({
       regimenId: "folfiri-colorectal",
       toxicityType: "diarrhoea",
-      toxicityGrade: 2,
-      occurrence: 2,
+      toxicityGrade: 3,
+      occurrence: 1,
       persistentAtNextCycle: "no",
     })
     expect(result.display).toContain("1 toxicity rule")
@@ -234,9 +234,11 @@ describe("oncology cycle / course calculations", () => {
       plannedCycles: 6,
       completedCycles: 2,
     })
-    expect(result.display).toContain("1500.00 mg completed exposure")
-    expect(result.secondary?.some((field) => field.value === "3000.00 mg")).toBe(true)
-    expect(result.secondary?.some((field) => field.value === "2250.00 mg")).toBe(true)
+    expect(result.display).toContain("1500 mg completed exposure")
+    const field = (label: string) => result.secondary?.find((entry) => entry.label === label)?.value
+    expect(field("Planned course exposure")).toBe("4500 mg")
+    expect(field("Completed exposure")).toBe("1500 mg")
+    expect(field("Remaining planned exposure")).toBe("3000 mg")
   })
 })
 

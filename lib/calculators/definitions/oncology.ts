@@ -210,14 +210,14 @@ export const oncologyCycleTotalCalculator: CalculatorDefinition = {
 
 export const carboplatinCalvertCalculator: CalculatorDefinition = {
   id: "carboplatin-calvert-dose",
-  name: "Carboplatin Dose → Calvert Formula",
+  name: "Carboplatin Dose — Calvert Formula",
   shortName: "Carboplatin Calvert",
   category: "oncology",
   subcategory: "chemotherapy-dosing",
   description: "Calculates carboplatin total dose in mg from a protocol-specified target AUC and GFR using the Calvert formula.",
   formula: "Dose (mg) = target AUC × (GFR + 25)",
   keywords: ["oncology", "carboplatin", "Calvert", "AUC", "GFR", "chemotherapy"],
-  relatedTools: ["creatinine-clearance", "egfr", "oncology-dose-intensity"],
+  relatedTools: ["creatinine-clearance", "egfr-ckd-epi", "oncology-dose-intensity"],
   inputs: [
     { id: "targetAuc", label: "Target AUC", kind: "number", unit: "mg·min/mL", min: 0.1, step: 0.1 },
     { id: "gfr", label: "GFR used by the protocol", kind: "number", unit: "mL/min", min: 0.1, step: 0.1 },
@@ -483,7 +483,7 @@ const PATIENT_SPECIFIC_REGIMENS = treatmentRegimens.filter(
 /** Phase 28: patient-specific arithmetic for the verified BSA-based oncology registry. */
 export const oncologyRegimenDoseCalculator: CalculatorDefinition = {
   id: "oncology-regimen-dose",
-  name: "Oncology Regimen → Patient-Specific Dose",
+  name: "Oncology Regimen — Patient-Specific Dose",
   shortName: "Oncology Regimen Dose",
   category: "oncology",
   subcategory: "chemotherapy-dosing",
