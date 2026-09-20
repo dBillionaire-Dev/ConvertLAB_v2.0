@@ -261,9 +261,9 @@ it("calculates the WHO 0–59 day sepsis/pneumonia reference regimen", () => {
 
 it("calculates WHO 0–59 day meningitis reference options", () => {
   const result = whoYoungInfantMeningitisCalculator.calculate({ weight: 3, ageGroup: "first-week" })
-  expect(result.secondary?.find((x) => x.label === "Option 1 — Ampicillin")?.value).toContain("150 mg")
-  expect(result.secondary?.find((x) => x.label === "Option 2 — Cefotaxime")?.value).toContain("150 mg")
-  expect(result.secondary?.find((x) => x.label === "Option 3 — Ceftriaxone")?.value).toContain("300 mg")
+  expect(result.secondary?.find((x) => x.label === "Option 1 → Ampicillin")?.value).toContain("150 mg")
+  expect(result.secondary?.find((x) => x.label === "Option 2 → Cefotaxime")?.value).toContain("150 mg")
+  expect(result.secondary?.find((x) => x.label === "Option 3 → Ceftriaxone")?.value).toContain("300 mg")
   expect(result.secondary?.find((x) => x.label === "Treatment duration")?.value).toBe("At least 3 weeks")
 })
 

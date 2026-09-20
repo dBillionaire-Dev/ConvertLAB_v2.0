@@ -210,7 +210,7 @@ export const oncologyCycleTotalCalculator: CalculatorDefinition = {
 
 export const carboplatinCalvertCalculator: CalculatorDefinition = {
   id: "carboplatin-calvert-dose",
-  name: "Carboplatin Dose — Calvert Formula",
+  name: "Carboplatin Dose → Calvert Formula",
   shortName: "Carboplatin Calvert",
   category: "oncology",
   subcategory: "chemotherapy-dosing",
@@ -483,7 +483,7 @@ const PATIENT_SPECIFIC_REGIMENS = treatmentRegimens.filter(
 /** Phase 28: patient-specific arithmetic for the verified BSA-based oncology registry. */
 export const oncologyRegimenDoseCalculator: CalculatorDefinition = {
   id: "oncology-regimen-dose",
-  name: "Oncology Regimen — Patient-Specific Dose",
+  name: "Oncology Regimen → Patient-Specific Dose",
   shortName: "Oncology Regimen Dose",
   category: "oncology",
   subcategory: "chemotherapy-dosing",
@@ -765,7 +765,7 @@ export const oncologyFebrileNeutropeniaRiskCalculator: CalculatorDefinition = {
     return {
       value: risk,
       unit: "%",
-      display: `${fmt(risk, 1, "%")} estimated FN risk — ${band} band`,
+      display: `${fmt(risk, 1, "%")} estimated FN risk → ${band} band`,
       secondary: [
         { label: "Risk band", value: band },
         { label: "Patient-specific risk factors", value: factors === "yes" ? "Present" : factors === "no" ? "None identified" : "Not assessed" },
@@ -825,7 +825,7 @@ export const oncologyCycleProgressCalculator: CalculatorDefinition = {
     return {
       value: remaining,
       unit: "cycles remaining",
-      display: `${position} — ${remaining} planned cycle${remaining === 1 ? "" : "s"} remaining`,
+      display: `${position} → ${remaining} planned cycle${remaining === 1 ? "" : "s"} remaining`,
       secondary: [
         { label: "Completed cycles", value: `${completed} of ${planned}` },
         { label: "Course progress", value: `${progress}%` },
@@ -879,7 +879,7 @@ export const oncologyCourseCompletionCalculator: CalculatorDefinition = {
     return {
       value: completedExposure,
       unit: "mg completed exposure",
-      display: `${fmt(completedExposure, 2, "mg")} completed exposure — ${remaining} cycle${remaining === 1 ? "" : "s"} remaining`,
+      display: `${fmt(completedExposure, 2, "mg")} completed exposure → ${remaining} cycle${remaining === 1 ? "" : "s"} remaining`,
       secondary: [
         { label: "Planned course exposure", value: fmt(plannedExposure, 2, "mg") },
         { label: "Completed exposure", value: fmt(completedExposure, 2, "mg") },
