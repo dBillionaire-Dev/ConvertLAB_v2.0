@@ -62,8 +62,8 @@ export function MolarMassConverter() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="mass-to-molar">mg/dL → mmol/L</SelectItem>
-                <SelectItem value="molar-to-mass">mmol/L → mg/dL</SelectItem>
+                <SelectItem value="mass-to-molar">mg/dL  to  mmol/L</SelectItem>
+                <SelectItem value="molar-to-mass">mmol/L  to  mg/dL</SelectItem>
               </SelectContent>
             </Select>
           </div>

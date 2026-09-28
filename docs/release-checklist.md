@@ -1,6 +1,6 @@
 # ConvertLAB Release Checklist
 
-## Phase 61 — Accessibility
+## Phase 61  -  Accessibility
 
 - [x] Calculator inputs expose required/optional semantics.
 - [x] Calculator result announces completion to assistive technology.
@@ -8,14 +8,14 @@
 - [x] Calculator can submit with Enter.
 - [x] Main landmark is keyboard-focusable for skip navigation.
 
-## Phase 62 — Performance
+## Phase 62  -  Performance
 
 - [x] Calculator pages use loading boundaries.
 - [x] Long calculator runner content uses browser content-visibility where supported.
 - [x] Service-worker caching remains available for offline use.
 - [ ] Measure production Web Vitals after deployment.
 
-## Phase 63 — Security
+## Phase 63  -  Security
 
 - [x] TypeScript build errors are not ignored.
 - [x] Powered-by header disabled.
@@ -27,7 +27,7 @@
 - [x] Production COOP/CORP headers.
 - [ ] Run an external production security scan after deployment.
 
-## Phase 64 — Automated tests
+## Phase 64  -  Automated tests
 
 - [x] Registry integrity tests.
 - [x] Clinical audit tests.
@@ -35,11 +35,11 @@
 - [x] Release-hardening tests.
 - [ ] Execute the complete suite in CI.
 
-## Phase 65 — Production build
+## Phase 65  -  Production build
 
-CI runs: install → typecheck → unit tests → Next.js production build.
+CI runs: install  to  typecheck  to  unit tests  to  Next.js production build.
 
-## Phase 66 — Final release audit
+## Phase 66  -  Final release audit
 
 Run:
 

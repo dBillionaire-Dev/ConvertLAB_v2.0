@@ -210,7 +210,7 @@ export const oncologyCycleTotalCalculator: CalculatorDefinition = {
 
 export const carboplatinCalvertCalculator: CalculatorDefinition = {
   id: "carboplatin-calvert-dose",
-  name: "Carboplatin Dose → Calvert Formula",
+  name: "Carboplatin Dose  to  Calvert Formula",
   shortName: "Carboplatin Calvert",
   category: "oncology",
   subcategory: "chemotherapy-dosing",
@@ -453,7 +453,7 @@ export const oncologyOrganFunctionModificationCalculator: CalculatorDefinition =
       display: assessments.length ? `${assessments.length} protocol rule${assessments.length === 1 ? "" : "s"} matched` : "No structured renal/hepatic rule matched",
       secondary,
       calculationSteps: assessments.length
-        ? assessments.map((assessment) => `${assessment.trigger} → ${assessment.action}`)
+        ? assessments.map((assessment) => `${assessment.trigger}  to  ${assessment.action}`)
         : ["No structured renal/hepatic rule matched the supplied findings."],
       interpretation: assessments.length
         ? `The selected ${regimen.name} protocol contains the matched renal/hepatic guidance shown above. This is protocol guidance, not an automatic dose change.`
@@ -483,7 +483,7 @@ const PATIENT_SPECIFIC_REGIMENS = treatmentRegimens.filter(
 /** Phase 28: patient-specific arithmetic for the verified BSA-based oncology registry. */
 export const oncologyRegimenDoseCalculator: CalculatorDefinition = {
   id: "oncology-regimen-dose",
-  name: "Oncology Regimen → Patient-Specific Dose",
+  name: "Oncology Regimen  to  Patient-Specific Dose",
   shortName: "Oncology Regimen Dose",
   category: "oncology",
   subcategory: "chemotherapy-dosing",
@@ -765,7 +765,7 @@ export const oncologyFebrileNeutropeniaRiskCalculator: CalculatorDefinition = {
     return {
       value: risk,
       unit: "%",
-      display: `${fmt(risk, 1, "%")} estimated FN risk → ${band} band`,
+      display: `${fmt(risk, 1, "%")} estimated FN risk  to  ${band} band`,
       secondary: [
         { label: "Risk band", value: band },
         { label: "Patient-specific risk factors", value: factors === "yes" ? "Present" : factors === "no" ? "None identified" : "Not assessed" },
@@ -825,7 +825,7 @@ export const oncologyCycleProgressCalculator: CalculatorDefinition = {
     return {
       value: remaining,
       unit: "cycles remaining",
-      display: `${position} → ${remaining} planned cycle${remaining === 1 ? "" : "s"} remaining`,
+      display: `${position}  to  ${remaining} planned cycle${remaining === 1 ? "" : "s"} remaining`,
       secondary: [
         { label: "Completed cycles", value: `${completed} of ${planned}` },
         { label: "Course progress", value: `${progress}%` },
@@ -879,7 +879,7 @@ export const oncologyCourseCompletionCalculator: CalculatorDefinition = {
     return {
       value: completedExposure,
       unit: "mg completed exposure",
-      display: `${fmt(completedExposure, 2, "mg")} completed exposure → ${remaining} cycle${remaining === 1 ? "" : "s"} remaining`,
+      display: `${fmt(completedExposure, 2, "mg")} completed exposure  to  ${remaining} cycle${remaining === 1 ? "" : "s"} remaining`,
       secondary: [
         { label: "Planned course exposure", value: fmt(plannedExposure, 2, "mg") },
         { label: "Completed exposure", value: fmt(completedExposure, 2, "mg") },

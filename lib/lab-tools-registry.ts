@@ -10,7 +10,7 @@ export interface LabToolEntry {
  * Pages built as standalone components rather than registered calculators
  * or conversion categories (dilution math, solution prep, spectrophotometry
  * UI, and reference tables). Listed here so global search and the command
- * palette can find them too — see spec section 37's example results,
+ * palette can find them too  -  see spec section 37's example results,
  * which explicitly include "Dilution" and "Mass ↔ Volume".
  */
 export const labTools: LabToolEntry[] = [

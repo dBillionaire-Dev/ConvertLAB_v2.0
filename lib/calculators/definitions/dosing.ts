@@ -135,7 +135,7 @@ export const dosePerAdministrationCalculator: CalculatorDefinition = {
 export const doseVolumeCalculator: CalculatorDefinition = {
   id: "dose-volume",
   name: "Dose to Volume",
-  shortName: "Dose → Volume",
+  shortName: "Dose  to  Volume",
   category: "dosing",
   subcategory: "general-dosing",
   description: "Converts a required drug dose into a volume when the available concentration is known.",
@@ -288,12 +288,12 @@ export const maximumDoseCheckCalculator: CalculatorDefinition = {
 
 export const artesunateAmodiaquineCalculator: CalculatorDefinition = {
   id: "artesunate-amodiaquine-uncomplicated-malaria",
-  name: "Artesunate–Amodiaquine → Uncomplicated Malaria",
+  name: "Artesunate–Amodiaquine  to  Uncomplicated Malaria",
   shortName: "Artesunate–Amodiaquine",
   category: "dosing",
   subcategory: "antimalarial",
   description: "Provides the WHO weight-band daily dose of artesunate–amodiaquine for uncomplicated malaria over 3 days.",
-  formula: "Weight band → fixed-dose combination per day for 3 days",
+  formula: "Weight band  to  fixed-dose combination per day for 3 days",
   keywords: ["artesunate", "amodiaquine", "AS-AQ", "ACT", "malaria", "weight band"],
   relatedTools: ["mg-per-kg-dose", "artemether-lumefantrine-uncomplicated-malaria"],
   inputs: [{ id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 4.5, step: 0.1 }],
@@ -333,7 +333,7 @@ export const artesunateAmodiaquineCalculator: CalculatorDefinition = {
         { label: "Tablets per day", value: `${tabletsPerDay}` },
         { label: "Total tablets", value: `${tabletsPerDay * 3}` },
       ],
-      calculationSteps: [`${weight} kg → ${dose} once daily for 3 days`],
+      calculationSteps: [`${weight} kg  to  ${dose} once daily for 3 days`],
       interpretation: "Weight-band regimen for uncomplicated malaria using fixed-dose artesunate–amodiaquine. This calculator does not diagnose malaria or determine whether this regimen is appropriate for the patient.",
       warnings: [
         "Verify the exact marketed formulation and national malaria guideline before administration.",
@@ -350,12 +350,12 @@ export const artesunateAmodiaquineCalculator: CalculatorDefinition = {
 
 export const artesunateMefloquineCalculator: CalculatorDefinition = {
   id: "artesunate-mefloquine-uncomplicated-malaria",
-  name: "Artesunate–Mefloquine → Uncomplicated Malaria",
+  name: "Artesunate–Mefloquine  to  Uncomplicated Malaria",
   shortName: "Artesunate–Mefloquine",
   category: "dosing",
   subcategory: "antimalarial",
   description: "Provides the WHO weight-band daily dose of artesunate–mefloquine for uncomplicated malaria over 3 days.",
-  formula: "Weight band → fixed-dose combination per day for 3 days",
+  formula: "Weight band  to  fixed-dose combination per day for 3 days",
   keywords: ["artesunate", "mefloquine", "AS-MQ", "ACT", "malaria", "weight band"],
   relatedTools: ["mg-per-kg-dose", "artesunate-amodiaquine-uncomplicated-malaria"],
   inputs: [{ id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 5, step: 0.1 }],
@@ -392,7 +392,7 @@ export const artesunateMefloquineCalculator: CalculatorDefinition = {
         { label: "Tablets per day", value: `${tabletsPerDay}` },
         { label: "Total tablets", value: `${tabletsPerDay * 3}` },
       ],
-      calculationSteps: [`${weight} kg → ${dose} once daily for 3 days`],
+      calculationSteps: [`${weight} kg  to  ${dose} once daily for 3 days`],
       interpretation: "Weight-band regimen for uncomplicated malaria using fixed-dose artesunate–mefloquine. This calculator does not diagnose malaria or determine whether this regimen is appropriate for the patient.",
       warnings: [
         "Mefloquine has important contraindications and precautions; verify the current product information and national malaria guideline before administration.",
@@ -409,12 +409,12 @@ export const artesunateMefloquineCalculator: CalculatorDefinition = {
 
 export const dihydroartemisininPiperaquineCalculator: CalculatorDefinition = {
   id: "dihydroartemisinin-piperaquine-uncomplicated-malaria",
-  name: "Dihydroartemisinin–Piperaquine → Uncomplicated Malaria",
+  name: "Dihydroartemisinin–Piperaquine  to  Uncomplicated Malaria",
   shortName: "DHA–Piperaquine",
   category: "dosing",
   subcategory: "antimalarial",
   description: "Provides the WHO weight-band daily dose of dihydroartemisinin–piperaquine for uncomplicated malaria over 3 days.",
-  formula: "Weight band → fixed-dose combination once daily for 3 days",
+  formula: "Weight band  to  fixed-dose combination once daily for 3 days",
   keywords: ["dihydroartemisinin", "piperaquine", "DHA-PPQ", "ACT", "malaria", "weight band"],
   relatedTools: ["mg-per-kg-dose", "artemether-lumefantrine-uncomplicated-malaria"],
   inputs: [{ id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 5, step: 0.1 }],
@@ -456,7 +456,7 @@ export const dihydroartemisininPiperaquineCalculator: CalculatorDefinition = {
         { label: "Tablets per day", value: `${tablets}` },
         { label: "Total tablets", value: `${tablets * 3}` },
       ],
-      calculationSteps: [`${weight} kg → ${dha} mg DHA + ${piperaquine} mg piperaquine once daily for 3 days`],
+      calculationSteps: [`${weight} kg  to  ${dha} mg DHA + ${piperaquine} mg piperaquine once daily for 3 days`],
       interpretation: "Weight-band regimen for uncomplicated malaria using fixed-dose dihydroartemisinin–piperaquine. This calculator does not diagnose malaria or determine whether this regimen is appropriate for the patient.",
       warnings: [
         "Avoid high-fat meals around piperaquine dosing because increased absorption can increase QT-prolongation risk.",
@@ -475,12 +475,12 @@ export const dihydroartemisininPiperaquineCalculator: CalculatorDefinition = {
 
 export const artemetherLumefantrineCalculator: CalculatorDefinition = {
   id: "artemether-lumefantrine-uncomplicated-malaria",
-  name: "Artemether–Lumefantrine → Uncomplicated Malaria",
+  name: "Artemether–Lumefantrine  to  Uncomplicated Malaria",
   shortName: "Artemether–Lumefantrine",
   category: "dosing",
   subcategory: "antimalarial",
   description: "Provides the standard six-dose artemether–lumefantrine tablet regimen by patient weight for uncomplicated malaria.",
-  formula: "Weight band → tablets per dose; 6 doses at 0, 8, 24, 36, 48 and 60 hours",
+  formula: "Weight band  to  tablets per dose; 6 doses at 0, 8, 24, 36, 48 and 60 hours",
   keywords: ["artemether", "lumefantrine", "AL", "ACT", "malaria", "uncomplicated malaria", "weight band"],
   relatedTools: ["mg-per-kg-dose", "artesunate-severe-malaria"],
   inputs: [
@@ -510,7 +510,7 @@ export const artemetherLumefantrineCalculator: CalculatorDefinition = {
         { label: "Active ingredients per dose", value: `${artemetherPerDose} mg + ${lumefantrinePerDose} mg` },
       ],
       calculationSteps: [
-        `${weight} kg → ${tabletsPerDose} tablet${tabletsPerDose === 1 ? "" : "s"} per dose`,
+        `${weight} kg  to  ${tabletsPerDose} tablet${tabletsPerDose === 1 ? "" : "s"} per dose`,
         `${tabletsPerDose} tablet${tabletsPerDose === 1 ? "" : "s"} × 6 doses = ${totalTablets} tablets total`,
       ],
       interpretation: "Weight-band regimen for uncomplicated malaria using 20 mg/120 mg artemether–lumefantrine tablets. This calculator does not diagnose malaria or determine whether this regimen is appropriate for the patient.",
@@ -536,12 +536,12 @@ export const artemetherLumefantrineCalculator: CalculatorDefinition = {
 
 export const artesunateSulfadoxinePyrimethamineCalculator: CalculatorDefinition = {
   id: "artesunate-sulfadoxine-pyrimethamine-uncomplicated-malaria",
-  name: "Artesunate–Sulfadoxine/Pyrimethamine → Uncomplicated Malaria",
+  name: "Artesunate–Sulfadoxine/Pyrimethamine  to  Uncomplicated Malaria",
   shortName: "Artesunate–SP",
   category: "dosing",
   subcategory: "antimalarial",
   description: "Provides the WHO weight-band regimen of artesunate plus sulfadoxine–pyrimethamine for uncomplicated malaria.",
-  formula: "Weight band → artesunate daily for 3 days + single SP dose on day 1",
+  formula: "Weight band  to  artesunate daily for 3 days + single SP dose on day 1",
   keywords: ["artesunate", "sulfadoxine", "pyrimethamine", "AS-SP", "ASSP", "ACT", "malaria", "weight band"],
   relatedTools: ["mg-per-kg-dose", "artemether-lumefantrine-uncomplicated-malaria"],
   inputs: [{ id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 5, step: 0.1 }],
@@ -573,8 +573,8 @@ export const artesunateSulfadoxinePyrimethamineCalculator: CalculatorDefinition 
         { label: "Duration", value: "3 days of artesunate" },
       ],
       calculationSteps: [
-        `${weight} kg → ${artesunate} mg artesunate once daily for 3 days`,
-        `${weight} kg → ${sulfadoxine}/${pyrimethamine} mg SP as a single dose on day 1`,
+        `${weight} kg  to  ${artesunate} mg artesunate once daily for 3 days`,
+        `${weight} kg  to  ${sulfadoxine}/${pyrimethamine} mg SP as a single dose on day 1`,
       ],
       interpretation: "Weight-band regimen for uncomplicated malaria using artesunate plus sulfadoxine–pyrimethamine. This calculator does not diagnose malaria or determine whether this regimen is appropriate for the patient.",
       warnings: [
@@ -594,12 +594,12 @@ export const artesunateSulfadoxinePyrimethamineCalculator: CalculatorDefinition 
 
 export const artesunatePyronaridineCalculator: CalculatorDefinition = {
   id: "artesunate-pyronaridine-uncomplicated-malaria",
-  name: "Artesunate–Pyronaridine → Uncomplicated Malaria",
+  name: "Artesunate–Pyronaridine  to  Uncomplicated Malaria",
   shortName: "Artesunate–Pyronaridine",
   category: "dosing",
   subcategory: "antimalarial",
   description: "Provides a weight-band artesunate–pyronaridine regimen for uncomplicated malaria using the available oral suspension and tablet strengths.",
-  formula: "Weight band → fixed-dose combination once daily for 3 days",
+  formula: "Weight band  to  fixed-dose combination once daily for 3 days",
   keywords: ["artesunate", "pyronaridine", "AS-PY", "ASPY", "ACT", "malaria", "weight band"],
   relatedTools: ["mg-per-kg-dose", "artesunate-amodiaquine-uncomplicated-malaria"],
   inputs: [{ id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 5, step: 0.1 }],
@@ -650,7 +650,7 @@ export const artesunatePyronaridineCalculator: CalculatorDefinition = {
         { label: "Dosage form", value: dosageForm },
         { label: "Total units", value: `${unitsPerDay * 3}` },
       ],
-      calculationSteps: [`${weight} kg → ${dosageForm} once daily for 3 days`],
+      calculationSteps: [`${weight} kg  to  ${dosageForm} once daily for 3 days`],
       interpretation: "Weight-band regimen for uncomplicated malaria using artesunate–pyronaridine. This calculator does not diagnose malaria or determine whether this regimen is appropriate for the patient.",
       warnings: [
         "Verify the exact product strength and formulation before administration; pediatric granules and tablets are not interchangeable by unit count.",
@@ -671,7 +671,7 @@ export const artesunatePyronaridineCalculator: CalculatorDefinition = {
 export const oralLiquidDoseVolumeCalculator: CalculatorDefinition = {
   id: "oral-liquid-dose-volume",
   name: "Oral Liquid Dose Volume",
-  shortName: "Liquid Dose → mL",
+  shortName: "Liquid Dose  to  mL",
   category: "dosing",
   subcategory: "general-dosing",
   description: "Converts a required oral liquid dose in mg to mL when the product concentration is stated as mg per 5 mL.",
@@ -707,7 +707,7 @@ export const oralLiquidDoseVolumeCalculator: CalculatorDefinition = {
 export const tabletCapsuleCountCalculator: CalculatorDefinition = {
   id: "tablet-capsule-count",
   name: "Tablet/Capsule Dose Count",
-  shortName: "Dose → Units",
+  shortName: "Dose  to  Units",
   category: "dosing",
   subcategory: "general-dosing",
   description: "Calculates the number of tablets or capsules needed for a required dose when the unit strength is known.",
@@ -799,7 +799,7 @@ export const doseVolumeRoundingCalculator: CalculatorDefinition = {
 
 export const artesunateSevereMalariaCalculator: CalculatorDefinition = {
   id: "artesunate-severe-malaria",
-  name: "Artesunate → Severe Malaria",
+  name: "Artesunate  to  Severe Malaria",
   shortName: "Artesunate",
   category: "dosing",
   subcategory: "antimalarial",
@@ -856,7 +856,7 @@ export const artesunateSevereMalariaCalculator: CalculatorDefinition = {
 
 export const amoxicillinPediatricCalculator: CalculatorDefinition = {
   id: "amoxicillin-pediatric-dose",
-  name: "Amoxicillin → Pediatric Dose",
+  name: "Amoxicillin  to  Pediatric Dose",
   shortName: "Amoxicillin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -883,7 +883,7 @@ export const amoxicillinPediatricCalculator: CalculatorDefinition = {
       calculationSteps: [
         `25 mg/kg/day × ${weight} kg = ${lowDaily} mg/day`,
         `50 mg/kg/day × ${weight} kg = ${highDaily} mg/day`,
-        `Divide each daily dose by 3 → ${lowDose}–${highDose} mg/dose`,
+        `Divide each daily dose by 3  to  ${lowDose}–${highDose} mg/dose`,
       ],
       interpretation: "WHO reference dosing for children older than 28 days. The appropriate dose depends on the infection and clinical guideline; this calculator does not select the indication-specific regimen.",
       warnings: [
@@ -898,7 +898,7 @@ export const amoxicillinPediatricCalculator: CalculatorDefinition = {
 
 export const amoxicillinClavulanatePediatricCalculator: CalculatorDefinition = {
   id: "amoxicillin-clavulanate-pediatric-dose",
-  name: "Amoxicillin/Clavulanate → Pediatric Dose",
+  name: "Amoxicillin/Clavulanate  to  Pediatric Dose",
   shortName: "Amox/Clav",
   category: "dosing",
   subcategory: "antibiotic",
@@ -925,7 +925,7 @@ export const amoxicillinClavulanatePediatricCalculator: CalculatorDefinition = {
       calculationSteps: [
         `25 mg/kg/day × ${weight} kg = ${lowDaily} mg/day amoxicillin component`,
         `50 mg/kg/day × ${weight} kg = ${highDaily} mg/day amoxicillin component`,
-        `Divide by 3 → ${lowDose}–${highDose} mg amoxicillin component/dose`,
+        `Divide by 3  to  ${lowDose}–${highDose} mg amoxicillin component/dose`,
       ],
       interpretation: "Dose is expressed using the amoxicillin component. The clavulanate amount depends on the selected product formulation.",
       warnings: [
@@ -940,7 +940,7 @@ export const amoxicillinClavulanatePediatricCalculator: CalculatorDefinition = {
 
 export const azithromycinPediatricCalculator: CalculatorDefinition = {
   id: "azithromycin-pediatric-dose",
-  name: "Azithromycin → Pediatric Dose",
+  name: "Azithromycin  to  Pediatric Dose",
   shortName: "Azithromycin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -968,7 +968,7 @@ export const azithromycinPediatricCalculator: CalculatorDefinition = {
 
 export const ceftriaxonePediatricCalculator: CalculatorDefinition = {
   id: "ceftriaxone-pediatric-dose",
-  name: "Ceftriaxone → Pediatric Dose",
+  name: "Ceftriaxone  to  Pediatric Dose",
   shortName: "Ceftriaxone",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1001,7 +1001,7 @@ export const ceftriaxonePediatricCalculator: CalculatorDefinition = {
 
 export const cephalexinPediatricCalculator: CalculatorDefinition = {
   id: "cephalexin-pediatric-dose",
-  name: "Cephalexin → Pediatric Dose",
+  name: "Cephalexin  to  Pediatric Dose",
   shortName: "Cephalexin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1020,7 +1020,7 @@ export const cephalexinPediatricCalculator: CalculatorDefinition = {
       unit: "mg/day",
       display: `${lowDaily}–${highDaily} mg/day`,
       secondary: [{ label: "Frequency", value: "4 times daily (about every 6 hours)" }, { label: "Per-dose range", value: `${round(lowDaily / 4, 1)}–${round(highDaily / 4, 1)} mg/dose` }],
-      calculationSteps: [`50 mg/kg/day × ${weight} kg = ${lowDaily} mg/day`, `100 mg/kg/day × ${weight} kg = ${highDaily} mg/day`, `Divide by 4 → ${round(lowDaily / 4, 1)}–${round(highDaily / 4, 1)} mg/dose`],
+      calculationSteps: [`50 mg/kg/day × ${weight} kg = ${lowDaily} mg/day`, `100 mg/kg/day × ${weight} kg = ${highDaily} mg/day`, `Divide by 4  to  ${round(lowDaily / 4, 1)}–${round(highDaily / 4, 1)} mg/dose`],
       interpretation: "WHO reference pediatric dose range. The appropriate dose depends on infection and severity.",
       warnings: ["Verify the indication, formulation, maximum dose and renal adjustment before administration."],
     }
@@ -1030,7 +1030,7 @@ export const cephalexinPediatricCalculator: CalculatorDefinition = {
 
 export const metronidazolePediatricCalculator: CalculatorDefinition = {
   id: "metronidazole-pediatric-dose",
-  name: "Metronidazole → Pediatric Dose",
+  name: "Metronidazole  to  Pediatric Dose",
   shortName: "Metronidazole",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1049,7 +1049,7 @@ export const metronidazolePediatricCalculator: CalculatorDefinition = {
       unit: "mg/day",
       display: `${lowDaily}–${highDaily} mg/day`,
       secondary: [{ label: "Frequency", value: "2 times daily (about every 12 hours)" }, { label: "Per-dose range", value: `${round(lowDaily / 2, 1)}–${round(highDaily / 2, 1)} mg/dose` }],
-      calculationSteps: [`15 mg/kg/day × ${weight} kg = ${lowDaily} mg/day`, `30 mg/kg/day × ${weight} kg = ${highDaily} mg/day`, `Divide by 2 → ${round(lowDaily / 2, 1)}–${round(highDaily / 2, 1)} mg/dose`],
+      calculationSteps: [`15 mg/kg/day × ${weight} kg = ${lowDaily} mg/day`, `30 mg/kg/day × ${weight} kg = ${highDaily} mg/day`, `Divide by 2  to  ${round(lowDaily / 2, 1)}–${round(highDaily / 2, 1)} mg/dose`],
       interpretation: "WHO reference pediatric dose range. Indication-specific regimens can differ substantially.",
       warnings: ["Confirm the infection, route, duration, maximum dose and hepatic considerations before administration."],
     }
@@ -1059,7 +1059,7 @@ export const metronidazolePediatricCalculator: CalculatorDefinition = {
 
 export const cefuroximeSurgicalProphylaxisCalculator: CalculatorDefinition = {
   id: "cefuroxime-surgical-prophylaxis",
-  name: "Cefuroxime → Surgical Prophylaxis",
+  name: "Cefuroxime  to  Surgical Prophylaxis",
   shortName: "Cefuroxime",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1088,7 +1088,7 @@ export const cefuroximeSurgicalProphylaxisCalculator: CalculatorDefinition = {
 
 export const ampicillinPediatricCalculator: CalculatorDefinition = {
   id: "ampicillin-pediatric-dose",
-  name: "Ampicillin → Pediatric Dose",
+  name: "Ampicillin  to  Pediatric Dose",
   shortName: "Ampicillin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1124,7 +1124,7 @@ export const ampicillinPediatricCalculator: CalculatorDefinition = {
 
 export const cefotaximePediatricCalculator: CalculatorDefinition = {
   id: "cefotaxime-pediatric-dose",
-  name: "Cefotaxime → Pediatric Dose",
+  name: "Cefotaxime  to  Pediatric Dose",
   shortName: "Cefotaxime",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1160,7 +1160,7 @@ export const cefotaximePediatricCalculator: CalculatorDefinition = {
 
 export const cloxacillinPediatricCalculator: CalculatorDefinition = {
   id: "cloxacillin-pediatric-dose",
-  name: "Cloxacillin → Pediatric Dose",
+  name: "Cloxacillin  to  Pediatric Dose",
   shortName: "Cloxacillin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1208,12 +1208,12 @@ export const cloxacillinPediatricCalculator: CalculatorDefinition = {
 
 export const ciprofloxacinPediatricCalculator: CalculatorDefinition = {
   id: "ciprofloxacin-pediatric-dose",
-  name: "Ciprofloxacin → Pediatric Dose",
+  name: "Ciprofloxacin  to  Pediatric Dose",
   shortName: "Ciprofloxacin",
   category: "dosing",
   subcategory: "antibiotic",
   description: "Provides WHO oral weight-band ciprofloxacin dosing used in selected pediatric hospital infections.",
-  formula: "Weight band → fixed dose every 12 hours",
+  formula: "Weight band  to  fixed dose every 12 hours",
   keywords: ["ciprofloxacin", "antibiotic", "quinolone", "pediatric", "weight band"],
   relatedTools: ["creatinine-clearance"],
   inputs: [{ id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 3, step: 0.1 }],
@@ -1232,7 +1232,7 @@ export const ciprofloxacinPediatricCalculator: CalculatorDefinition = {
       unit: "mg/dose",
       display: `${dose} mg orally every 12 hours`,
       secondary: [{ label: "Approximate basis", value: "15 mg/kg/dose" }, { label: "Route", value: "Oral" }],
-      calculationSteps: [`${weight} kg → ${dose} mg weight-band dose every 12 hours`],
+      calculationSteps: [`${weight} kg  to  ${dose} mg weight-band dose every 12 hours`],
       interpretation: "WHO weight-band regimen for selected pediatric hospital infections. Ciprofloxacin use in children should be indication-specific.",
       warnings: ["Do not extrapolate this calculator to every pediatric indication. Verify susceptibility, indication, interactions, renal function and local guidance."],
     }
@@ -1242,7 +1242,7 @@ export const ciprofloxacinPediatricCalculator: CalculatorDefinition = {
 
 export const gentamicinPediatricCalculator: CalculatorDefinition = {
   id: "gentamicin-pediatric-dose",
-  name: "Gentamicin → Pediatric Dose",
+  name: "Gentamicin  to  Pediatric Dose",
   shortName: "Gentamicin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1279,7 +1279,7 @@ export const gentamicinPediatricCalculator: CalculatorDefinition = {
 
 export const meropenemPediatricCalculator: CalculatorDefinition = {
   id: "meropenem-pediatric-dose",
-  name: "Meropenem → Pediatric Dose",
+  name: "Meropenem  to  Pediatric Dose",
   shortName: "Meropenem",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1308,7 +1308,7 @@ export const meropenemPediatricCalculator: CalculatorDefinition = {
 
 export const vancomycinPediatricCalculator: CalculatorDefinition = {
   id: "vancomycin-pediatric-dose",
-  name: "Vancomycin → Pediatric Dose",
+  name: "Vancomycin  to  Pediatric Dose",
   shortName: "Vancomycin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1350,7 +1350,7 @@ export const vancomycinPediatricCalculator: CalculatorDefinition = {
  */
 export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "amoxicillin-clavulanate-renal-adjustment",
-  name: "Amoxicillin/Clavulanate → Renal Adjustment",
+  name: "Amoxicillin/Clavulanate  to  Renal Adjustment",
   shortName: "Amox/Clav Renal",
   category: "dosing",
   subcategory: "renal-adjustment",
@@ -1392,7 +1392,7 @@ export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefiniti
         unit: "mg/dose",
         display: `${strength} mg amoxicillin component every 12 hours (usual regimen)`,
         secondary: [{ label: "Renal band", value: "GFR ≥30 mL/min" }],
-        calculationSteps: [`GFR ${gfr} mL/min → no renal dose reduction required by the product label`],
+        calculationSteps: [`GFR ${gfr} mL/min  to  no renal dose reduction required by the product label`],
         interpretation: "Immediate-release amoxicillin/clavulanate generally does not require renal dose reduction above 30 mL/min.",
         warnings: ["Confirm the indication, formulation, amoxicillin/clavulanate ratio and maximum daily dose. The 875 mg dose is not for severe renal impairment."],
       }
@@ -1414,7 +1414,7 @@ export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefiniti
         unit: "mg/dose",
         display: `${strength} mg amoxicillin component every 12 hours`,
         secondary: [{ label: "Renal band", value: "GFR 10–<30 mL/min" }],
-        calculationSteps: [`GFR ${gfr} mL/min → ${strength} mg every 12 hours`],
+        calculationSteps: [`GFR ${gfr} mL/min  to  ${strength} mg every 12 hours`],
         interpretation: "Product-label regimen for severe renal impairment, with dose selected according to infection severity.",
         warnings: ["The label allows 250 mg or 500 mg every 12 hours depending on infection severity. Do not use the 875 mg strength in this renal band."],
       }
@@ -1425,7 +1425,7 @@ export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefiniti
       unit: "mg/dose",
       display: `${strength} mg amoxicillin component every 24 hours`,
       secondary: [{ label: "Renal band", value: "GFR <10 mL/min" }],
-      calculationSteps: [`GFR ${gfr} mL/min → ${strength} mg every 24 hours`],
+      calculationSteps: [`GFR ${gfr} mL/min  to  ${strength} mg every 24 hours`],
       interpretation: "Product-label regimen for severe renal impairment with GFR <10 mL/min.",
       warnings: [
         "For hemodialysis, the product label specifies an additional dose during and at the end of dialysis.",
@@ -1438,7 +1438,7 @@ export const amoxicillinClavulanateRenalAdjustmentCalculator: CalculatorDefiniti
 
 export const ciprofloxacinRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "ciprofloxacin-renal-adjustment",
-  name: "Ciprofloxacin → Renal Adjustment",
+  name: "Ciprofloxacin  to  Renal Adjustment",
   shortName: "Ciprofloxacin Renal",
   category: "dosing",
   subcategory: "renal-adjustment",
@@ -1490,7 +1490,7 @@ export const ciprofloxacinRenalAdjustmentCalculator: CalculatorDefinition = {
       display: `${dose} mg orally ${interval}`,
       secondary: [{ label: "CrCl band", value: dialysis ? "Dialysis" : crcl > 50 ? ">50 mL/min" : crcl >= 30 ? "30–50 mL/min" : "5–29 mL/min" }],
       calculationSteps: [
-        dialysis ? "Dialysis → dose every 24 hours after dialysis" : `${crcl} mL/min CrCl → ${interval}`,
+        dialysis ? "Dialysis  to  dose every 24 hours after dialysis" : `${crcl} mL/min CrCl  to  ${interval}`,
       ],
       interpretation: "Adult oral renal-adjustment reference from the product label. Dose selection still depends on infection and indication.",
       warnings: ["This calculator is for adult oral-label renal adjustment. Pediatric patients with moderate/severe renal insufficiency require separate guidance."],
@@ -1501,7 +1501,7 @@ export const ciprofloxacinRenalAdjustmentCalculator: CalculatorDefinition = {
 
 export const cefotaximeRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "cefotaxime-renal-adjustment",
-  name: "Cefotaxime → Renal Adjustment",
+  name: "Cefotaxime  to  Renal Adjustment",
   shortName: "Cefotaxime Renal",
   category: "dosing",
   subcategory: "renal-adjustment",
@@ -1525,7 +1525,7 @@ export const cefotaximeRenalAdjustmentCalculator: CalculatorDefinition = {
       unit: "mg/dose",
       display: `${adjustedDose} mg/dose${reduced ? " (50% of usual dose)" : " (usual dose)"}`,
       secondary: [{ label: "Renal band", value: reduced ? "CrCl <20 mL/min/1.73 m²" : "CrCl ≥20 mL/min/1.73 m²" }],
-      calculationSteps: reduced ? [`${usualDose} mg × 50% = ${adjustedDose} mg/dose`] : [`CrCl ${crcl} mL/min/1.73 m² → retain usual dose of ${usualDose} mg/dose`],
+      calculationSteps: reduced ? [`${usualDose} mg × 50% = ${adjustedDose} mg/dose`] : [`CrCl ${crcl} mL/min/1.73 m²  to  retain usual dose of ${usualDose} mg/dose`],
       interpretation: "Product-label renal adjustment reference. Frequency and total daily exposure still depend on the indication and severity of infection.",
       warnings: ["The label describes this as a suggested adjustment because evidence is limited. Confirm the regimen, indication, frequency and local protocol before administration."],
     }
@@ -1535,7 +1535,7 @@ export const cefotaximeRenalAdjustmentCalculator: CalculatorDefinition = {
 
 export const cefuroximeAxetilRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "cefuroxime-axetil-renal-adjustment",
-  name: "Cefuroxime Axetil → Renal Adjustment",
+  name: "Cefuroxime Axetil  to  Renal Adjustment",
   shortName: "Cefuroxime Axetil Renal",
   category: "dosing",
   subcategory: "renal-adjustment",
@@ -1575,7 +1575,7 @@ export const cefuroximeAxetilRenalAdjustmentCalculator: CalculatorDefinition = {
       unit: "mg/dose",
       display: `${dose} mg orally ${interval}`,
       secondary: [{ label: "Renal band", value: crcl >= 30 ? "CrCl ≥30 mL/min" : crcl >= 10 ? "CrCl 10–<30 mL/min" : "CrCl <10 mL/min" }],
-      calculationSteps: [`${crcl} mL/min CrCl → ${interval}`],
+      calculationSteps: [`${crcl} mL/min CrCl  to  ${interval}`],
       interpretation: "Adult cefuroxime axetil renal-adjustment reference from the product label.",
       warnings: [
         "This calculator applies to cefuroxime axetil oral tablets, not the separate IV cefuroxime surgical-prophylaxis regimen.",
@@ -1588,7 +1588,7 @@ export const cefuroximeAxetilRenalAdjustmentCalculator: CalculatorDefinition = {
 
 export const meropenemRenalAdjustmentCalculator: CalculatorDefinition = {
   id: "meropenem-renal-adjustment",
-  name: "Meropenem → Renal Adjustment",
+  name: "Meropenem  to  Renal Adjustment",
   shortName: "Meropenem Renal",
   category: "dosing",
   subcategory: "renal-adjustment",
@@ -1603,9 +1603,9 @@ export const meropenemRenalAdjustmentCalculator: CalculatorDefinition = {
       label: "Adult labeled regimen",
       kind: "select",
       options: [
-        { value: "csssi", label: "cSSSI → 500 mg" },
-        { value: "intra-abdominal", label: "Intra-abdominal → 1 g" },
-        { value: "pseudomonas-csssi", label: "P. aeruginosa cSSSI → 1 g" },
+        { value: "csssi", label: "cSSSI  to  500 mg" },
+        { value: "intra-abdominal", label: "Intra-abdominal  to  1 g" },
+        { value: "pseudomonas-csssi", label: "P. aeruginosa cSSSI  to  1 g" },
       ],
     },
     {
@@ -1643,7 +1643,7 @@ export const meropenemRenalAdjustmentCalculator: CalculatorDefinition = {
       secondary: [{ label: "Renal band", value: crcl > 50 ? ">50 mL/min" : crcl >= 26 ? "26–50 mL/min" : crcl >= 10 ? "10–25 mL/min" : "<10 mL/min" }],
       calculationSteps: [
         half ? `${baseDose} mg × 50% = ${dose} mg/dose` : `Retain ${baseDose} mg recommended dose`,
-        `${crcl} mL/min CrCl → ${interval}`,
+        `${crcl} mL/min CrCl  to  ${interval}`,
       ],
       interpretation: "Adult meropenem renal-adjustment reference from the product label. The base dose is indication-specific.",
       warnings: ["This calculator does not cover pediatric renal impairment; the product label states there is no experience in pediatric patients with renal impairment."],
@@ -1659,7 +1659,7 @@ export const meropenemRenalAdjustmentCalculator: CalculatorDefinition = {
  */
 export const vancomycinAuc24TargetCalculator: CalculatorDefinition = {
   id: "vancomycin-auc24-target-check",
-  name: "Vancomycin → AUC24 Target Check",
+  name: "Vancomycin  to  AUC24 Target Check",
   shortName: "Vancomycin AUC24",
   category: "dosing",
   subcategory: "therapeutic-drug-monitoring",
@@ -1677,7 +1677,7 @@ export const vancomycinAuc24TargetCalculator: CalculatorDefinition = {
     return {
       value: auc24,
       unit: "mg·h/L",
-      display: `${fmt(auc24)} mg·h/L → ${status}`,
+      display: `${fmt(auc24)} mg·h/L  to  ${status}`,
       secondary: [
         { label: "Consensus target", value: "400–600 mg·h/L" },
         { label: "Assumed MIC", value: "1 mg/L" },
@@ -1702,7 +1702,7 @@ export const vancomycinAuc24TargetCalculator: CalculatorDefinition = {
 
 export const gentamicinPeakTroughCheckerCalculator: CalculatorDefinition = {
   id: "gentamicin-peak-trough-check",
-  name: "Gentamicin → Peak/Trough Check",
+  name: "Gentamicin  to  Peak/Trough Check",
   shortName: "Gentamicin TDM",
   category: "dosing",
   subcategory: "therapeutic-drug-monitoring",
@@ -1742,8 +1742,8 @@ export const gentamicinPeakTroughCheckerCalculator: CalculatorDefinition = {
         { label: "Trough", value: `${fmt(trough)} mcg/mL (${troughStatus}; target <2)` },
       ],
       calculationSteps: [
-        `${fmt(peak)} mcg/mL peak → ${peakStatus}`,
-        `${fmt(trough)} mcg/mL trough → ${troughStatus}`,
+        `${fmt(peak)} mcg/mL peak  to  ${peakStatus}`,
+        `${fmt(trough)} mcg/mL trough  to  ${troughStatus}`,
       ],
       interpretation:
         status === "Within conventional reference"
@@ -1770,7 +1770,7 @@ export const gentamicinPeakTroughCheckerCalculator: CalculatorDefinition = {
  */
 export const whoYoungInfantSepsisPneumoniaCalculator: CalculatorDefinition = {
   id: "who-young-infant-sepsis-pneumonia",
-  name: "WHO 0–59 Days → Sepsis/Pneumonia Regimen",
+  name: "WHO 0–59 Days  to  Sepsis/Pneumonia Regimen",
   shortName: "0–59 Days Sepsis",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1842,7 +1842,7 @@ export const whoYoungInfantSepsisPneumoniaCalculator: CalculatorDefinition = {
 
 export const whoYoungInfantMeningitisCalculator: CalculatorDefinition = {
   id: "who-young-infant-meningitis",
-  name: "WHO 0–59 Days → Meningitis Regimen",
+  name: "WHO 0–59 Days  to  Meningitis Regimen",
   shortName: "0–59 Days Meningitis",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1880,9 +1880,9 @@ export const whoYoungInfantMeningitisCalculator: CalculatorDefinition = {
       unit: "mg ampicillin/dose",
       display: `${ampicillin} mg ampicillin + ${gentamicin} mg gentamicin`,
       secondary: [
-        { label: "Option 1 — Ampicillin", value: `${ampicillin} mg IM/IV ${ampicillinInterval} + gentamicin ${gentamicin} mg once daily` },
-        { label: "Option 2 — Cefotaxime", value: `${cefotaxime} mg IM/IV ${cefotaximeInterval} + gentamicin ${gentamicin} mg once daily` },
-        { label: "Option 3 — Ceftriaxone", value: `${ceftriaxone} mg IM/IV once daily + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 1: Ampicillin", value: `${ampicillin} mg IM/IV ${ampicillinInterval} + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 2: Cefotaxime", value: `${cefotaxime} mg IM/IV ${cefotaximeInterval} + gentamicin ${gentamicin} mg once daily` },
+        { label: "Option 3: Ceftriaxone", value: `${ceftriaxone} mg IM/IV once daily + gentamicin ${gentamicin} mg once daily` },
         { label: "Treatment duration", value: "At least 3 weeks" },
       ],
       calculationSteps: [
@@ -1914,7 +1914,7 @@ export const whoYoungInfantMeningitisCalculator: CalculatorDefinition = {
  */
 export const piperacillinTazobactamPediatricCalculator: CalculatorDefinition = {
   id: "piperacillin-tazobactam-pediatric-dose",
-  name: "Piperacillin–Tazobactam → Pediatric Dose",
+  name: "Piperacillin–Tazobactam  to  Pediatric Dose",
   shortName: "Piperacillin–Tazobactam",
   category: "dosing",
   subcategory: "antibiotic",
@@ -1958,7 +1958,7 @@ export const piperacillinTazobactamPediatricCalculator: CalculatorDefinition = {
 /** WHO AWaRe reference regimen for selected pediatric infections. */
 export const clindamycinPediatricCalculator: CalculatorDefinition = {
   id: "clindamycin-pediatric-dose",
-  name: "Clindamycin → Pediatric Dose",
+  name: "Clindamycin  to  Pediatric Dose",
   shortName: "Clindamycin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -2007,7 +2007,7 @@ export const clindamycinPediatricCalculator: CalculatorDefinition = {
 /** WHO AWaRe reference regimen for selected pediatric bone/joint infections. */
 export const cefazolinPediatricCalculator: CalculatorDefinition = {
   id: "cefazolin-pediatric-dose",
-  name: "Cefazolin → Pediatric Dose",
+  name: "Cefazolin  to  Pediatric Dose",
   shortName: "Cefazolin",
   category: "dosing",
   subcategory: "antibiotic",
@@ -2043,7 +2043,7 @@ export const cefazolinPediatricCalculator: CalculatorDefinition = {
 /** WHO AWaRe reference regimen for selected pediatric reserve-antibiotic use. */
 export const linezolidPediatricCalculator: CalculatorDefinition = {
   id: "linezolid-pediatric-dose",
-  name: "Linezolid → Pediatric Dose",
+  name: "Linezolid  to  Pediatric Dose",
   shortName: "Linezolid",
   category: "dosing",
   subcategory: "antibiotic",
@@ -2054,8 +2054,8 @@ export const linezolidPediatricCalculator: CalculatorDefinition = {
   inputs: [
     { id: "weight", label: "Patient weight", kind: "number", unit: "kg", min: 0, step: 0.1 },
     { id: "ageGroup", label: "Age group", kind: "select", options: [
-      { value: "neonate-first-week", label: "Neonate → first week of life" },
-      { value: "neonate-after-first-week", label: "Neonate → after first week" },
+      { value: "neonate-first-week", label: "Neonate  to  first week of life" },
+      { value: "neonate-after-first-week", label: "Neonate  to  after first week" },
       { value: "child", label: "Child" },
     ] },
   ],
@@ -2091,7 +2091,7 @@ export const linezolidPediatricCalculator: CalculatorDefinition = {
 /** WHO Model Formulary for Children reference regimen for selected bacterial infections. */
 export const doxycyclinePediatricCalculator: CalculatorDefinition = {
   id: "doxycycline-pediatric-dose",
-  name: "Doxycycline → Pediatric Dose",
+  name: "Doxycycline  to  Pediatric Dose",
   shortName: "Doxycycline",
   category: "dosing",
   subcategory: "antibiotic",
@@ -2292,7 +2292,7 @@ export const courseTotalDoseCalculator: CalculatorDefinition = {
 /** WHO 2024 oral zinc regimen for children up to 10 years with diarrhoea. */
 export const whoPediatricDiarrhoeaZincCalculator: CalculatorDefinition = {
   id: "who-pediatric-diarrhoea-zinc",
-  name: "WHO Pediatric Diarrhoea → Zinc Regimen",
+  name: "WHO Pediatric Diarrhoea  to  Zinc Regimen",
   shortName: "Diarrhoea Zinc",
   category: "dosing",
   subcategory: "general-dosing",
@@ -2384,7 +2384,7 @@ export const whoPediatricDiarrhoeaZincCalculator: CalculatorDefinition = {
 /** Pediatric estimated fluid deficit from a clinician-entered dehydration percentage. */
 export const pediatricFluidDeficitCalculator: CalculatorDefinition = {
   id: "pediatric-fluid-deficit",
-  name: "Pediatric Fluid Deficit → Assessed Dehydration",
+  name: "Pediatric Fluid Deficit  to  Assessed Dehydration",
   shortName: "Fluid Deficit",
   category: "dosing",
   subcategory: "general-dosing",
@@ -2514,7 +2514,7 @@ export const whoPediatricMaintenanceFluidCalculator: CalculatorDefinition = {
 /** WHO pediatric diarrhoea Plan B oral rehydration reference. */
 export const whoPediatricOrsPlanBCalculator: CalculatorDefinition = {
   id: "who-pediatric-ors-plan-b",
-  name: "WHO Pediatric ORS → Plan B Volume",
+  name: "WHO Pediatric ORS  to  Plan B Volume",
   shortName: "ORS Plan B",
   category: "dosing",
   subcategory: "general-dosing",
@@ -2549,7 +2549,7 @@ export const whoPediatricOrsPlanBCalculator: CalculatorDefinition = {
         { label: "Dose basis", value: "75 mL/kg" },
         { label: "Hourly average", value: `${hourlyVolume} mL/hour` },
         { label: "Duration", value: "4 hours" },
-        { label: "Protocol", value: "WHO Plan B → some dehydration" },
+        { label: "Protocol", value: "WHO Plan B  to  some dehydration" },
       ],
       calculationSteps: [
         `75 mL/kg × ${weight} kg = ${totalVolume} mL ORS`,
@@ -2577,7 +2577,7 @@ export const whoPediatricOrsPlanBCalculator: CalculatorDefinition = {
 /** WHO Plan A home/ongoing ORS reference after each loose stool. */
 export const whoPediatricOrsOngoingLossCalculator: CalculatorDefinition = {
   id: "who-pediatric-ors-ongoing-loss",
-  name: "WHO Pediatric ORS → Ongoing Losses",
+  name: "WHO Pediatric ORS  to  Ongoing Losses",
   shortName: "ORS Ongoing Loss",
   category: "dosing",
   subcategory: "general-dosing",
@@ -2627,7 +2627,7 @@ export const whoPediatricOrsOngoingLossCalculator: CalculatorDefinition = {
           { label: "Per-stool reference", value: "50–100 mL ORS" },
           { label: "Planned stool count", value: String(looseStools) },
           { label: "Cumulative reference range", value: `${min}–${max} mL` },
-          { label: "Protocol", value: "WHO Plan A → home/ongoing fluid replacement" },
+          { label: "Protocol", value: "WHO Plan A  to  home/ongoing fluid replacement" },
         ],
         calculationSteps: [
           `50–100 mL × ${looseStools} loose stool${looseStools === 1 ? "" : "s"} = ${min}–${max} mL`,
@@ -2653,7 +2653,7 @@ export const whoPediatricOrsOngoingLossCalculator: CalculatorDefinition = {
           { label: "Per-stool reference", value: "100–200 mL ORS" },
           { label: "Planned stool count", value: String(looseStools) },
           { label: "Cumulative reference range", value: `${min}–${max} mL` },
-          { label: "Protocol", value: "WHO Plan A → home/ongoing fluid replacement" },
+          { label: "Protocol", value: "WHO Plan A  to  home/ongoing fluid replacement" },
         ],
         calculationSteps: [
           `100–200 mL × ${looseStools} loose stool${looseStools === 1 ? "" : "s"} = ${min}–${max} mL`,
@@ -2676,7 +2676,7 @@ export const whoPediatricOrsOngoingLossCalculator: CalculatorDefinition = {
         { label: "Per-stool reference", value: "As much as wanted/tolerated" },
         { label: "Planned stool count", value: String(looseStools) },
         { label: "Cumulative calculation", value: "Not numerically prescribed by this reference" },
-        { label: "Protocol", value: "WHO Plan A → home/ongoing fluid replacement" },
+        { label: "Protocol", value: "WHO Plan A  to  home/ongoing fluid replacement" },
       ],
       calculationSteps: [
         "For children aged 10 years or older, WHO home-treatment guidance uses thirst/tolerance rather than a fixed numeric volume per stool.",
@@ -2703,7 +2703,7 @@ export const whoPediatricOrsOngoingLossCalculator: CalculatorDefinition = {
 /** WHO 2024 pneumonia regimen selector for children aged 2–59 months. */
 export const whoPediatricPneumoniaRegimenCalculator: CalculatorDefinition = {
   id: "who-pediatric-pneumonia-regimen",
-  name: "WHO Pediatric Pneumonia → Regimen Reference",
+  name: "WHO Pediatric Pneumonia  to  Regimen Reference",
   shortName: "Pneumonia Regimen",
   category: "dosing",
   subcategory: "antibiotic",

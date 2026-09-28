@@ -28,7 +28,7 @@
 }
 
 /* In-app override (Settings > Preferences), independent of the OS-level
-   media query above — some users want this without changing OS settings. */
+   media query above  -  some users want this without changing OS settings. */
 html.reduce-motion .animate-marquee {
   animation: none;
 }
@@ -42,7 +42,7 @@ html.reduce-motion .animate-marquee {
     margin: 1.5cm;
   }
 
-  /* Force light-mode variable values even when .dark is active on <html> —
+  /* Force light-mode variable values even when .dark is active on <html>  - 
      this rule is unlayered, so it wins over @layer base regardless of the
      .dark declaration appearing later in the file. */
   :root,

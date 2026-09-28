@@ -24,9 +24,9 @@ Every registered calculator now resolves to at least one source metadata record 
 
 Reference status is explicit:
 
-- `current` — source is treated as current for the stated scope
-- `supporting` — source provides supporting methodology or protocol context
-- `review-needed` — a category-level reference is present, but a calculator-specific primary source still needs verification
+- `current`  -  source is treated as current for the stated scope
+- `supporting`  -  source provides supporting methodology or protocol context
+- `review-needed`  -  a category-level reference is present, but a calculator-specific primary source still needs verification
 
 A category-level reference must **not** be interpreted as proof that every formula in that category has been independently clinically validated.
 

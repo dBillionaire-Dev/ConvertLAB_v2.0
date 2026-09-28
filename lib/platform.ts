@@ -20,14 +20,14 @@ export function isMac(): boolean {
   return navigator.platform === "MacIntel" && navigator.maxTouchPoints <= 1
 }
 
-/** True Safari only — Chrome/Firefox/Edge on iOS all include "Safari" in their UA too. */
+/** True Safari only  -  Chrome/Firefox/Edge on iOS all include "Safari" in their UA too. */
 export function isSafari(): boolean {
   if (typeof navigator === "undefined") return false
   const ua = navigator.userAgent
   return /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(ua)
 }
 
-/** Neither iOS nor macOS Safari support the beforeinstallprompt flow — they need manual instructions. */
+/** Neither iOS nor macOS Safari support the beforeinstallprompt flow  -  they need manual instructions. */
 export function needsManualInstallInstructions(): boolean {
   return isIOS() || (isMac() && isSafari())
 }

@@ -23,7 +23,7 @@ export const substances: Substance[] = [
     density: {
       value: 1.06,
       approximate: true,
-      notes: "Blood density varies between samples with hematocrit and composition — this is an estimate, not a measured value.",
+      notes: "Blood density varies between samples with hematocrit and composition  -  this is an estimate, not a measured value.",
     },
   },
   {

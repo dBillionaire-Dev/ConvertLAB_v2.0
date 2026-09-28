@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 import { massToVolume, volumeToMass, DensityConversionError } from "./density"
 import { substances } from "./substances"
 
-describe("density conversion — round trips", () => {
+describe("density conversion  -  round trips", () => {
   for (const substance of substances) {
     it(`${substance.name}: mass -> volume -> mass returns the original value`, () => {
       const originalMass = 123.45
@@ -13,7 +13,7 @@ describe("density conversion — round trips", () => {
   }
 })
 
-describe("density conversion — known values", () => {
+describe("density conversion  -  known values", () => {
   it("100 g of water (density 1.0) = 100 mL", () => {
     expect(massToVolume(100, 1.0)).toBeCloseTo(100, 6)
   })
@@ -31,7 +31,7 @@ describe("density conversion — known values", () => {
   })
 })
 
-describe("density conversion — error handling", () => {
+describe("density conversion  -  error handling", () => {
   it("throws for zero density", () => {
     expect(() => massToVolume(100, 0)).toThrow(DensityConversionError)
     expect(() => volumeToMass(100, 0)).toThrow(DensityConversionError)

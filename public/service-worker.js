@@ -1,4 +1,4 @@
-// ConvertLAB service worker — enables full offline use.
+// ConvertLAB service worker  -  enables full offline use.
 //
 // All calculation/conversion/substance data ships inside the app's JS
 // bundles, so once a page's HTML + JS are cached, its calculators work
@@ -232,7 +232,7 @@ self.addEventListener("install", (event) => {
       Promise.all(
         PRECACHE_URLS.map((url) =>
           cache.add(url).catch(() => {
-            // Ignore individual failures so one bad URL doesn't block install —
+            // Ignore individual failures so one bad URL doesn't block install  - 
             // that route just falls back to network-then-runtime-cache instead.
           }),
         ),
