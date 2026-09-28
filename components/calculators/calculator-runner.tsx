@@ -225,14 +225,28 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
             </div>
             <CardDescription className="mt-1.5">{definition.description}</CardDescription>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
-            onClick={handleFavorite}
-          >
-            <Star className={cn("h-5 w-5", favorite && "fill-yellow-400 text-yellow-400")} />
-          </Button>
+          <div className="flex shrink-0 items-center gap-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label="Reset calculator"
+              title="Reset calculator"
+              onClick={handleReset}
+            >
+              <RotateCcw className="h-5 w-5" aria-hidden />
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
+              title={favorite ? "Remove from favorites" : "Add to favorites"}
+              onClick={handleFavorite}
+            >
+              <Star className={cn("h-5 w-5", favorite && "fill-yellow-400 text-yellow-400")} />
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-5">
           <form
@@ -443,9 +457,6 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
                 disabled={!result || savedToHistory}
               >
                 <Save className="h-4 w-4 mr-1.5" /> {savedToHistory ? "Saved" : "Save to history"}
-              </Button>
-              <Button variant="outline" size="sm" onClick={handleReset}>
-                <RotateCcw className="h-4 w-4 mr-1.5" /> Reset
               </Button>
               <Button variant="outline" size="sm" onClick={handleShare}>
                 <Share2 className="h-4 w-4 mr-1.5" /> Share
