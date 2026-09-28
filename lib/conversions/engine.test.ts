@@ -4,7 +4,7 @@ import { conversionCategories } from "./registry"
 
 const TOLERANCE = 1e-9
 
-describe("conversion engine — round trips", () => {
+describe("conversion engine  -  round trips", () => {
   for (const category of conversionCategories) {
     describe(category.name, () => {
       for (const unit of category.units) {
@@ -22,7 +22,7 @@ describe("conversion engine — round trips", () => {
   }
 })
 
-describe("conversion engine — known values", () => {
+describe("conversion engine  -  known values", () => {
   const temperature = conversionCategories.find((c) => c.id === "temperature")!
   const mass = conversionCategories.find((c) => c.id === "mass")!
   const volume = conversionCategories.find((c) => c.id === "volume")!
@@ -74,7 +74,7 @@ describe("conversion engine — known values", () => {
   })
 })
 
-describe("conversion engine — error handling", () => {
+describe("conversion engine  -  error handling", () => {
   const mass = conversionCategories.find((c) => c.id === "mass")!
 
   it("throws for an unknown unit id", () => {

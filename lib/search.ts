@@ -33,7 +33,7 @@ const CONCEPT_ALIASES: Record<string, string[]> = {
 function normalize(value: string): string {
   return value
     .toLowerCase()
-    .replace(/[↔→←/\\_–—-]/g, " ")
+    .replace(/[↔←/\\_–-]/g, " ")
     .replace(/[^a-z0-9µ²³.%+\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim()

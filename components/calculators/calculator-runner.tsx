@@ -26,7 +26,7 @@ function defaultValues(def: CalculatorDefinition | undefined): Record<string, st
   const values: Record<string, string> = {}
   for (const input of def.inputs) {
     // Select inputs need a real pre-selected value (there's no equivalent of a
-    // placeholder for a dropdown). Number inputs start empty — their
+    // placeholder for a dropdown). Number inputs start empty  -  their
     // defaultValue is shown as a placeholder hint instead (see CalculatorField).
     values[input.id] = input.kind === "select" && input.defaultValue !== undefined ? String(input.defaultValue) : ""
   }
@@ -276,10 +276,10 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
       {result ? (
         <Card aria-live="polite">
           <CardHeader>
-            {/* Print-only masthead — site header/nav is hidden when printing */}
+            {/* Print-only masthead  -  site header/nav is hidden when printing */}
             <div className="hidden print:block mb-2">
               <p className="font-bold">ConvertLAB</p>
-              <p className="text-xs text-muted-foreground">{definition.name} — {new Date().toLocaleDateString()}</p>
+              <p className="text-xs text-muted-foreground">{definition.name}  -  {new Date().toLocaleDateString()}</p>
             </div>
             <CardTitle ref={resultHeadingRef} tabIndex={-1} className="text-sm font-medium text-muted-foreground focus:outline-none">Result</CardTitle>
           </CardHeader>

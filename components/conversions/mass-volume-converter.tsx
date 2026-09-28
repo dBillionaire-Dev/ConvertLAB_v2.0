@@ -82,8 +82,8 @@ export function MassVolumeConverter() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="mass-to-volume">Mass → Volume</SelectItem>
-                <SelectItem value="volume-to-mass">Volume → Mass</SelectItem>
+                <SelectItem value="mass-to-volume">Mass  to  Volume</SelectItem>
+                <SelectItem value="volume-to-mass">Volume  to  Mass</SelectItem>
               </SelectContent>
             </Select>
           </div>

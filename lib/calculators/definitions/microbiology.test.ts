@@ -25,7 +25,7 @@ describe("cfuCalculator", () => {
     expect(() => cfuCalculator.calculate({ colonies: -5, volumePlated: 0.1, dilutionFactor: 1000 })).toThrow()
   })
 
-  it("handles zero colonies (valid — a legitimate plate result)", () => {
+  it("handles zero colonies (valid  -  a legitimate plate result)", () => {
     const result = cfuCalculator.calculate({ colonies: 0, volumePlated: 0.1, dilutionFactor: 1000 })
     expect(result.value).toBe(0)
   })

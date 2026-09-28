@@ -188,7 +188,7 @@ export const correctedCalciumCalculator: CalculatorDefinition = {
       calculationSteps: [`${calcium} + 0.8 x (4 - ${albumin})`],
     }
   },
-  limitations: ["An approximation — ionized calcium measurement is more accurate when available, particularly in critical illness."],
+  limitations: ["An approximation  -  ionized calcium measurement is more accurate when available, particularly in critical illness."],
 }
 
 export const totalHdlRatioCalculator: CalculatorDefinition = {
@@ -336,7 +336,7 @@ export const deltaRatioCalculator: CalculatorDefinition = {
       interpretation,
     }
   },
-  notes: ["Assumes a normal anion gap of 12 and normal HCO3 of 24 mmol/L — some institutions use slightly different baselines."],
+  notes: ["Assumes a normal anion gap of 12 and normal HCO3 of 24 mmol/L  -  some institutions use slightly different baselines."],
   limitations: ["A teaching tool for classifying mixed acid-base disorders, not a substitute for full clinical/blood gas assessment."],
 }
 
@@ -418,8 +418,8 @@ export const hba1cEagCalculator: CalculatorDefinition = {
       label: "Direction",
       kind: "select",
       options: [
-        { value: "hba1c-to-eag", label: "HbA1c → eAG" },
-        { value: "eag-to-hba1c", label: "eAG → HbA1c" },
+        { value: "hba1c-to-eag", label: "HbA1c  to  eAG" },
+        { value: "eag-to-hba1c", label: "eAG  to  HbA1c" },
       ],
       defaultValue: "hba1c-to-eag",
     },
@@ -484,7 +484,7 @@ export const correctedBunCalculator: CalculatorDefinition = {
   category: "chemistry",
   description: "Converts blood urea nitrogen and urea between common reporting units.",
   inputs: [
-    { id: "direction", label: "Direction", kind: "select", options: [{ value: "urea-to-bun", label: "Urea mmol/L → BUN mg/dL" }, { value: "bun-to-urea", label: "BUN mg/dL → Urea mmol/L" }], defaultValue: "urea-to-bun" },
+    { id: "direction", label: "Direction", kind: "select", options: [{ value: "urea-to-bun", label: "Urea mmol/L  to  BUN mg/dL" }, { value: "bun-to-urea", label: "BUN mg/dL  to  Urea mmol/L" }], defaultValue: "urea-to-bun" },
     { id: "value", label: "Value", kind: "number", min: 0, step: 0.1, defaultValue: 10 },
   ],
   calculate: (inputs) => {
@@ -528,7 +528,7 @@ export const creatinineUnitConversionCalculator: CalculatorDefinition = {
   category: "chemistry",
   description: "Converts serum creatinine between mg/dL and µmol/L.",
   inputs: [
-    { id: "direction", label: "Direction", kind: "select", options: [{ value: "mgdl-to-umol", label: "mg/dL → µmol/L" }, { value: "umol-to-mgdl", label: "µmol/L → mg/dL" }], defaultValue: "mgdl-to-umol" },
+    { id: "direction", label: "Direction", kind: "select", options: [{ value: "mgdl-to-umol", label: "mg/dL  to  µmol/L" }, { value: "umol-to-mgdl", label: "µmol/L  to  mg/dL" }], defaultValue: "mgdl-to-umol" },
     { id: "value", label: "Creatinine", kind: "number", min: 0, step: 0.01, defaultValue: 1 },
   ],
   calculate: (inputs) => {

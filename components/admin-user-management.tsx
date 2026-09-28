@@ -8,9 +8,9 @@ import type { AnalyticsSnapshot } from "@/lib/analytics/types"
 type User = AnalyticsSnapshot["allUsersList"][number]
 
 function localDateTime(value: string | null | undefined) {
-  if (!value) return "—"
+  if (!value) return " - "
   const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return "—"
+  if (Number.isNaN(date.getTime())) return " - "
   return new Intl.DateTimeFormat("en-NG", {
     timeZone: "Africa/Lagos",
     dateStyle: "medium",

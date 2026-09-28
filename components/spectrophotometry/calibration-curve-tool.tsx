@@ -147,13 +147,13 @@ export function CalibrationCurveTool() {
               </div>
               <div className="rounded-md border bg-muted p-3">
                 <p className="text-xs text-muted-foreground">Concentration (as measured)</p>
-                <p className="text-lg font-bold">{unknownConcentration !== null ? Number(unknownConcentration.toPrecision(6)) : "—"}</p>
+                <p className="text-lg font-bold">{unknownConcentration !== null ? Number(unknownConcentration.toPrecision(6)) : " - "}</p>
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 items-end">
               <div className="space-y-1.5">
-                <Label htmlFor="dilution-factor">Dilution factor (optional — if the sample was diluted before measurement)</Label>
+                <Label htmlFor="dilution-factor">Dilution factor (optional  -  if the sample was diluted before measurement)</Label>
                 <Input
                   id="dilution-factor"
                   type="number"
@@ -165,7 +165,7 @@ export function CalibrationCurveTool() {
               </div>
               <div className="rounded-md border bg-muted p-3">
                 <p className="text-xs text-muted-foreground">Original (undiluted) sample concentration</p>
-                <p className="text-lg font-bold">{originalConcentration !== null ? Number(originalConcentration.toPrecision(6)) : "—"}</p>
+                <p className="text-lg font-bold">{originalConcentration !== null ? Number(originalConcentration.toPrecision(6)) : " - "}</p>
               </div>
             </div>
             <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>

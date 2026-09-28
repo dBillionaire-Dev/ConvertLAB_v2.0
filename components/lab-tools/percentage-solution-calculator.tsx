@@ -11,7 +11,7 @@ import { trackCalculation } from "@/lib/analytics/track-calculation"
 /**
  * All three percentage types reduce to "amount of solute per 100 units of
  * solution": w/v = g/100mL, v/v = mL/100mL, w/w = g/100g. That means the
- * same %  <-> g/L (or equivalent) <-> mg/mL math applies to all three —
+ * same %  <-> g/L (or equivalent) <-> mg/mL math applies to all three  - 
  * only the units of "amount" and "solution" differ.
  */
 type Mode = "wv" | "vv" | "ww"
@@ -105,7 +105,7 @@ export function PercentageSolutionCalculator() {
 
         <p className="text-xs text-muted-foreground">
           For % w/w, the "per 100 g" and "mg/mL" figures assume solution density ≈ 1 g/mL unless you know the actual
-          density — for precise work, use the Mass ↔ Volume converter with the correct substance density.
+          density  -  for precise work, use the Mass ↔ Volume converter with the correct substance density.
         </p>
         <p className="text-xs text-muted-foreground">{LAB_PREP_DISCLAIMER}</p>
       </CardContent>

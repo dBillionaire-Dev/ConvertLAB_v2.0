@@ -9,8 +9,8 @@ const labTools = [
   { href: "/lab-tools/dilution", label: "C1V1 = C2V2 Dilution", description: "Solve for concentration or volume", icon: Droplets },
   { href: "/lab-tools/serial-dilution", label: "Serial Dilution", description: "Concentration at every step of a dilution series", icon: Layers },
   { href: "/lab-tools/percentage-solution", label: "Percentage Solution", description: "% w/v, % v/v, % w/w conversions", icon: Percent },
-  { href: "/calculators/lab-solutions/molarity", label: "Molarity Calculator", description: "Mass, molecular weight, volume → M", icon: FlaskConical },
-  { href: "/calculators/lab-solutions/normality", label: "Normality Calculator", description: "Mass, equivalent weight, volume → N", icon: FlaskConical },
+  { href: "/calculators/lab-solutions/molarity", label: "Molarity Calculator", description: "Mass, molecular weight, volume  to  M", icon: FlaskConical },
+  { href: "/calculators/lab-solutions/normality", label: "Normality Calculator", description: "Mass, equivalent weight, volume  to  N", icon: FlaskConical },
   { href: "/lab-tools/microbiology", label: "Microbiology", description: "CFU/mL, dilution factor, McFarland standards", icon: Bug },
   { href: "/lab-tools/spectrophotometry", label: "Spectrophotometry", description: "Beer-Lambert, %T, calibration curves", icon: Waves },
 ]

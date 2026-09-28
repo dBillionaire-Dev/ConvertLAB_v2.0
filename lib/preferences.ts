@@ -18,7 +18,7 @@ export function setReduceMotion(value: boolean) {
   window.dispatchEvent(new CustomEvent("convertlab:reduce-motion-changed"))
 }
 
-/** Applies the stored preference to <html> — call once on mount at the app root. */
+/** Applies the stored preference to <html>  -  call once on mount at the app root. */
 export function applyStoredReduceMotion() {
   if (!isBrowser()) return
   document.documentElement.classList.toggle("reduce-motion", getReduceMotion())

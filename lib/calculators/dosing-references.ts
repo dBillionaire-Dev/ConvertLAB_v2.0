@@ -14,7 +14,7 @@ export interface CalculatorReference {
 const VERIFIED_ON = "2026-09-15"
 
 const WHO_MALARIA: CalculatorReference = {
-  source: "World Health Organization — WHO guidelines for malaria",
+  source: "World Health Organization  -  WHO guidelines for malaria",
   version: "10 September 2026",
   url: "https://www.who.int/publications/i/item/guidelines-for-malaria/",
   applicablePopulation: "Patients with malaria; use the specific regimen and weight/age bands shown by the calculator.",
@@ -23,7 +23,7 @@ const WHO_MALARIA: CalculatorReference = {
 }
 
 const WHO_AWARE: CalculatorReference = {
-  source: "World Health Organization — AWaRe antibiotic book",
+  source: "World Health Organization  -  AWaRe antibiotic book",
   version: "2022 edition",
   url: "https://www.who.int/publications/i/item/9789240062382",
   applicablePopulation: "Children and adults for the infection-specific regimens covered by the source.",
@@ -33,7 +33,7 @@ const WHO_AWARE: CalculatorReference = {
 }
 
 const WHO_INFANTS: CalculatorReference = {
-  source: "World Health Organization — Serious bacterial infections in infants aged 0–59 days",
+  source: "World Health Organization  -  Serious bacterial infections in infants aged 0–59 days",
   version: "8 December 2024 guideline",
   url: "https://www.who.int/publications/i/item/9789240102903/",
   applicablePopulation: "Infants aged 0–59 days with suspected serious bacterial infection.",
@@ -42,7 +42,7 @@ const WHO_INFANTS: CalculatorReference = {
 }
 
 const TDM_VANCOMYCIN: CalculatorReference = {
-  source: "ASHP/IDSA/PIDS/SIDP — Vancomycin monitoring consensus guideline",
+  source: "ASHP/IDSA/PIDS/SIDP  -  Vancomycin monitoring consensus guideline",
   version: "2020 consensus guideline",
   url: "https://www.idsociety.org/practice-guideline/vancomycin/",
   applicablePopulation: "Serious invasive MRSA infections where AUC-guided monitoring is applicable.",
@@ -53,7 +53,7 @@ const TDM_VANCOMYCIN: CalculatorReference = {
 
 
 const LINEZOLID_REFERENCE: CalculatorReference = {
-  source: "World Health Organization — AWaRe antibiotic book",
+  source: "World Health Organization  -  AWaRe antibiotic book",
   version: "2022 edition",
   url: "https://www.who.int/publications/i/item/9789240062382",
   applicablePopulation: "Selected pediatric and neonatal patients for reserve-antibiotic use.",
@@ -76,7 +76,7 @@ const DOXYCYCLINE_REFERENCE: CalculatorReference = {
 
 
 const WHO_PNEUMONIA_2024: CalculatorReference = {
-  source: "World Health Organization — Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+  source: "World Health Organization  -  Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
   version: "31 December 2024 guideline",
   url: "https://www.who.int/publications/i/item/9789240103412",
   applicablePopulation: "Children aged 2–59 months with pneumonia presentations covered by the guideline.",
@@ -88,7 +88,7 @@ const WHO_PNEUMONIA_2024: CalculatorReference = {
 
 
 const WHO_ORS_2025: CalculatorReference = {
-  source: "World Health Organization — Clinical tools for cholera / diarrhoeal rehydration",
+  source: "World Health Organization  -  Clinical tools for cholera / diarrhoeal rehydration",
   version: "2025 clinical tool",
   url: "https://iris.who.int/bitstream/handle/10665/379760/B09194-eng.pdf?sequence=1",
   applicablePopulation: "Children with some dehydration for whom oral rehydration is appropriate.",
@@ -99,7 +99,7 @@ const WHO_ORS_2025: CalculatorReference = {
 }
 
 const WHO_ORS_HOME_SUPPORTING: CalculatorReference = {
-  source: "World Health Organization — The treatment of diarrhoea",
+  source: "World Health Organization  -  The treatment of diarrhoea",
   version: "4th revision, 2005; supporting home-treatment guidance",
   url: "https://www.who.int/publications/i/item/9241593180",
   applicablePopulation: "Children receiving home/maintenance oral rehydration after loose stools.",
@@ -110,7 +110,7 @@ const WHO_ORS_HOME_SUPPORTING: CalculatorReference = {
 }
 
 const WHO_DIARRHOEA_2024: CalculatorReference = {
-  source: "World Health Organization — Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
+  source: "World Health Organization  -  Guideline on management of pneumonia and diarrhoea in children up to 10 years of age",
   version: "31 December 2024 guideline",
   url: "https://www.who.int/publications/i/item/9789240103412",
   applicablePopulation: "Children up to 10 years with acute watery or persistent diarrhoea.",
@@ -122,7 +122,7 @@ const WHO_DIARRHOEA_2024: CalculatorReference = {
 
 
 const WHO_MAINTENANCE_FLUID: CalculatorReference = {
-  source: "World Health Organization — Handbook for clinical management of dengue / normal maintenance IV fluid calculation",
+  source: "World Health Organization  -  Handbook for clinical management of dengue / normal maintenance IV fluid calculation",
   version: "WHO clinical handbook",
   url: "https://iris.who.int/bitstream/handle/10665/76887/9789241504713_eng.pdf?sequence=1",
   applicablePopulation: "Children requiring normal maintenance intravenous fluid calculation.",
@@ -134,7 +134,7 @@ const WHO_MAINTENANCE_FLUID: CalculatorReference = {
 
 
 const PEDIATRIC_FLUID_DEFICIT: CalculatorReference = {
-  source: "World Health Organization — The treatment of diarrhoea",
+  source: "World Health Organization  -  The treatment of diarrhoea",
   version: "4th revision, 2005; supporting fluid-deficit calculation guidance",
   url: "https://www.who.int/publications/i/item/9241593180",
   applicablePopulation: "Children with clinically assessed dehydration requiring an estimated fluid deficit calculation.",
@@ -145,7 +145,7 @@ const PEDIATRIC_FLUID_DEFICIT: CalculatorReference = {
 }
 
 const ONCOLOGY_REGIMEN: CalculatorReference = {
-  source: "eviQ — Calculating anti-cancer drug doses / source protocol registry",
+  source: "eviQ  -  Calculating anti-cancer drug doses / source protocol registry",
   version: "Current eviQ education and ConvertLAB protocol registry",
   url: "https://education.eviq.org.au/getmedia/aa5ddb9b-b698-4cdd-91de-9c0564ec775e/ADAC-V4-M4-Workbook-Adult-v2.aspx",
   applicablePopulation: "Patients receiving a specifically selected source-backed oncology regimen in ConvertLAB.",
@@ -167,7 +167,7 @@ const GENERIC: CalculatorReference = {
 
 const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], CalculatorReference>> = {
   general: {
-    source: "National Cancer Institute — Body Surface Area formula reference; ConvertLAB general calculation methods",
+    source: "National Cancer Institute  -  Body Surface Area formula reference; ConvertLAB general calculation methods",
     version: "Mosteller formula reference",
     url: "https://ctep.cancer.gov/branches/pmb/inside_pmb/nov2011.pdf",
     applicablePopulation: "General calculation use; verify the intended population and formula for the specific clinical application.",
@@ -176,7 +176,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
     note: "General calculators may have method-specific references; use the calculator's formula and limitations as the immediate scope.",
   },
   hematology: {
-    source: "American Society of Hematology — Platelet transfusion refractoriness / corrected count increment guidance",
+    source: "American Society of Hematology  -  Platelet transfusion refractoriness / corrected count increment guidance",
     version: "ASH Education Program 2020",
     url: "https://ashpublications.org/hematology/article/2020/1/527/474305/Platelet-transfusion-refractoriness-how-do-I",
     applicablePopulation: "Hematology and transfusion calculations covered by the specific calculator.",
@@ -193,7 +193,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
     note: "Formula-specific references are provided where available; remaining chemistry tools are mathematical calculation aids and require method-specific laboratory validation where clinically applied.",
   },
   microbiology: {
-    source: "Clinical and Laboratory Standards Institute — microbiology and antimicrobial susceptibility testing standards",
+    source: "Clinical and Laboratory Standards Institute  -  microbiology and antimicrobial susceptibility testing standards",
     version: "M100 Ed36 / M07 Ed12, 2026",
     url: "https://clsi.org/shop/packages/ast-m100-pkg/",
     applicablePopulation: "Microbiology laboratory calculations and workflows; apply the laboratory's validated method.",
@@ -202,7 +202,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
     note: "CLSI standards govern validated microbiology methods; these calculators do not establish organism identity, susceptibility interpretation, or clinical significance.",
   },
   "lab-solutions": {
-    source: "World Health Organization — Laboratory Quality Management System: Handbook",
+    source: "World Health Organization  -  Laboratory Quality Management System: Handbook",
     version: "2011 handbook",
     url: "https://www.who.int/publications-detail-redirect/9789241548274",
     applicablePopulation: "Laboratory preparation and quality-management context.",
@@ -211,7 +211,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
     note: "Preparation calculations must be performed within the laboratory's validated SOPs and reagent instructions.",
   },
   spectrophotometry: {
-    source: "NIST — Standard Reference Materials / spectrophotometric measurement references",
+    source: "NIST  -  Standard Reference Materials / spectrophotometric measurement references",
     version: "NIST reference material",
     url: "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nbsspecialpublication260-81.pdf",
     applicablePopulation: "Spectrophotometric calculations represented by the calculator.",
@@ -220,7 +220,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
     note: "Instrument qualification, blanking, calibration, linearity and method validation remain laboratory responsibilities.",
   },
   cardiovascular: {
-    source: "American College of Cardiology — AnticoagEvaluator / cardiovascular risk tools",
+    source: "American College of Cardiology  -  AnticoagEvaluator / cardiovascular risk tools",
     version: "Updated through 2023 ACC/AHA/ACCP/HRS AF guidance; app updated November 2024",
     url: "https://www.acc.org/anticoagevaluator",
     applicablePopulation: "Cardiovascular risk calculations covered by the specific calculator.",
@@ -229,7 +229,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
     note: "Scores support assessment and do not by themselves determine treatment. Use the current applicable guideline.",
   },
   "stem-cell-transplant": {
-    source: "EBMT — The EBMT Handbook, 2nd edition",
+    source: "EBMT  -  The EBMT Handbook, 2nd edition",
     version: "Second edition, 2024",
     url: "https://www.ebmt.org/sites/default/files/2024-04/978-3-031-44080-9.pdf",
     applicablePopulation: "Hematopoietic cell transplantation and cellular therapy calculations represented by the calculator.",
@@ -238,7 +238,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
     note: "Transplant protocols, graft specifications and institutional procedures take precedence for patient-specific decisions.",
   },
   oncology: {
-    source: "eviQ — oncology protocol and anti-cancer treatment resources",
+    source: "eviQ  -  oncology protocol and anti-cancer treatment resources",
     version: "Current source-backed ConvertLAB oncology registry",
     url: "https://www.eviq.org.au/",
     applicablePopulation: "Oncology calculations represented by the selected calculator or regimen.",
@@ -251,7 +251,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
 
 const CHEMISTRY_REFERENCES: Record<string, CalculatorReference> = {
   "ldl-friedewald": {
-    source: "Friedewald equation — peer-reviewed validation literature",
+    source: "Friedewald equation  -  peer-reviewed validation literature",
     version: "Published validation literature; verify assay-specific applicability",
     url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC9106156/",
     applicablePopulation: "Use for LDL-C estimation when the calculator's input assumptions are met.",
@@ -260,7 +260,7 @@ const CHEMISTRY_REFERENCES: Record<string, CalculatorReference> = {
     note: "Friedewald estimation has known limitations, including high triglycerides and low LDL-C; direct or alternative validated methods may be appropriate.",
   },
   "non-hdl-cholesterol": {
-    source: "Peer-reviewed lipid laboratory guidance — non-HDL cholesterol calculation",
+    source: "Peer-reviewed lipid laboratory guidance  -  non-HDL cholesterol calculation",
     version: "Current supporting literature",
     url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5778427/",
     applicablePopulation: "Lipid profile calculation use.",
@@ -268,7 +268,7 @@ const CHEMISTRY_REFERENCES: Record<string, CalculatorReference> = {
     status: "supporting",
   },
   "hba1c-eag": {
-    source: "NIDDK — The A1C Test & Diabetes / ADAG relationship",
+    source: "NIDDK  -  The A1C Test & Diabetes / ADAG relationship",
     version: "Current NIDDK patient/laboratory information",
     url: "https://www.niddk.nih.gov/health-information/diagnostic-tests/a1c-test",
     applicablePopulation: "HbA1c results for estimating average glucose; eAG is a population-derived estimate and may not equal an individual's measured average glucose.",
@@ -276,7 +276,7 @@ const CHEMISTRY_REFERENCES: Record<string, CalculatorReference> = {
     status: "supporting",
   },
   "corrected-sodium-hyperglycemia": {
-    source: "Peer-reviewed review — corrected serum sodium in hyperglycemic crises",
+    source: "Peer-reviewed review  -  corrected serum sodium in hyperglycemic crises",
     version: "Published clinical review",
     url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479837/",
     applicablePopulation: "Hyperglycemia-associated corrected sodium estimation.",

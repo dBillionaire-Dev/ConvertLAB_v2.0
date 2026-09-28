@@ -20,7 +20,7 @@ const EVIQ_LAST_VERIFIED = "2026-09-15"
 export const treatmentRegimens: TreatmentRegimen[] = [
   {
     id: "r-chop21-dlbcl",
-    name: "R-CHOP21 — Diffuse Large B-Cell Lymphoma",
+    name: "R-CHOP21  -  Diffuse Large B-Cell Lymphoma",
     specialty: "oncology",
     disease: "Diffuse large B-cell lymphoma",
     indication: "Adult B-cell non-Hodgkin lymphoma / DLBCL reference regimen",
@@ -50,7 +50,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — R-CHOP21 (protocol 70)",
+        source: "eviQ  -  R-CHOP21 (protocol 70)",
         version: "Current protocol page",
         url: "https://www.eviq.org.au/haematology/lymphoma/other-b-cell-lymphoma/70-r-chop21-rituximab-cyclophosphamide-doxorubici",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -58,7 +58,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
         note: "Cited schedule: rituximab 375 mg/m², cyclophosphamide 750 mg/m², doxorubicin 50 mg/m², vincristine 1.4 mg/m² capped at 2 mg on day 1; prednisolone 100 mg days 1–5; every 21 days.",
       },
       {
-        source: "NCI Drug Dictionary — R-CHOP",
+        source: "NCI Drug Dictionary  -  R-CHOP",
         version: "Current page",
         url: "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/r-chop-regimen",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -70,7 +70,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "abvd-hodgkin-lymphoma",
-    name: "ABVD — Hodgkin Lymphoma",
+    name: "ABVD  -  Hodgkin Lymphoma",
     specialty: "oncology",
     disease: "Hodgkin lymphoma",
     indication: "Hodgkin lymphoma reference regimen",
@@ -92,7 +92,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — Advanced stage ABVD (protocol 56)",
+        source: "eviQ  -  Advanced stage ABVD (protocol 56)",
         version: "Current protocol page",
         url: "https://www.eviq.org.au/haematology/lymphoma/hodgkin-lymphoma/56-advanced-stage-abvd-doxorubicin-bleomycin-vinb",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -100,7 +100,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
         note: "Cited schedule: doxorubicin 25 mg/m², vinblastine 6 mg/m², dacarbazine 375 mg/m² and bleomycin 10,000 IU/m² on days 1 and 15 every 28 days, six cycles unless progression or unacceptable toxicity.",
       },
       {
-        source: "NCI — ABVD",
+        source: "NCI  -  ABVD",
         version: "Updated May 10, 2023",
         url: "https://www.cancer.gov/about-cancer/treatment/drugs/abvd",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -112,7 +112,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "mfolfox6-colorectal",
-    name: "mFOLFOX6 — Colorectal Cancer",
+    name: "mFOLFOX6  -  Colorectal Cancer",
     specialty: "oncology",
     disease: "Colorectal cancer",
     indication: "Colorectal cancer reference regimen",
@@ -151,7 +151,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — Colorectal metastatic mFOLFOX6 (protocol 114)",
+        source: "eviQ  -  Colorectal metastatic mFOLFOX6 (protocol 114)",
         version: "Current protocol page",
         url: "https://www.eviq.org.au/medical-oncology/colorectal/metastatic/114-colorectal-metastatic-folfox6-modified-fluo",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -159,7 +159,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
         note: "Cited schedule: oxaliplatin 85 mg/m², leucovorin 50 mg, 5-FU 400 mg/m² IV followed by 2,400 mg/m² continuous infusion over 46 hours, every 14 days.",
       },
       {
-        source: "NCI Drug Dictionary — FOLFOX",
+        source: "NCI Drug Dictionary  -  FOLFOX",
         version: "Updated April 27, 2023",
         url: "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/folfox-regimen",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -171,7 +171,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "folfiri-colorectal",
-    name: "FOLFIRI — Advanced/Metastatic Colorectal Cancer",
+    name: "FOLFIRI  -  Advanced/Metastatic Colorectal Cancer",
     specialty: "oncology",
     disease: "Colorectal cancer",
     indication: "Advanced or metastatic colorectal cancer reference regimen",
@@ -201,7 +201,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — Advanced or metastatic FOLFIRI (protocol 4043)",
+        source: "eviQ  -  Advanced or metastatic FOLFIRI (protocol 4043)",
         version: "Current protocol page",
         url: "https://www.eviq.org.au/medical-oncology/upper-gastrointestinal/gastric-and-oesophageal-metastatic/4043-advanced-or-metastatic-folfiri-modified-fl",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -209,7 +209,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
         note: "Cited schedule: irinotecan 180 mg/m², leucovorin 50 mg, 5-FU 400 mg/m² IV followed by 2,400 mg/m² continuous infusion over 46 hours; every 14 days.",
       },
       {
-        source: "NCI Drug Dictionary — FOLFIRI",
+        source: "NCI Drug Dictionary  -  FOLFIRI",
         version: "Current page",
         url: "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/folfiri-regimen",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -221,7 +221,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "tc-breast-adjuvant",
-    name: "TC — Breast Cancer Adjuvant",
+    name: "TC  -  Breast Cancer Adjuvant",
     specialty: "oncology",
     disease: "Breast cancer",
     indication: "Adjuvant breast cancer protocol reference",
@@ -245,7 +245,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — Breast adjuvant TC (protocol 24)",
+        source: "eviQ  -  Breast adjuvant TC (protocol 24)",
         version: "v.10",
         url: "https://www.eviq.org.au/medical-oncology/breast/neoadjuvant-adjuvant/24-breast-adjuvant-tc-docetaxel-and-cyclophospham",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -257,7 +257,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "tac-breast-cancer",
-    name: "TAC — Breast Cancer Neoadjuvant/Adjuvant",
+    name: "TAC  -  Breast Cancer Neoadjuvant/Adjuvant",
     specialty: "oncology",
     disease: "Breast cancer",
     indication: "Neoadjuvant or adjuvant breast cancer reference regimen",
@@ -289,7 +289,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — Breast neoadjuvant/adjuvant TAC (protocol 4114)",
+        source: "eviQ  -  Breast neoadjuvant/adjuvant TAC (protocol 4114)",
         version: "v.4",
         url: "https://www.eviq.org.au/medical-oncology/breast/neoadjuvant-adjuvant/4114-breast-neoadjuvant-adjuvant-tac-docetaxel-do",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -301,7 +301,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "tchp-breast-neoadjuvant",
-    name: "TCHP — HER2-Positive Breast Cancer",
+    name: "TCHP  -  HER2-Positive Breast Cancer",
     specialty: "oncology",
     disease: "HER2-positive breast cancer",
     indication: "Neoadjuvant treatment of operable HER2-positive early breast cancer",
@@ -346,7 +346,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — Breast neoadjuvant TCHP (protocol 3736)",
+        source: "eviQ  -  Breast neoadjuvant TCHP (protocol 3736)",
         version: "v.4",
         url: "https://www.eviq.org.au/medical-oncology/breast/neoadjuvant-adjuvant/3736-breast-neoadjuvant-tchp-docetaxel-carboplati",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -358,7 +358,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "sclc-atezolizumab-carboplatin-etoposide",
-    name: "Atezolizumab + Carboplatin + Etoposide — Extensive-Stage SCLC",
+    name: "Atezolizumab + Carboplatin + Etoposide  -  Extensive-Stage SCLC",
     specialty: "oncology",
     disease: "Extensive-stage small-cell lung cancer",
     indication: "First-line extensive-stage small-cell lung cancer reference regimen",
@@ -390,7 +390,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — SCLC extensive disease carboplatin, etoposide and atezolizumab (protocol 3731)",
+        source: "eviQ  -  SCLC extensive disease carboplatin, etoposide and atezolizumab (protocol 3731)",
         version: "v.6",
         url: "https://www.eviq.org.au/medical-oncology/respiratory/small-cell-lung-cancer/3731-sclc-extensive-disease-carboplatin-etoposide",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -402,7 +402,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "r-cvp-non-hodgkin-lymphoma",
-    name: "R-CVP — Non-Hodgkin Lymphoma",
+    name: "R-CVP  -  Non-Hodgkin Lymphoma",
     specialty: "oncology",
     disease: "B-cell non-Hodgkin lymphoma",
     indication: "Non-Hodgkin lymphoma reference regimen",
@@ -432,7 +432,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — R-CVP (protocol 168)",
+        source: "eviQ  -  R-CVP (protocol 168)",
         version: "Current protocol page",
         url: "https://www.eviq.org.au/haematology/lymphoma/other-b-cell-lymphoma/168-r-cvp-rituximab-cyclophosphamide-vincristine",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -444,7 +444,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "docetaxel-prostate-metastatic",
-    name: "Docetaxel + Prednisolone — Metastatic Prostate Cancer",
+    name: "Docetaxel + Prednisolone  -  Metastatic Prostate Cancer",
     specialty: "oncology",
     disease: "Metastatic prostate cancer",
     indication: "Androgen-independent (castration-resistant) metastatic prostate cancer reference regimen",
@@ -467,7 +467,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "eviQ — Prostate metastatic docetaxel three weekly and prednisolone (protocol 249)",
+        source: "eviQ  -  Prostate metastatic docetaxel three weekly and prednisolone (protocol 249)",
         version: "Current protocol page",
         url: "https://www.eviq.org.au/medical-oncology/urogenital/prostate/249-prostate-metastatic-docetaxel-three-weekly-and",
         lastVerified: EVIQ_LAST_VERIFIED,
@@ -479,7 +479,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
   },
   {
     id: "ac-breast-cancer",
-    name: "AC — Breast Cancer",
+    name: "AC  -  Breast Cancer",
     specialty: "oncology",
     disease: "Breast cancer",
     indication: "Doxorubicin/cyclophosphamide reference regimen",
@@ -499,7 +499,7 @@ export const treatmentRegimens: TreatmentRegimen[] = [
     ],
     references: [
       {
-        source: "NCI Drug Dictionary — AC regimen",
+        source: "NCI Drug Dictionary  -  AC regimen",
         version: "Current page",
         url: "https://www.cancer.gov/publications/dictionaries/cancer-drug/def/ac-regimen",
         lastVerified: EVIQ_LAST_VERIFIED,

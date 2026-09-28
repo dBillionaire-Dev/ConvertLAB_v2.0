@@ -107,7 +107,7 @@ export function BeerLambertCalculator() {
         <div className="rounded-md border bg-muted p-4">
           <p className="text-xs text-muted-foreground mb-1">{FIELD_LABELS[solveFor]}</p>
           <p className="text-2xl font-bold">
-            {result.error ? <span className="text-sm font-normal text-destructive">{result.error}</span> : result.value !== null ? Number(result.value.toPrecision(6)) : "—"}
+            {result.error ? <span className="text-sm font-normal text-destructive">{result.error}</span> : result.value !== null ? Number(result.value.toPrecision(6)) : " - "}
           </p>
         </div>
         <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>

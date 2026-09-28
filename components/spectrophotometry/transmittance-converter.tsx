@@ -39,8 +39,8 @@ export function TransmittanceConverter() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="t-to-a">%Transmittance → Absorbance</SelectItem>
-              <SelectItem value="a-to-t">Absorbance → %Transmittance</SelectItem>
+              <SelectItem value="t-to-a">%Transmittance  to  Absorbance</SelectItem>
+              <SelectItem value="a-to-t">Absorbance  to  %Transmittance</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -58,7 +58,7 @@ export function TransmittanceConverter() {
             ) : result.value !== null ? (
               Number(result.value.toPrecision(6))
             ) : (
-              "—"
+              " - "
             )}
           </p>
         </div>

@@ -111,10 +111,10 @@ export const serialDilutionFactorCalculator: CalculatorDefinition = {
   description: "Calculates the overall dilution factor from multiple serial dilution steps.",
   formula: "Total dilution factor = factor₁ × factor₂ × ... × factorₙ",
   inputs: [
-    { id: "factor1", label: "Dilution factor — step 1", kind: "number", min: 1, step: 1, defaultValue: 10 },
-    { id: "factor2", label: "Dilution factor — step 2", kind: "number", min: 1, step: 1, optional: true },
-    { id: "factor3", label: "Dilution factor — step 3", kind: "number", min: 1, step: 1, optional: true },
-    { id: "factor4", label: "Dilution factor — step 4", kind: "number", min: 1, step: 1, optional: true },
+    { id: "factor1", label: "Dilution factor  -  step 1", kind: "number", min: 1, step: 1, defaultValue: 10 },
+    { id: "factor2", label: "Dilution factor  -  step 2", kind: "number", min: 1, step: 1, optional: true },
+    { id: "factor3", label: "Dilution factor  -  step 3", kind: "number", min: 1, step: 1, optional: true },
+    { id: "factor4", label: "Dilution factor  -  step 4", kind: "number", min: 1, step: 1, optional: true },
   ],
   calculate: (inputs) => {
     const values = ["factor1","factor2","factor3","factor4"].map(id => inputs[id]).filter(v => v !== undefined && v !== "")
