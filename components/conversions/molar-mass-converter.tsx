@@ -1,6 +1,8 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { RotateCcw } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -31,12 +33,25 @@ export function MolarMassConverter() {
     }
   }, [value, mw, direction])
 
+  const handleReset = () => {
+    setAnalyteId("glucose")
+    setDirection("mass-to-molar")
+    setValue("")
+    setUseCustomMw(false)
+    setCustomMw("")
+  }
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Molar ↔ Mass Concentration</CardTitle>
-        <CardDescription>Convert mg/dL to mmol/L (and back) using an analyte's molecular weight.</CardDescription>
-      </CardHeader>
+        <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+          <div>
+            <CardTitle>Molar ↔ Mass Concentration</CardTitle>
+            <CardDescription>Convert mg/dL to mmol/L (and back) using an analyte's molecular weight.</CardDescription>
+          </div>
+          <Button variant="ghost" size="icon" aria-label="Reset conversion" onClick={handleReset}>
+            <RotateCcw className="h-5 w-5" />
+          </Button>
+        </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">

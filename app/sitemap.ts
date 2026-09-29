@@ -8,6 +8,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: base, changeFrequency: "weekly", priority: 1 },
     { url: `${base}/calculators`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/conversions`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/lab-tools`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/estimators`, changeFrequency: "weekly", priority: 0.8 },
     ...calculatorCategories.map((category) => ({
       url: `${base}/calculators/${category.id}`,
       changeFrequency: "weekly" as const,

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { ArrowLeftRight, Copy } from "lucide-react"
+import { ArrowLeftRight, Copy, RotateCcw } from "lucide-react"
 import type { ConversionCategory } from "@/lib/conversions/types"
 import { convert, ConversionError } from "@/lib/conversions/engine"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -53,6 +53,12 @@ export function ConversionRunner({ category }: { category: ConversionCategory })
     setToId(fromId)
   }
 
+  const handleReset = () => {
+    setValue("")
+    setFromId(category.units[0]?.id ?? "")
+    setToId(category.units[1]?.id ?? category.units[0]?.id ?? "")
+  }
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(`${value} ${fromUnit?.symbol} = ${result.display} ${toUnit?.symbol}`)
@@ -64,9 +70,14 @@ export function ConversionRunner({ category }: { category: ConversionCategory })
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{category.name} Conversion</CardTitle>
-        <CardDescription>Convert between {category.name.toLowerCase()} units.</CardDescription>
+      <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+        <div>
+          <CardTitle>{category.name} Conversion</CardTitle>
+          <CardDescription>Convert between {category.name.toLowerCase()} units.</CardDescription>
+        </div>
+        <Button variant="ghost" size="icon" aria-label="Reset conversion" onClick={handleReset}>
+          <RotateCcw className="h-5 w-5" />
+        </Button>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-end">

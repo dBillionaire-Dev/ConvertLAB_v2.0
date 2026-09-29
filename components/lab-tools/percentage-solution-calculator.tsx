@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { RotateCcw } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -42,6 +44,11 @@ export function PercentageSolutionCalculator() {
     }
   }, [percent])
 
+  const handleReset = () => {
+    setMode("wv")
+    setPercent("")
+  }
+
   useEffect(() => {
     if (!result) return
     const timer = window.setTimeout(() => {
@@ -56,9 +63,14 @@ export function PercentageSolutionCalculator() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Percentage Solution</CardTitle>
-        <CardDescription>Convert between %, g/L (or mL/L), and mg/mL for w/v, v/v, and w/w solutions.</CardDescription>
+      <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+        <div>
+          <CardTitle>Percentage Solution</CardTitle>
+          <CardDescription>Convert between %, g/L (or mL/L), and mg/mL for w/v, v/v, and w/w solutions.</CardDescription>
+        </div>
+        <Button variant="ghost" size="icon" aria-label="Reset calculator" onClick={handleReset}>
+          <RotateCcw className="h-5 w-5" />
+        </Button>
       </CardHeader>
       <CardContent className="space-y-5">
         <Tabs value={mode} onValueChange={(v) => setMode(v as Mode)}>
