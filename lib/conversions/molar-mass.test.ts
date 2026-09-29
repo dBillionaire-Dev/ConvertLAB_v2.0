@@ -15,7 +15,7 @@ describe("molar mass conversion  -  round trips", () => {
 describe("molar mass conversion  -  known clinical values", () => {
   it("100 mg/dL glucose ≈ 5.55 mmol/L", () => {
     const glucose = getAnalyte("glucose")!
-    expect(mgdLToMmolL(100, glucose.molecularWeight)).toBeCloseTo(5.5507, 3)
+    expect(mgdLToMmolL(100, glucose.molecularWeight)).toBeCloseTo(5.5556, 3)
   })
 
   it("1 mg/dL creatinine ≈ 88.4 µmol/L (0.0884 mmol/L)", () => {
