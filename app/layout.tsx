@@ -14,12 +14,69 @@ import { ApplyPreferences } from "@/components/apply-preferences"
 import { AnalyticsSync } from "@/components/analytics-sync"
 
 const inter = Inter({ subsets: ["latin"] })
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://convertlab-nex.vercel.app").replace(/\/$/, "")
+const siteName = "ConvertLAB"
+const description =
+  "Laboratory calculators, medical unit conversions, solution preparation tools, microbiology tools, and spectrophotometry calculators for students and laboratory professionals."
 
 export const metadata: Metadata = {
-  title: "ConvertLAB - From units to results",
-  description:
-    "A laboratory calculation, conversion, estimation, and reference toolkit. Calculators, unit conversions, and lab tools for laboratory and clinical work.",
-  keywords: "lab calculator, medical converter, laboratory units, eGFR, LDL calculator, PWA, healthcare tools",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "ConvertLAB - Laboratory Calculators & Unit Conversions",
+    template: "%s | ConvertLAB",
+  },
+  description,
+  applicationName: siteName,
+  keywords: [
+    "laboratory calculator",
+    "medical calculator",
+    "lab calculator",
+    "medical unit conversion",
+    "laboratory unit conversion",
+    "clinical calculator",
+    "eGFR calculator",
+    "LDL calculator",
+    "molarity calculator",
+    "dilution calculator",
+    "spectrophotometry calculator",
+    "microbiology calculator",
+  ],
+  authors: [{ name: "ConvertLAB" }],
+  creator: "ConvertLAB",
+  publisher: "ConvertLAB",
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName,
+    title: "ConvertLAB - Laboratory Calculators & Unit Conversions",
+    description,
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ConvertLAB - Laboratory calculators and unit conversions",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ConvertLAB - Laboratory Calculators & Unit Conversions",
+    description,
+    images: ["/og-image.png"],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -41,11 +98,7 @@ export const viewport = {
   ],
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>

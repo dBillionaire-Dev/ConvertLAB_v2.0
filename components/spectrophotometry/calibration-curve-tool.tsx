@@ -1,5 +1,7 @@
 "use client"
 
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
+
 import { useMemo, useState } from "react"
 import { Plus, Trash2 } from "lucide-react"
 import { CartesianGrid, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis, ZAxis } from "recharts"
@@ -9,7 +11,6 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { linearRegression, concentrationFromCalibration, originalConcentrationFromDiluted, SpectroError, type CalibrationPoint } from "@/lib/spectrophotometry"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
-
 const PLACEHOLDER_POINTS = [
   { concentration: "0", absorbance: "0.001" },
   { concentration: "10", absorbance: "0.120" },
@@ -66,11 +67,24 @@ export function CalibrationCurveTool() {
   const addRow = () => setRows((prev) => [...prev, { concentration: "", absorbance: "" }])
   const removeRow = (index: number) => setRows((prev) => prev.filter((_, i) => i !== index))
 
+  const handleReset = () => {
+    setRows(
+      PLACEHOLDER_POINTS.map(() => ({
+        concentration: "",
+        absorbance: "",
+      }))
+    )
+    setUnknownAbsorbance("")
+    setDilutionFactor("")
+  }
+
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <CardTitle>Calibration Curve</CardTitle>
         <CardDescription>Enter standards to fit a calibration line and estimate an unknown's concentration.</CardDescription>
+      
+        <CalculatorResetButton onReset={handleReset} />
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-2">

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 import { trackCalculation } from "@/lib/analytics/track-calculation"
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
 
 type FieldId = "c1" | "v1" | "c2" | "v2"
 
@@ -55,6 +56,15 @@ export function DilutionCalculator() {
         (parsed.result.field === "v1" ? parsed.result.value : Number.parseFloat(values.v1))
       : null
 
+  const handleReset = () => {
+    setValues({
+      c1: "",
+      v1: "",
+      c2: "",
+      v2: "",
+    })
+  }
+
   const set = (id: FieldId) => (e: ChangeEvent<HTMLInputElement>) =>
     setValues((prev) => ({ ...prev, [id]: e.target.value }))
 
@@ -72,9 +82,14 @@ export function DilutionCalculator() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>C1V1 = C2V2 Dilution</CardTitle>
-        <CardDescription>Leave exactly one field blank, ConvertLAB will solve for it.</CardDescription>
+      <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+        <div>
+          <CardTitle>C1V1 = C2V2 Dilution</CardTitle>
+          <CardDescription className="mt-1.5">
+            Leave exactly one field blank, ConvertLAB will solve for it.
+          </CardDescription>
+        </div>
+        <CalculatorResetButton onReset={handleReset} />
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">

@@ -1,5 +1,6 @@
 "use client"
 
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
 import { useMemo, useState } from "react"
 import { AlertTriangle } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -13,7 +14,6 @@ import { convert } from "@/lib/conversions/engine"
 import { massConversion } from "@/lib/conversions/data/mass"
 import { volumeConversion } from "@/lib/conversions/data/volume"
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
-
 type Direction = "mass-to-volume" | "volume-to-mass"
 
 export function MassVolumeConverter() {
@@ -24,6 +24,16 @@ export function MassVolumeConverter() {
   const [volumeUnit, setVolumeUnit] = useState("mL")
   const [useCustomDensity, setUseCustomDensity] = useState(false)
   const [customDensity, setCustomDensity] = useState("")
+
+  const handleReset = () => {
+    setDirection("mass-to-volume")
+    setSubstanceId("water")
+    setInputValue("")
+    setMassUnit("g")
+    setVolumeUnit("mL")
+    setUseCustomDensity(false)
+    setCustomDensity("")
+  }
 
   const substance = substances.find((s) => s.id === substanceId)
   const density = useCustomDensity ? Number.parseFloat(customDensity) : substance?.density.value
@@ -51,11 +61,15 @@ export function MassVolumeConverter() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <CardTitle>Mass ↔ Volume</CardTitle>
         <CardDescription>
           Mass and volume are only interchangeable through density. ConvertLAB never assumes 1 g = 1 mL.
         </CardDescription>
+          </CardDescription>
+        </div>
+      
+        <CalculatorResetButton onReset={handleReset} />
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">

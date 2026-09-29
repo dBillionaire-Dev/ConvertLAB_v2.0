@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { CalculationResetButton } from "@/components/calculation-reset-button"
 
 const MCFARLAND_STANDARDS = [
   { standard: "0.5", cellDensity: "1.5 x 10⁸ CFU/mL", bacl2: "0.05 mL", h2so4: "9.95 mL" },
@@ -13,9 +14,10 @@ const MCFARLAND_STANDARDS = [
 export function McFarlandReference() {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <CardTitle>McFarland Turbidity Standards</CardTitle>
         <CardDescription>Reference values for approximate bacterial cell density by standard.</CardDescription>
+        <CalculationResetButton />
       </CardHeader>
       <CardContent>
         <div className="rounded-md border overflow-x-auto">

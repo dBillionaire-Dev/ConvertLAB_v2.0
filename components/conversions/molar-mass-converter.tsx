@@ -1,5 +1,6 @@
 "use client"
 
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
 import { useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -8,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { analytes, getAnalyte, mgdLToMmolL, mmolLToMgdL } from "@/lib/conversions/molar-mass"
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
-
 type Direction = "mass-to-molar" | "molar-to-mass"
 
 export function MolarMassConverter() {
@@ -17,6 +17,14 @@ export function MolarMassConverter() {
   const [value, setValue] = useState("")
   const [useCustomMw, setUseCustomMw] = useState(false)
   const [customMw, setCustomMw] = useState("")
+
+  const handleReset = () => {
+    setAnalyteId("glucose")
+    setDirection("mass-to-molar")
+    setValue("")
+    setUseCustomMw(false)
+    setCustomMw("")
+  }
 
   const analyte = getAnalyte(analyteId)
   const mw = useCustomMw ? Number.parseFloat(customMw) : analyte?.molecularWeight
@@ -33,9 +41,11 @@ export function MolarMassConverter() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <CardTitle>Molar ↔ Mass Concentration</CardTitle>
         <CardDescription>Convert mg/dL to mmol/L (and back) using an analyte's molecular weight.</CardDescription>
+      
+        <CalculatorResetButton onReset={handleReset} />
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">

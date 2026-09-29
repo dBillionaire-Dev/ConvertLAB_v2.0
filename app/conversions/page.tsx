@@ -4,7 +4,11 @@ import { conversionCategories } from "@/lib/conversions/registry"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Droplet } from "lucide-react"
 
-export const metadata = { title: "Conversions - ConvertLAB" }
+export const metadata = {
+  title: "Medical & Laboratory Unit Conversions",
+  description: "Convert laboratory and clinical units, mass and volume, and molar concentrations with ConvertLAB.",
+  alternates: { canonical: "/conversions" },
+}
 
 export default function ConversionsPage() {
   return (

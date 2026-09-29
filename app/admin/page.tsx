@@ -94,6 +94,8 @@ function localDateTime(value: string | null | undefined) {
   }).format(date)
 }
 
+export const metadata = { robots: { index: false, follow: false } }
+
 export default async function AdminPage() {
   if (!(await isAdminAuthenticated())) redirect("/admin/login")
 

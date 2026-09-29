@@ -1,5 +1,7 @@
 "use client"
 
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
+
 import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -7,7 +9,6 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 import { trackCalculation } from "@/lib/analytics/track-calculation"
-
 /**
  * All three percentage types reduce to "amount of solute per 100 units of
  * solution": w/v = g/100mL, v/v = mL/100mL, w/w = g/100g. That means the
@@ -51,14 +52,21 @@ export function PercentageSolutionCalculator() {
         category: "lab-tools",
       })
     }, 800)
-    return () => window.clearTimeout(timer)
+    const handleReset = () => {
+    setMode("wv")
+    setPercent("")
+  }
+
+  return () => window.clearTimeout(timer)
   }, [result])
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <CardTitle>Percentage Solution</CardTitle>
         <CardDescription>Convert between %, g/L (or mL/L), and mg/mL for w/v, v/v, and w/w solutions.</CardDescription>
+      
+        <CalculatorResetButton onReset={handleReset} />
       </CardHeader>
       <CardContent className="space-y-5">
         <Tabs value={mode} onValueChange={(v) => setMode(v as Mode)}>

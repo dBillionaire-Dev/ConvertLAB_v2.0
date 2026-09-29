@@ -1,5 +1,7 @@
 "use client"
 
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
+
 import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -8,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { beerLambert, SpectroError } from "@/lib/spectrophotometry"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
 import { trackCalculation } from "@/lib/analytics/track-calculation"
-
 type SolveFor = "absorbance" | "epsilon" | "pathLength" | "concentration"
 
 const FIELD_LABELS: Record<SolveFor, string> = {
@@ -62,14 +63,26 @@ export function BeerLambertCalculator() {
         category: "spectrophotometry",
       })
     }, 800)
-    return () => window.clearTimeout(timer)
+    const handleReset = () => {
+    setSolveFor("concentration")
+    setValues(
+      (prev) =>
+        Object.fromEntries(
+          Object.keys(prev).map((key) => [key, ""])
+        ) as Record<SolveFor, string>
+    )
+  }
+
+  return () => window.clearTimeout(timer)
   }, [result])
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <CardTitle>Beer-Lambert Law</CardTitle>
         <CardDescription>A = εbc, choose the quantity to solve for.</CardDescription>
+      
+        <CalculatorResetButton onReset={handleReset} />
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-1.5 max-w-sm">

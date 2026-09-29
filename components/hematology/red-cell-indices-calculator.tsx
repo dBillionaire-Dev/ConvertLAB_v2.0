@@ -1,5 +1,7 @@
 "use client"
 
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
+
 import { useState } from "react"
 import { AlertTriangle, Copy, Save } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -14,7 +16,6 @@ import { recordUsage } from "@/lib/recently-used"
 import { trackCalculation } from "@/lib/analytics/track-calculation"
 import { useHistory } from "@/lib/history/use-history"
 import type { CalculationResult, CalculatorDefinition } from "@/lib/calculators/types"
-
 interface IndexResult {
   label: string
   result: CalculationResult | null
@@ -86,13 +87,22 @@ export function RedCellIndicesCalculator() {
     }
   }
 
+  const handleReset = () => {
+    setHgb("")
+    setHct("")
+    setRbc("")
+    setResults(null)
+  }
+
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-start justify-between gap-4">
           <CardTitle>Red Cell Indices</CardTitle>
           <CardDescription>Enter Hemoglobin, Hematocrit, and RBC count once to get MCV, MCH, and MCHC together.</CardDescription>
-        </CardHeader>
+        
+        <CalculatorResetButton onReset={handleReset} />
+      </CardHeader>
         <CardContent className="space-y-5">
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-1.5">

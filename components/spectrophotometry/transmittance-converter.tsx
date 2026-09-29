@@ -1,5 +1,6 @@
 "use client"
 
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
 import { useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -7,7 +8,6 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { absorbanceFromTransmittance, transmittanceFromAbsorbance, SpectroError } from "@/lib/spectrophotometry"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
-
 type Direction = "a-to-t" | "t-to-a"
 
 export function TransmittanceConverter() {
@@ -25,11 +25,18 @@ export function TransmittanceConverter() {
     }
   }, [value, direction])
 
+  const handleReset = () => {
+    setDirection("t-to-a")
+    setValue("")
+  }
+
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <CardTitle>Absorbance ↔ %Transmittance</CardTitle>
         <CardDescription>A = -log₁₀(T), where T is fractional transmittance.</CardDescription>
+      
+        <CalculatorResetButton onReset={handleReset} />
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-1.5 max-w-sm">

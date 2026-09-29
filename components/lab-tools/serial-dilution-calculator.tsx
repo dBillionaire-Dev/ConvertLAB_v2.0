@@ -1,5 +1,7 @@
 "use client"
 
+import { CalculatorResetButton } from "@/components/calculators/calculator-reset-button"
+
 import { useEffect, useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -7,7 +9,6 @@ import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { LAB_PREP_DISCLAIMER } from "@/lib/calculators/types"
 import { trackCalculation } from "@/lib/analytics/track-calculation"
-
 export function SerialDilutionCalculator() {
   const [initial, setInitial] = useState("")
   const [factor, setFactor] = useState("")
@@ -42,14 +43,22 @@ export function SerialDilutionCalculator() {
         category: "lab-tools",
       })
     }, 800)
-    return () => window.clearTimeout(timer)
+    const handleReset = () => {
+    setInitial("")
+    setFactor("")
+    setSteps("")
+  }
+
+  return () => window.clearTimeout(timer)
   }, [result])
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
         <CardTitle>Serial Dilution</CardTitle>
         <CardDescription>Calculates concentration at every step of a serial dilution series.</CardDescription>
+      
+        <CalculatorResetButton onReset={handleReset} />
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-3">
