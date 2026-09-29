@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect, useMemo, useState, type ChangeEvent } from "react"
+import { RotateCcw } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -58,6 +60,10 @@ export function DilutionCalculator() {
   const set = (id: FieldId) => (e: ChangeEvent<HTMLInputElement>) =>
     setValues((prev) => ({ ...prev, [id]: e.target.value }))
 
+  const handleReset = () => {
+    setValues({ c1: "", v1: "", c2: "", v2: "" })
+  }
+
   useEffect(() => {
     if (!parsed.result) return
     const timer = window.setTimeout(() => {
@@ -72,9 +78,14 @@ export function DilutionCalculator() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>C1V1 = C2V2 Dilution</CardTitle>
-        <CardDescription>Leave exactly one field blank, ConvertLAB will solve for it.</CardDescription>
+      <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+        <div>
+          <CardTitle>C1V1 = C2V2 Dilution</CardTitle>
+          <CardDescription>Leave exactly one field blank, ConvertLAB will solve for it.</CardDescription>
+        </div>
+        <Button variant="ghost" size="icon" aria-label="Reset calculator" onClick={handleReset}>
+          <RotateCcw className="h-5 w-5" />
+        </Button>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">

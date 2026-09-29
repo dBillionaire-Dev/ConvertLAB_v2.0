@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { PageContainer } from "@/components/page-container"
@@ -8,6 +9,21 @@ import { Badge } from "@/components/ui/badge"
 
 export function generateStaticParams() {
   return calculatorCatalog.map((c) => ({ category: c.id }))
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
+  const { category: categoryParam } = await params
+  const category = calculatorCatalog.find((item) => item.id === categoryParam)
+  if (!category) return {}
+  const title = `${category.label} Laboratory Calculators`
+  const description = `Explore ${category.label.toLowerCase()} calculators and laboratory tools in ConvertLAB.`
+  return {
+    title,
+    description,
+    alternates: { canonical: `/calculators/${category.id}` },
+    openGraph: { title, description, url: `/calculators/${category.id}`, type: "website", images: [{ url: "/og-image.png", alt: `ConvertLAB ${category.label} laboratory calculators` }] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og-image.png"] },
+  }
 }
 
 export default async function CalculatorCategoryPage({ params }: { params: Promise<{ category: string }> }) {

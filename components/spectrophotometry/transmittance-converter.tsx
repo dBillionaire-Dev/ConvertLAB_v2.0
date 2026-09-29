@@ -1,6 +1,8 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { RotateCcw } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -25,11 +27,21 @@ export function TransmittanceConverter() {
     }
   }, [value, direction])
 
+  const handleReset = () => {
+    setDirection("t-to-a")
+    setValue("")
+  }
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Absorbance ↔ %Transmittance</CardTitle>
-        <CardDescription>A = -log₁₀(T), where T is fractional transmittance.</CardDescription>
+      <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+        <div>
+          <CardTitle>Absorbance ↔ %Transmittance</CardTitle>
+          <CardDescription>A = -log₁₀(T), where T is fractional transmittance.</CardDescription>
+        </div>
+        <Button variant="ghost" size="icon" aria-label="Reset conversion" onClick={handleReset}>
+          <RotateCcw className="h-5 w-5" />
+        </Button>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-1.5 max-w-sm">

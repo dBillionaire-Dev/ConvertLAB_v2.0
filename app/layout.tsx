@@ -16,22 +16,49 @@ import { AnalyticsSync } from "@/components/analytics-sync"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "ConvertLAB - From units to results",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://convertlab-nex.vercel.app"),
+  title: {
+    default: "ConvertLAB | Laboratory Calculators and Tools",
+    template: "%s | ConvertLAB",
+  },
   description:
-    "A laboratory calculation, conversion, estimation, and reference toolkit. Calculators, unit conversions, and lab tools for laboratory and clinical work.",
-  keywords: "lab calculator, medical converter, laboratory units, eGFR, LDL calculator, PWA, healthcare tools",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "ConvertLAB",
+    "ConvertLAB is a laboratory calculator, unit conversion, estimation, and reference toolkit for medical laboratory and clinical work.",
+  keywords: [
+    "laboratory calculator",
+    "medical laboratory calculator",
+    "lab calculator",
+    "unit conversion",
+    "medical converter",
+    "clinical calculator",
+    "drug dosing calculator",
+    "hematology calculator",
+    "clinical chemistry calculator",
+    "microbiology calculator",
+    "ConvertLAB",
+  ],
+  applicationName: "ConvertLAB",
+  category: "health",
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    siteName: "ConvertLAB",
+    title: "ConvertLAB | Laboratory Calculators and Tools",
+    description:
+      "Laboratory calculators, unit conversions, estimators, and reference tools for medical laboratory and clinical work.",
+    url: "/",
+    images: [{ url: "/og-image.png", alt: "ConvertLAB laboratory calculators and tools" }],
   },
-  formatDetection: {
-    telephone: false,
+  twitter: {
+    card: "summary_large_image",
+    title: "ConvertLAB | Laboratory Calculators and Tools",
+    description:
+      "Laboratory calculators, unit conversions, estimators, and reference tools for medical laboratory and clinical work.",
+    images: ["/og-image.png"],
   },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "ConvertLAB" },
+  formatDetection: { telephone: false },
+  icons: { icon: "/favicon.ico", apple: "/apple-touch-icon.png" },
 }
 
 export const viewport = {

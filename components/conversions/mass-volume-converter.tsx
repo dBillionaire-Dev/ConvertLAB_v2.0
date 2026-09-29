@@ -1,7 +1,8 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { AlertTriangle } from "lucide-react"
+import { AlertTriangle, RotateCcw } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -46,17 +47,32 @@ export function MassVolumeConverter() {
     }
   }, [inputValue, density, direction, massUnit, volumeUnit])
 
+  const handleReset = () => {
+    setDirection("mass-to-volume")
+    setSubstanceId("water")
+    setInputValue("")
+    setMassUnit("g")
+    setVolumeUnit("mL")
+    setUseCustomDensity(false)
+    setCustomDensity("")
+  }
+
   const inputLabel = direction === "mass-to-volume" ? `Mass (${massUnit})` : `Volume (${volumeUnit})`
   const outputUnit = direction === "mass-to-volume" ? volumeUnit : massUnit
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Mass ↔ Volume</CardTitle>
-        <CardDescription>
-          Mass and volume are only interchangeable through density. ConvertLAB never assumes 1 g = 1 mL.
-        </CardDescription>
-      </CardHeader>
+        <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+          <div>
+            <CardTitle>Mass ↔ Volume</CardTitle>
+            <CardDescription>
+              Mass and volume are only interchangeable through density. ConvertLAB never assumes 1 g = 1 mL.
+            </CardDescription>
+          </div>
+          <Button variant="ghost" size="icon" aria-label="Reset conversion" onClick={handleReset}>
+            <RotateCcw className="h-5 w-5" />
+          </Button>
+        </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">

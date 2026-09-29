@@ -226,16 +226,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
             <CardDescription className="mt-1.5">{definition.description}</CardDescription>
           </div>
           <div className="flex shrink-0 items-center gap-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label="Reset calculator"
-              title="Reset calculator"
-              onClick={handleReset}
-            >
-              <RotateCcw className="h-5 w-5" aria-hidden />
-            </Button>
+            
             <Button
               type="button"
               variant="ghost"
@@ -246,6 +237,15 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
             >
               <Star className={cn("h-5 w-5", favorite && "fill-yellow-400 text-yellow-400")} />
             </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Reset calculator"
+            onClick={handleReset}
+          >
+            <RotateCcw className="h-5 w-5" />
+          </Button>
+          
           </div>
         </CardHeader>
         <CardContent className="space-y-5">
@@ -453,8 +453,15 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => result && lastParsedInputsRef.current && saveResultToHistory(lastParsedInputsRef.current, result)}
-                disabled={!result || savedToHistory}
+                onClick={() => {
+                  if (!result || !lastParsedInputsRef.current) return
+                  if (savedToHistory) {
+                    toast({ description: "This result is already saved to history." })
+                    return
+                  }
+                  void saveResultToHistory(lastParsedInputsRef.current, result)
+                }}
+                disabled={!result}
               >
                 <Save className="h-4 w-4 mr-1.5" /> {savedToHistory ? "Saved" : "Save to history"}
               </Button>

@@ -4,7 +4,12 @@ import { calculatorCatalog, getCalculatorsByCategory } from "@/lib/calculators/r
 import { CALCULATOR_SUBCATEGORY_LABELS } from "@/lib/calculators/types"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 
-export const metadata = { title: "Calculators - ConvertLAB" }
+export const metadata = {
+  title: "Laboratory Calculators",
+  description:
+    "Browse ConvertLAB laboratory calculators for clinical, hematology, chemistry, microbiology, dosing, oncology, cardiovascular, and transplant workflows.",
+  alternates: { canonical: "/calculators" },
+}
 
 export default function CalculatorsPage() {
   return (
