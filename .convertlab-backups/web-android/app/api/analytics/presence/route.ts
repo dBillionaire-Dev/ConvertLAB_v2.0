@@ -3,7 +3,7 @@ import { z } from "zod"
 
 const presenceSchema = z.object({
   anonymousId: z.string().min(1).max(100),
-  source: z.enum(["web", "pwa", "android"]).default("web"),
+  source: z.enum(["web", "pwa"]).default("web"),
   environment: z.string().min(1).max(40).default("production"),
   appVersion: z.string().min(1).max(40).default("unknown"),
 })

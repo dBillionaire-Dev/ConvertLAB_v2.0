@@ -7,7 +7,7 @@ export interface CalculationEvent {
   occurredAt: string
   appVersion: string
   wasOffline: boolean
-  source: "web" | "pwa" | "android"
+  source: "web" | "pwa"
   environment: string
 }
 

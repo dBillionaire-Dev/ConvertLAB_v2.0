@@ -219,7 +219,7 @@ export default async function AdminPage() {
           <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="font-semibold">All users / devices</h2>
-              <p className="mt-1 text-xs text-muted-foreground">Every anonymous browser, PWA or Android installation ever recorded. Active means seen within the last 5 minutes.</p>
+              <p className="mt-1 text-xs text-muted-foreground">Every anonymous browser or PWA installation ever recorded. Active means seen within the last 5 minutes.</p>
             </div>
             <span className="text-sm font-medium">{number(data.totalUsers)} total</span>
           </div>
@@ -297,7 +297,7 @@ export default async function AdminPage() {
         </section>
 
         <p className="mt-6 text-xs text-muted-foreground">
-          Usage is anonymous. Each browser, PWA or Android installation receives a stable pseudonym such as User-7A31C2; it is not a real name or account identity. Active means seen within the last 5 minutes.
+          Usage is anonymous. Each browser/PWA installation receives a stable pseudonym such as User-7A31C2; it is not a real name or account identity. Active means seen within the last 5 minutes.
           Calculation inputs and results are not sent to analytics by this implementation.
         </p>
       </div>

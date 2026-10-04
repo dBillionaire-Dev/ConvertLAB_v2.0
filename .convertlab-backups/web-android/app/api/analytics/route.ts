@@ -10,7 +10,7 @@ const eventSchema = z.object({
   occurredAt: z.string().datetime(),
   appVersion: z.string().min(1).max(40),
   wasOffline: z.boolean(),
-  source: z.enum(["web", "pwa", "android"]).default("web"),
+  source: z.enum(["web", "pwa"]).default("web"),
   environment: z.string().min(1).max(40).default("production"),
 })
 
