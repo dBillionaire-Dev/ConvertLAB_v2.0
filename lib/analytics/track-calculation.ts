@@ -18,6 +18,9 @@ export async function trackCalculation({
   category: string
 }) {
   try {
+    // Landing-page demo frames are marketing, not usage.
+    if (typeof window !== "undefined" && window.self !== window.top) return
+
     await queueCalculationEvent({
       anonymousId: getAnonymousId(),
       calculatorId,

@@ -31,6 +31,7 @@ export function InstallPrompt() {
   const [platform, setPlatform] = useState<"ios" | "mac" | null>(null)
 
   useEffect(() => {
+    if (window.self !== window.top) return // never show the install banner inside the landing-page demo frames
     if (isStandaloneDisplayMode()) return
     if (window.localStorage.getItem(DISMISSED_KEY) === "true") return
 

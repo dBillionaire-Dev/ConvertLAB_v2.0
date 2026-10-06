@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { ChromeGate } from "@/components/landing/chrome-gate"
 import { CommandPalette } from "@/components/command-palette"
 import { InstallPrompt } from "@/components/install-prompt"
 import { ServiceWorkerRegistration } from "@/components/service-worker-registration"
@@ -84,11 +85,11 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SkipToContent />
           <div className="min-h-screen flex flex-col bg-background">
-            <Header />
+            <ChromeGate><Header /></ChromeGate>
             <main id="main-content" tabIndex={-1} className="flex-1 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
               {children}
             </main>
-            <Footer />
+            <ChromeGate><Footer /></ChromeGate>
           </div>
           <CommandPalette />
           <InstallPrompt />

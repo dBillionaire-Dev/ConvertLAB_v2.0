@@ -1,12 +1,18 @@
 "use client"
 
 import { useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { syncAnalytics } from "@/lib/analytics/sync"
 import { backfillExistingHistory } from "@/lib/analytics/backfill"
 import { sendPresenceHeartbeat } from "@/lib/analytics/presence"
 
 export function AnalyticsSync() {
+  const pathname = usePathname()
+
   useEffect(() => {
+    // Do not count landing-page visitors, or the demo frames embedded in it, as app users.
+    if (pathname?.startsWith("/welcome") || window.self !== window.top) return
+
     const run = () => {
       void backfillExistingHistory()
         .catch(() => {})
@@ -41,7 +47,7 @@ export function AnalyticsSync() {
       window.clearInterval(heartbeat)
       window.clearInterval(hourlySync)
     }
-  }, [])
+  }, [pathname])
 
   return null
 }
