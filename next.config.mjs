@@ -1,3 +1,14 @@
+const landingUrl = (process.env.NEXT_PUBLIC_LANDING_URL ?? "").trim().replace(/\/+$/, "")
+let landingOrigins = ""
+try {
+  const u = new URL(landingUrl)
+  landingOrigins = `${u.origin} ${u.protocol}//www.${u.host}`
+} catch {}
+// With a separate landing domain, only that domain (and the app itself) may embed the app in its live demo.
+const FRAME_HEADERS = landingOrigins
+  ? [{ key: "Content-Security-Policy", value: `frame-ancestors 'self' ${landingOrigins}` }]
+  : [{ key: "X-Frame-Options", value: "SAMEORIGIN" }]
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -10,7 +21,7 @@ const nextConfig = {
         source: "/(.*)",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          ...FRAME_HEADERS,
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
           { key: "X-DNS-Prefetch-Control", value: "on" },

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { isIOS, isStandaloneDisplayMode } from "@/lib/platform"
 import { LANDING } from "@/lib/landing-config"
+import { APP_URL, splitEnabled } from "@/lib/site"
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
@@ -46,6 +47,15 @@ export function InstallPwaButton({ variant = "outline", size = "lg", className }
     }
     setOpen(true)
   }, [deferred])
+
+  // Two-domain setup: the landing site is not the installable app. Send people to the app, where the browser can install it.
+  if (splitEnabled) {
+    return (
+      <Button asChild variant={variant} size={size} className={className}>
+        <a href={`${APP_URL}/`}><Download className="mr-2 h-4 w-4" aria-hidden />Install as an app</a>
+      </Button>
+    )
+  }
 
   if (standalone) {
     return (

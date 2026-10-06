@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ChromeGate } from "@/components/landing/chrome-gate"
+import { SITE_BOOTSTRAP } from "@/lib/site"
 import { CommandPalette } from "@/components/command-palette"
 import { InstallPrompt } from "@/components/install-prompt"
 import { ServiceWorkerRegistration } from "@/components/service-worker-registration"
@@ -77,6 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
+        {SITE_BOOTSTRAP ? <script dangerouslySetInnerHTML={{ __html: SITE_BOOTSTRAP }} /> : null}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="ConvertLAB" />
