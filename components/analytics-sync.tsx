@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import { usePathname } from "next/navigation"
+import { isLandingSite } from "@/lib/site"
 import { syncAnalytics } from "@/lib/analytics/sync"
 import { backfillExistingHistory } from "@/lib/analytics/backfill"
 import { sendPresenceHeartbeat } from "@/lib/analytics/presence"
@@ -11,7 +12,7 @@ export function AnalyticsSync() {
 
   useEffect(() => {
     // Do not count landing-page visitors, or the demo frames embedded in it, as app users.
-    if (pathname?.startsWith("/welcome") || window.self !== window.top) return
+    if (pathname?.startsWith("/welcome") || isLandingSite() || window.self !== window.top) return
 
     const run = () => {
       void backfillExistingHistory()

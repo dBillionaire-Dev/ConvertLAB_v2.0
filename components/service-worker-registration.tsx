@@ -1,10 +1,12 @@
 "use client"
 
 import { useEffect } from "react"
+import { isLandingSite } from "@/lib/site"
 
 export function ServiceWorkerRegistration() {
   useEffect(() => {
     if (process.env.NODE_ENV !== "production") return
+    if (isLandingSite()) return // the landing site is not the installable app
     if (typeof window === "undefined" || !("serviceWorker" in navigator)) return
 
     navigator.serviceWorker.register("/service-worker.js")

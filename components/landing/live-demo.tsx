@@ -8,6 +8,7 @@ import { DEMO, IMG, SHOTS, shotById, type DemoScenario } from "@/lib/landing-dat
 import { LaptopFrame, PhoneFrame } from "@/components/landing/device-frame"
 import { ThemedImage } from "@/components/landing/themed-image"
 import { cn } from "@/lib/utils"
+import { appHref } from "@/lib/site"
 
 const SCREEN = { desktop: { w: 1280, h: 800 }, phone: { w: 390, h: 844 } } as const
 
@@ -43,7 +44,7 @@ function LiveScreen({ kind, scenarios }: { kind: "desktop" | "phone"; scenarios:
         <div style={{ width: size.w, height: size.h, transform: `scale(${scale})`, transformOrigin: "top left" }} className="absolute left-0 top-0">
           <iframe
             key={scenario.path}
-            src={scenario.path}
+            src={appHref(scenario.path)}
             title={`Live ConvertLAB demo: ${scenario.label}`}
             width={size.w}
             height={size.h}
@@ -86,7 +87,7 @@ function LiveScreen({ kind, scenarios }: { kind: "desktop" | "phone"; scenarios:
       )}
       <p className="text-center text-sm text-muted-foreground">
         {live ? "This is the real app: type values, press Calculate, explore." : "Press “Try it live” to use the real app right here."}{" "}
-        <a href={scenario.path} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-primary underline-offset-4 hover:underline">
+        <a href={appHref(scenario.path)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-primary underline-offset-4 hover:underline">
           Open full screen <ExternalLink className="h-3.5 w-3.5" aria-hidden />
         </a>
       </p>

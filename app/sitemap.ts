@@ -7,7 +7,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: base, changeFrequency: "weekly", priority: 1 },
-    { url: `${base}/welcome`, changeFrequency: "monthly", priority: 0.9 },
+    // With a separate landing domain, /welcome is not a page of the app (it redirects to the landing domain).
+    ...(process.env.NEXT_PUBLIC_LANDING_URL ? [] : [{ url: `${base}/welcome`, changeFrequency: "monthly" as const, priority: 0.9 }]),
     { url: `${base}/calculators`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/conversions`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/lab-tools`, changeFrequency: "weekly", priority: 0.8 },

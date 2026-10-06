@@ -11,6 +11,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 import { isIOS, isStandaloneDisplayMode, needsManualInstallInstructions } from "@/lib/platform"
+import { isLandingSite } from "@/lib/site"
 
 const DISMISSED_KEY = "convertlab:install-prompt-dismissed"
 
@@ -31,7 +32,7 @@ export function InstallPrompt() {
   const [platform, setPlatform] = useState<"ios" | "mac" | null>(null)
 
   useEffect(() => {
-    if (window.self !== window.top) return // never show the install banner inside the landing-page demo frames
+    if (window.self !== window.top || isLandingSite()) return // no install banner in the demo frames or on the landing site
     if (isStandaloneDisplayMode()) return
     if (window.localStorage.getItem(DISMISSED_KEY) === "true") return
 

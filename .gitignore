@@ -19,6 +19,8 @@ yarn-error.log*
 
 # vercel
 .vercel
+add-domain-split.sh
+add-legacy-redirect.sh
 
 # typescript
 *.tsbuildinfo

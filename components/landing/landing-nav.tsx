@@ -2,6 +2,8 @@ import Link from "next/link"
 import { Activity } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { AppLink } from "@/components/landing/app-link"
+import { landingHome } from "@/lib/site"
 
 const LINKS = [
   { href: "#features", label: "Features" },
@@ -15,7 +17,7 @@ export function LandingNav() {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
-        <Link href="/welcome" className="flex items-center gap-2" aria-label="ConvertLAB home">
+        <Link href={landingHome} className="flex items-center gap-2" aria-label="ConvertLAB home">
           <Activity className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden />
           <span className="text-lg font-bold">ConvertLAB</span>
         </Link>
@@ -29,7 +31,7 @@ export function LandingNav() {
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
           <Button asChild size="sm">
-            <Link href="/">Open web app</Link>
+            <AppLink path="/">Open web app</AppLink>
           </Button>
         </div>
       </div>

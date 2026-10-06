@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { ArrowRight, ArrowLeftRight, BookOpenText, Calculator, FlaskConical, Gauge, Globe, ShieldCheck, Smartphone, WifiOff, Download } from "lucide-react"
 import { calculatorCategories, calculators } from "@/lib/calculators/registry"
 import { conversionCategories } from "@/lib/conversions/registry"
 import { LANDING } from "@/lib/landing-config"
+import { LANDING_URL, splitEnabled } from "@/lib/site"
+import { AppLink } from "@/components/landing/app-link"
 import { shotById } from "@/lib/landing-data"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
@@ -18,18 +19,22 @@ const TITLE = "Clinical and laboratory calculators for web and Android"
 const DESCRIPTION =
   "ConvertLAB brings clinical and laboratory calculators, unit conversions, estimators and lab tools to the web, your phone and Android. Fast, offline-ready, and it shows its working."
 
+// With its own domain the landing page is "/" on that domain, so canonical and share links must point there (absolute).
+const CANONICAL = splitEnabled ? `${LANDING_URL}/` : "/welcome"
+const OG_IMAGE = splitEnabled ? `${LANDING_URL}/landing/og.png` : "/landing/og.png"
+
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/welcome" },
+  alternates: { canonical: CANONICAL },
   openGraph: {
     type: "website",
     title: `ConvertLAB | ${TITLE}`,
     description: DESCRIPTION,
-    url: "/welcome",
-    images: [{ url: "/landing/og.png", width: 1200, height: 630, alt: "ConvertLAB on a laptop and a phone" }],
+    url: CANONICAL,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "ConvertLAB on a laptop and a phone" }],
   },
-  twitter: { card: "summary_large_image", title: `ConvertLAB | ${TITLE}`, description: DESCRIPTION, images: ["/landing/og.png"] },
+  twitter: { card: "summary_large_image", title: `ConvertLAB | ${TITLE}`, description: DESCRIPTION, images: [OG_IMAGE] },
 }
 
 const androidReady = Boolean(LANDING.playStoreUrl || LANDING.apkUrl)
@@ -65,7 +70,7 @@ export default function WelcomePage() {
     applicationCategory: "HealthApplication",
     operatingSystem: "Web, Android",
     description: DESCRIPTION,
-    url: "/welcome",
+    url: CANONICAL,
     ...(LANDING.playStoreUrl ? { downloadUrl: LANDING.playStoreUrl } : {}),
   }
 
@@ -87,7 +92,7 @@ export default function WelcomePage() {
               {total} calculators, unit conversions, estimators and lab tools on the web, on your phone and on Android. Fast, offline-ready, and it shows its working.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Button asChild size="lg"><Link href="/">Open the web app<ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Link></Button>
+              <Button asChild size="lg"><AppLink path="/">Open the web app<ArrowRight className="ml-2 h-4 w-4" aria-hidden /></AppLink></Button>
               <AndroidButton variant="secondary" />
               <InstallPwaButton variant="outline" />
             </div>
@@ -147,7 +152,7 @@ export default function WelcomePage() {
               <Globe className="h-7 w-7 text-primary" aria-hidden />
               <h3 className="mt-3 text-lg font-semibold">Web app</h3>
               <p className="mt-1 flex-1 text-sm text-muted-foreground">Nothing to install. Works in any modern browser on a computer, tablet or phone.</p>
-              <Button asChild className="mt-5"><Link href="/">Open the web app</Link></Button>
+              <Button asChild className="mt-5"><AppLink path="/">Open the web app</AppLink></Button>
             </div>
             <div className="flex flex-col rounded-xl border bg-card p-6">
               <Download className="h-7 w-7 text-primary" aria-hidden />
@@ -211,7 +216,7 @@ export default function WelcomePage() {
           <h2 className="text-3xl font-bold tracking-tight">Ready when you are.</h2>
           <p className="mt-3 text-muted-foreground">Open it now. No sign-up, no setup.</p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button asChild size="lg"><Link href="/">Open the web app<ArrowRight className="ml-2 h-4 w-4" aria-hidden /></Link></Button>
+            <Button asChild size="lg"><AppLink path="/">Open the web app<ArrowRight className="ml-2 h-4 w-4" aria-hidden /></AppLink></Button>
             <AndroidButton variant="secondary" />
           </div>
         </div>
@@ -221,10 +226,10 @@ export default function WelcomePage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 text-sm text-muted-foreground sm:flex-row">
           <span>&copy; {new Date().getFullYear()} ConvertLAB by <a className="font-medium text-foreground underline-offset-4 hover:underline" href={LANDING.developerUrl} target="_blank" rel="noopener noreferrer">NexDev</a></span>
           <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-5 gap-y-1">
-            <Link href="/calculators" className="hover:text-foreground">Calculators</Link>
-            <Link href="/conversions" className="hover:text-foreground">Conversions</Link>
-            <Link href="/lab-tools" className="hover:text-foreground">Lab tools</Link>
-            <Link href="/estimators" className="hover:text-foreground">Estimators</Link>
+            <AppLink path="/calculators" className="hover:text-foreground">Calculators</AppLink>
+            <AppLink path="/conversions" className="hover:text-foreground">Conversions</AppLink>
+            <AppLink path="/lab-tools" className="hover:text-foreground">Lab tools</AppLink>
+            <AppLink path="/estimators" className="hover:text-foreground">Estimators</AppLink>
           </nav>
         </div>
       </footer>
