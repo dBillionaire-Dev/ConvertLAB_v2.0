@@ -30,4 +30,4 @@ if (failed.length) {
   process.exit(1)
 }
 
-console.log(`ConvertLAB release audit passed (${required.length} required artifacts checked).`)
+console.log(`Clinexia release audit passed (${required.length} required artifacts checked).`)

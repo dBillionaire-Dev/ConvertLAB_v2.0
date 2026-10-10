@@ -73,7 +73,7 @@ export function RedCellIndicesCalculator() {
   const resultText = () => {
     if (!results) return ""
     const lines = [
-      "ConvertLAB, Red Cell Indices",
+      "Clinexia, Red Cell Indices",
       "",
       `Hemoglobin: ${hgb} g/dL`,
       `Hematocrit: ${hct} %`,

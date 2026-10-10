@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useCallback, useEffect, useState } from "react"
-import { Download, Share, SquarePlus, MoreVertical, Smartphone, ExternalLink } from "lucide-react"
+import { Download, Share, SquarePlus, MoreVertical, Smartphone, ExternalLink, Monitor } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { isIOS, isStandaloneDisplayMode } from "@/lib/platform"
@@ -73,7 +73,7 @@ export function InstallPwaButton({ variant = "outline", size = "lg", className }
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Install ConvertLAB</DialogTitle>
+            <DialogTitle>Install Clinexia</DialogTitle>
             <DialogDescription>It opens like an app, works offline, and uses almost no storage.</DialogDescription>
           </DialogHeader>
           <ol className="space-y-3 text-sm">
@@ -96,7 +96,7 @@ export function InstallPwaButton({ variant = "outline", size = "lg", className }
   )
 }
 
-/** Google Play button, a direct APK link, or an honest "coming soon" until one is configured. */
+/** The first Android channel that is configured: Google Play, then the Firebase beta, then a direct APK. Otherwise an honest "coming soon". */
 export function AndroidButton({ variant = "secondary", size = "lg", className }: { variant?: "default" | "outline" | "secondary"; size?: "default" | "sm" | "lg"; className?: string }) {
   if (LANDING.playStoreUrl) {
     return (
@@ -107,11 +107,20 @@ export function AndroidButton({ variant = "secondary", size = "lg", className }:
       </Button>
     )
   }
+  if (LANDING.firebaseUrl) {
+    return (
+      <Button asChild variant={variant} size={size} className={className}>
+        <a href={LANDING.firebaseUrl} target="_blank" rel="noopener noreferrer">
+          <Smartphone className="mr-2 h-4 w-4" aria-hidden />Join the Android beta<ExternalLink className="ml-2 h-3.5 w-3.5 opacity-70" aria-hidden />
+        </a>
+      </Button>
+    )
+  }
   if (LANDING.apkUrl) {
     return (
       <Button asChild variant={variant} size={size} className={className}>
-        <a href={LANDING.apkUrl} rel="noopener noreferrer">
-          <Download className="mr-2 h-4 w-4" aria-hidden />Download the Android app (APK)
+        <a href={LANDING.apkUrl} rel="noopener noreferrer" download>
+          <Download className="mr-2 h-4 w-4" aria-hidden />Download for Android (APK)
         </a>
       </Button>
     )
@@ -123,4 +132,70 @@ export function AndroidButton({ variant = "secondary", size = "lg", className }:
   )
 }
 
-export const androidAvailable = Boolean(LANDING.playStoreUrl || LANDING.apkUrl)
+function Channel({ title, status, children }: { title: string; status: "ready" | "soon"; children: React.ReactNode }) {
+  return (
+    <li className="rounded-lg border bg-background p-3">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-sm font-semibold">{title}</span>
+        <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${status === "ready" ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300" : "bg-muted text-muted-foreground"}`}>
+          {status === "ready" ? "Available" : "Coming soon"}
+        </span>
+      </div>
+      <div className="mt-2 text-xs text-muted-foreground">{children}</div>
+    </li>
+  )
+}
+
+/** All the ways to get the Android app, each honest about whether it exists yet. */
+export function AndroidChannels() {
+  return (
+    <ul className="mt-4 space-y-2">
+      <Channel title="Google Play" status={LANDING.playStoreUrl ? "ready" : "soon"}>
+        {LANDING.playStoreUrl ? (
+          <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.playStoreUrl} target="_blank" rel="noopener noreferrer">Open the Play Store listing</a>
+        ) : "Automatic updates once the listing is live."}
+      </Channel>
+      <Channel title="Beta on Firebase App Distribution" status={LANDING.firebaseUrl ? "ready" : "soon"}>
+        {LANDING.firebaseUrl ? (
+          <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.firebaseUrl} target="_blank" rel="noopener noreferrer">Join the beta testers</a>
+        ) : "Early builds for testers, by invitation link."}
+      </Channel>
+      <Channel title={`Direct download (APK)${LANDING.apkVersion ? ` · v${LANDING.apkVersion}` : ""}`} status={LANDING.apkUrl ? "ready" : "soon"}>
+        {LANDING.apkUrl ? (
+          <>
+            <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.apkUrl} rel="noopener noreferrer" download>Download the APK</a>
+            {LANDING.apkSha256 && (
+              <p className="mt-2 break-all">SHA-256: <code className="rounded bg-muted px-1 py-0.5 text-[10px]">{LANDING.apkSha256}</code></p>
+            )}
+            <details className="mt-2">
+              <summary className="cursor-pointer font-medium text-foreground">How to install it</summary>
+              <ol className="mt-1 list-decimal space-y-1 pl-4">
+                <li>Open the downloaded file. Android may ask you to allow installs from your browser or Files app: allow it for this install.</li>
+                <li>Tap Install. If Play Protect warns about an app from outside the Play Store, choose to install anyway only if you downloaded it from this page.</li>
+                <li>Optional: compare the SHA-256 above with the file&apos;s checksum before installing.</li>
+              </ol>
+            </details>
+          </>
+        ) : "A signed APK file you can install without the Play Store."}
+      </Channel>
+    </ul>
+  )
+}
+
+/** Windows: the Microsoft Store listing (packaged with PWABuilder) when it exists. */
+export function WindowsButton({ variant = "secondary", size = "default", className }: { variant?: "default" | "outline" | "secondary"; size?: "default" | "sm" | "lg"; className?: string }) {
+  if (LANDING.microsoftStoreUrl) {
+    return (
+      <Button asChild variant={variant} size={size} className={className}>
+        <a href={LANDING.microsoftStoreUrl} target="_blank" rel="noopener noreferrer">
+          <Monitor className="mr-2 h-4 w-4" aria-hidden />Get it from Microsoft Store<ExternalLink className="ml-2 h-3.5 w-3.5 opacity-70" aria-hidden />
+        </a>
+      </Button>
+    )
+  }
+  return (
+    <Button type="button" variant={variant} size={size} className={className} disabled aria-disabled="true">
+      <Monitor className="mr-2 h-4 w-4" aria-hidden />Microsoft Store: coming soon
+    </Button>
+  )
+}

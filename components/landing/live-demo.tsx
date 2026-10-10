@@ -45,7 +45,7 @@ function LiveScreen({ kind, scenarios }: { kind: "desktop" | "phone"; scenarios:
           <iframe
             key={scenario.path}
             src={appHref(scenario.path)}
-            title={`Live ConvertLAB demo: ${scenario.label}`}
+            title={`Live Clinexia demo: ${scenario.label}`}
             width={size.w}
             height={size.h}
             className="block border-0"

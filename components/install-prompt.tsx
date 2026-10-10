@@ -81,7 +81,7 @@ export function InstallPrompt() {
       <div className="fixed bottom-4 left-4 right-4 bg-background border rounded-lg shadow-lg p-4 z-50 max-w-sm mx-auto">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1">
-            <h3 className="text-sm font-semibold mb-1">Install ConvertLAB</h3>
+            <h3 className="text-sm font-semibold mb-1">Install Clinexia</h3>
             <p className="text-xs text-muted-foreground mb-3">
               Install this app for quick access and offline calculations.
             </p>
@@ -109,7 +109,7 @@ export function InstallPrompt() {
         <div className="fixed bottom-4 left-4 right-4 bg-background border rounded-lg shadow-lg p-4 z-50 max-w-sm mx-auto">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1">
-              <h3 className="text-sm font-semibold mb-1">Install ConvertLAB on your {platform === "ios" ? "iPhone or iPad" : "Mac"}</h3>
+              <h3 className="text-sm font-semibold mb-1">Install Clinexia on your {platform === "ios" ? "iPhone or iPad" : "Mac"}</h3>
               <p className="text-xs text-muted-foreground mb-3">
                 Add it to your {platform === "ios" ? "Home Screen" : "Dock"} for quick access and offline calculations.
               </p>
@@ -126,7 +126,7 @@ export function InstallPrompt() {
         <Dialog open={showInstructions} onOpenChange={setShowInstructions}>
           <DialogContent className="max-w-sm">
             <DialogHeader>
-              <DialogTitle>Install ConvertLAB</DialogTitle>
+              <DialogTitle>Install Clinexia</DialogTitle>
               <DialogDescription>
                 {platform === "ios"
                   ? "Safari doesn't offer an automatic install button, a few taps does it:"

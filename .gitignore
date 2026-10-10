@@ -26,3 +26,5 @@ add-legacy-redirect.sh
 *.tsbuildinfo
 next-env.d.ts
 .convertlab-backups/
+
+.clinexia-backups/

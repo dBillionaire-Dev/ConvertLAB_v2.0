@@ -1,7 +1,7 @@
 import { PageContainer } from "@/components/page-container"
 import { RedCellIndicesCalculator } from "@/components/hematology/red-cell-indices-calculator"
 
-export const metadata = { title: "Red Cell Indices - ConvertLAB" }
+export const metadata = { title: "Red Cell Indices - Clinexia" }
 
 export default function RedCellIndicesPage() {
   return (

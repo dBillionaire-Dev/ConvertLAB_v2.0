@@ -1,4 +1,4 @@
-// ConvertLAB service worker  -  enables full offline use.
+// Clinexia service worker  -  enables full offline use.
 //
 // All calculation/conversion/substance data ships inside the app's JS
 // bundles, so once a page's HTML + JS are cached, its calculators work
@@ -337,7 +337,7 @@ async function syncAnalyticsFromServiceWorker() {
       await deleteAnalyticsEvents(body.accepted || [])
     } catch {
       // Throwing causes Background Sync to retry when supported.
-      throw new Error("ConvertLAB analytics sync failed")
+      throw new Error("Clinexia analytics sync failed")
     }
   }
 }

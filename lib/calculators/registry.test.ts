@@ -19,12 +19,14 @@ describe("calculator registry integrity", () => {
   // input, though, opening it must produce a working calculation rather than an
   // immediate "missing required value" error.
   it("every fully-defaulted calculator runs without throwing on its own defaults", () => {
-    const fullyDefaulted = calculators.filter((c) => c.inputs.every((input) => input.defaultValue !== undefined))
+    // The optional product-strength inputs (added to dosing calculators) never have defaults: they are left empty.
+    const isStrengthInput = (id: string) => id === "liquidMg" || id === "liquidMl"
+    const fullyDefaulted = calculators.filter((c) => c.inputs.every((input) => input.defaultValue !== undefined || isStrengthInput(input.id)))
     expect(fullyDefaulted.length).toBeGreaterThan(0)
 
     for (const c of fullyDefaulted) {
       const inputs: Record<string, number | string> = {}
-      for (const input of c.inputs) inputs[input.id] = input.defaultValue as number | string
+      for (const input of c.inputs) inputs[input.id] = (input.defaultValue ?? "") as number | string
       expect(() => c.calculate(inputs), `${c.id} threw with its own default inputs`).not.toThrow()
     }
   })

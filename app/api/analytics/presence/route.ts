@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      console.error("ConvertLAB presence update failed:", await response.text())
+      console.error("Clinexia presence update failed:", await response.text())
       return NextResponse.json({ error: "Unable to record presence." }, { status: 502 })
     }
 
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: "Invalid presence payload." }, { status: 400 })
     }
-    console.error("ConvertLAB presence error:", error)
+    console.error("Clinexia presence error:", error)
     return NextResponse.json({ error: "Unable to record presence." }, { status: 500 })
   }
 }

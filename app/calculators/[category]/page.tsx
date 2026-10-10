@@ -15,13 +15,13 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const { category: categoryParam } = await params
   const category = calculatorCatalog.find((item) => item.id === categoryParam)
   if (!category) return {}
-  const title = `${category.label} Laboratory Calculators`
-  const description = `Explore ${category.label.toLowerCase()} calculators and laboratory tools in ConvertLAB.`
+  const title = `${category.label} Calculators`
+  const description = `Explore ${category.label.toLowerCase()} calculators and clinical tools in Clinexia.`
   return {
     title,
     description,
     alternates: { canonical: `/calculators/${category.id}` },
-    openGraph: { title, description, url: `/calculators/${category.id}`, type: "website", images: [{ url: "/og-image.png", alt: `ConvertLAB ${category.label} laboratory calculators` }] },
+    openGraph: { title, description, url: `/calculators/${category.id}`, type: "website", images: [{ url: "/og-image.png", alt: `Clinexia ${category.label} calculators` }] },
     twitter: { card: "summary_large_image", title, description, images: ["/og-image.png"] },
   }
 }
@@ -124,7 +124,7 @@ export default async function CalculatorCategoryPage({ params }: { params: Promi
                 <CardHeader>
                   <CardTitle className="text-base">Coming in a future phase</CardTitle>
                   <CardDescription>
-                    This subsection is part of the ConvertLAB architecture and will be populated with verified calculators and protocol-backed tools.
+                    This subsection is part of the Clinexia architecture and will be populated with verified calculators and protocol-backed tools.
                   </CardDescription>
                 </CardHeader>
               </Card>

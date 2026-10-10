@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { AlertTriangle } from "lucide-react"
 
-export const metadata = { title: "Reference - ConvertLAB" }
+export const metadata = { title: "Reference Ranges and Formulas" }
 
 function ReferenceRangeTable({ group }: { group: ReferenceRangeGroup }) {
   return (
@@ -46,7 +46,7 @@ function ReferenceRangeTable({ group }: { group: ReferenceRangeGroup }) {
 
 export default function ReferencePage() {
   return (
-    <PageContainer title="Reference" description="Typical reference ranges, formulas, and unit definitions used throughout ConvertLAB.">
+    <PageContainer title="Reference" description="Typical reference ranges, formulas, and unit definitions used throughout Clinexia.">
       <div className="space-y-8">
         <section>
           <div className="flex items-start gap-2 rounded-md border border-amber-300/50 bg-amber-50 dark:bg-amber-950/20 p-3 text-sm text-amber-800 dark:text-amber-300 mb-4">

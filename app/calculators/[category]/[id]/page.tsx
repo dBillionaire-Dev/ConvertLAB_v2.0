@@ -17,9 +17,9 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   return {
     title,
     description,
-    keywords: [definition.name, `${definition.name} calculator`, `${definition.name} laboratory calculator`, ...(definition.keywords ?? []), "ConvertLAB"],
+    keywords: [definition.name, `${definition.name} calculator`, `${definition.name} clinical calculator`, ...(definition.keywords ?? []), "Clinexia"],
     alternates: { canonical: `/calculators/${category}/${id}` },
-    openGraph: { title, description, url: `/calculators/${category}/${id}`, type: "website", images: [{ url: "/og-image.png", alt: `ConvertLAB ${definition.name} calculator` }] },
+    openGraph: { title, description, url: `/calculators/${category}/${id}`, type: "website", images: [{ url: "/og-image.png", alt: `Clinexia ${definition.name} calculator` }] },
     twitter: { card: "summary_large_image", title, description, images: ["/og-image.png"] },
   }
 }

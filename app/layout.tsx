@@ -20,46 +20,57 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://convertlab-nex.vercel.app"),
   title: {
-    default: "ConvertLAB | Laboratory Calculators and Tools",
-    template: "%s | ConvertLAB",
+    default: "Clinexia | Clinical Calculators, Drug Dosing and Unit Conversions",
+    template: "%s | Clinexia",
   },
   description:
-    "ConvertLAB is a laboratory calculator, unit conversion, estimation, and reference toolkit for medical laboratory and clinical work.",
+    "Clinexia is a complete clinical toolkit: medical calculators, drug dosing with mg and mL per dose, renal, cardiovascular, oncology and pediatric tools, laboratory calculators, unit conversions and reference ranges. Works offline.",
   keywords: [
-    "laboratory calculator",
-    "medical laboratory calculator",
-    "lab calculator",
-    "unit conversion",
-    "medical converter",
     "clinical calculator",
-    "drug dosing calculator",
+    "medical calculator",
+    "drug dose calculator",
+    "pediatric dosing calculator",
+    "mg to mL dose calculator",
+    "eGFR calculator",
+    "creatinine clearance calculator",
+    "BMI calculator",
+    "body surface area calculator",
+    "anion gap calculator",
+    "corrected calcium calculator",
+    "medical unit converter",
+    "clinical toolkit",
+    "nursing calculator",
+    "pharmacy calculator",
+    "laboratory calculator",
+    "lab reference ranges",
     "hematology calculator",
     "clinical chemistry calculator",
-    "microbiology calculator",
-    "ConvertLAB",
+    "offline medical app",
+    "Clinexia",
   ],
-  applicationName: "ConvertLAB",
+  applicationName: "Clinexia",
   category: "health",
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
   openGraph: {
     type: "website",
-    siteName: "ConvertLAB",
-    title: "ConvertLAB | Laboratory Calculators and Tools",
+    siteName: "Clinexia",
+    title: "Clinexia | Clinical Calculators, Drug Dosing and Unit Conversions",
     description:
-      "Laboratory calculators, unit conversions, estimators, and reference tools for medical laboratory and clinical work.",
+      "Medical calculators, drug dosing with mg and mL per dose, renal, cardiovascular and pediatric tools, laboratory calculators and unit conversions. No account needed, works offline.",
     url: "/",
-    images: [{ url: "/og-image.png", alt: "ConvertLAB laboratory calculators and tools" }],
+    images: [{ url: "/og-image.png", alt: "Clinexia clinical toolkit: calculators, drug dosing and unit conversions" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ConvertLAB | Laboratory Calculators and Tools",
+    title: "Clinexia | Clinical Calculators, Drug Dosing and Unit Conversions",
     description:
-      "Laboratory calculators, unit conversions, estimators, and reference tools for medical laboratory and clinical work.",
+      "Medical calculators, drug dosing with mg and mL per dose, renal, cardiovascular and pediatric tools, laboratory calculators and unit conversions. No account needed, works offline.",
     images: ["/og-image.png"],
   },
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "ConvertLAB" },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Clinexia" },
   formatDetection: { telephone: false },
+  other: { "msapplication-TileColor": "#2563eb" },
   icons: { icon: "/favicon.ico", apple: "/apple-touch-icon.png" },
 }
 
@@ -81,7 +92,7 @@ export default function RootLayout({
         {SITE_BOOTSTRAP ? <script dangerouslySetInnerHTML={{ __html: SITE_BOOTSTRAP }} /> : null}
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="ConvertLAB" />
+        <meta name="apple-mobile-web-app-title" content="Clinexia" />
       </head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>

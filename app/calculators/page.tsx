@@ -5,15 +5,15 @@ import { CALCULATOR_SUBCATEGORY_LABELS } from "@/lib/calculators/types"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 
 export const metadata = {
-  title: "Laboratory Calculators",
+  title: "Clinical Calculators",
   description:
-    "Browse ConvertLAB laboratory calculators for clinical, hematology, chemistry, microbiology, dosing, oncology, cardiovascular, and transplant workflows.",
+    "Browse Clinexia clinical calculators: general, renal, cardiovascular, drug dosing, oncology, hematology, clinical chemistry, microbiology and transplant tools.",
   alternates: { canonical: "/calculators" },
 }
 
 export default function CalculatorsPage() {
   return (
-    <PageContainer title="Calculators" description="General laboratory, drug dosing, oncology, hematology, cardiovascular, and transplant calculators.">
+    <PageContainer title="Calculators" description="General clinical, renal, drug dosing, oncology, hematology, cardiovascular, laboratory and transplant calculators.">
       <div className="grid gap-4 sm:grid-cols-2">
         {[...calculatorCatalog]
           .sort((a, b) => a.label.localeCompare(b.label))

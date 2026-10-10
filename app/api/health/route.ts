@@ -7,7 +7,7 @@ export function GET() {
   return NextResponse.json(
     {
       status: "ok",
-      service: "ConvertLAB",
+      service: "Clinexia",
       calculatorCount: calculators.length,
       activeCalculatorCategories: calculatorCategories.length,
       timestamp: new Date().toISOString(),

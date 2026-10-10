@@ -5,7 +5,7 @@ import { CalibrationCurveLazy } from "@/components/spectrophotometry/calibration
 import { Separator } from "@/components/ui/separator"
 
 export const metadata = {
-  title: "Spectrophotometry - ConvertLAB",
+  title: "Spectrophotometry - Clinexia",
 }
 
 export default function SpectrophotometryPage() {

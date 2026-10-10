@@ -81,7 +81,7 @@ export function DilutionCalculator() {
       <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
         <div>
           <CardTitle>C1V1 = C2V2 Dilution</CardTitle>
-          <CardDescription>Leave exactly one field blank, ConvertLAB will solve for it.</CardDescription>
+          <CardDescription>Leave exactly one field blank, Clinexia will solve for it.</CardDescription>
         </div>
         <Button variant="ghost" size="icon" aria-label="Reset calculator" onClick={handleReset}>
           <RotateCcw className="h-5 w-5" />

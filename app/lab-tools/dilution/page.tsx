@@ -1,7 +1,7 @@
 import { PageContainer } from "@/components/page-container"
 import { DilutionCalculator } from "@/components/lab-tools/dilution-calculator"
 
-export const metadata = { title: "Dilution Calculator - ConvertLAB" }
+export const metadata = { title: "Dilution Calculator - Clinexia" }
 
 export default function DilutionPage() {
   return (

@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      console.error("ConvertLAB analytics insert failed:", await response.text())
+      console.error("Clinexia analytics insert failed:", await response.text())
       return NextResponse.json({ error: "Unable to record analytics." }, { status: 502 })
     }
 
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
         })
 
         if (!deviceResponse.ok) {
-          console.error("ConvertLAB device update failed:", await deviceResponse.text())
+          console.error("Clinexia device update failed:", await deviceResponse.text())
         }
       }
     }
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: "Invalid analytics payload." }, { status: 400 })
     }
-    console.error("ConvertLAB analytics error:", error)
+    console.error("Clinexia analytics error:", error)
     return NextResponse.json({ error: "Unable to record analytics." }, { status: 500 })
   }
 }

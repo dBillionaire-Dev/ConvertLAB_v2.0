@@ -5,7 +5,7 @@ import { getCalculatorReferences } from "./dosing-references"
 
 const nonEmpty = (value: unknown): value is string => typeof value === "string" && value.trim().length > 0
 
-describe("ConvertLAB clinical registry audit", () => {
+describe("Clinexia clinical registry audit", () => {
   it("has unique ids and no structural registry issues", () => {
     const report = buildClinicalAuditSummary()
     expect(report.structuralIssues).toEqual([])

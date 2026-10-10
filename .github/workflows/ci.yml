@@ -1,4 +1,4 @@
-name: ConvertLAB CI
+name: Clinexia CI
 
 on:
   push:

@@ -1,4 +1,5 @@
 import type { CalculatorDefinition, CalculatorGroup } from "./types"
+import { withDoseVolume } from "./dose-volume"
 import { CALCULATOR_CATEGORY_LABELS } from "./types"
 import {
   bmiCalculator,
@@ -142,7 +143,7 @@ import {
   pediatricFluidDeficitCalculator,
 } from "./definitions/dosing"
 
-export const calculators: CalculatorDefinition[] = [
+const baseCalculators: CalculatorDefinition[] = [
   bmiCalculator,
   bsaCalculator,
   idealBodyWeightCalculator,
@@ -299,6 +300,9 @@ export const calculators: CalculatorDefinition[] = [
   oncologyCycleProgressCalculator,
   oncologyCourseCompletionCalculator,
 ]
+
+/** Every calculator, with the optional product-strength inputs and mL-per-dose output added where they apply. */
+export const calculators: CalculatorDefinition[] = baseCalculators.map(withDoseVolume)
 
 export function getCalculatorById(id: string): CalculatorDefinition | undefined {
   return calculators.find((c) => c.id === id)

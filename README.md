@@ -1,12 +1,12 @@
-# ConvertLAB v2.0
+# Clinexia v2.0
 
-ConvertLAB is a progresive web application for converting various medical, laboratory, and health-related units, including BMI, LDL, chemical units, temperature, weight, and more. This version (v2.0) features a modern frontend built with Next.js, TypeScript, and Tailwind CSS, designed for a smooth, responsive user experience.
+Clinexia is a complete clinical toolkit and progressive web app: medical calculators, drug dosing (mg per dose and mL per dose), unit conversions, laboratory tools and reference ranges. This version (v2.0) features a modern frontend built with Next.js, TypeScript, and Tailwind CSS, designed for a smooth, responsive user experience.
 
 ---
 
 ## Live Demo
 
-[ConvertLAB v2.0 Live](https://convertlab-nex.vercel.app/)
+[Clinexia v2.0 Live](https://convertlab-nex.vercel.app/)
 ![](image.png)
 
 ---
@@ -23,7 +23,7 @@ ConvertLAB is a progresive web application for converting various medical, labor
 
 ## Features
 
-- Unit conversion for various lab/health metrics (e.g. chemical, weight, temperature, LDL, BMI)  
+- Clinical calculators, drug dosing with mg and mL per dose, and unit conversion for clinical and laboratory metrics  
 - Responsive layout, mobile & desktop friendly  
 - Real-time input validation and conversion feedback  
 - Modular component architecture (conversion cards, input fields, selection controls)  
@@ -103,7 +103,7 @@ For issues or feature requests, open a GitHub issue in this repo or contact me v
 
 ## Anonymous Usage Analytics
 
-ConvertLAB can record successful calculator usage without requiring users to register. Each browser gets an anonymous installation ID, and calculation events are first placed in an IndexedDB outbox so usage is retained while offline. When connectivity returns, pending events are uploaded to the Next.js analytics API and stored in Supabase.
+Clinexia can record successful calculator usage without requiring users to register. Each browser gets an anonymous installation ID, and calculation events are first placed in an IndexedDB outbox so usage is retained while offline. When connectivity returns, pending events are uploaded to the Next.js analytics API and stored in Supabase.
 
 ### Setup
 
@@ -126,11 +126,11 @@ Offline events remain in the browser's IndexedDB until the server confirms recei
 
 ### Existing history backfill
 
-When analytics is first enabled, ConvertLAB performs a one-time migration of calculation history that is still present in the user's local IndexedDB. Historical entries are queued using their existing history IDs, so an interrupted migration can safely retry without double-counting. Only calculator metadata and timestamps are sent; existing calculation inputs and results remain local. Historical entries are labelled separately in the admin console as **Historical backlog**.
+When analytics is first enabled, Clinexia performs a one-time migration of calculation history that is still present in the user's local IndexedDB. Historical entries are queued using their existing history IDs, so an interrupted migration can safely retry without double-counting. Only calculator metadata and timestamps are sent; existing calculation inputs and results remain local. Historical entries are labelled separately in the admin console as **Historical backlog**.
 
 ## Anonymous Usage Analytics
 
-ConvertLAB can record calculator usage without requiring users to register. Events are queued locally in IndexedDB first, so calculations made offline can sync later when connectivity returns. The `/admin` management console shows aggregate usage across the deployed application.
+Clinexia can record calculator usage without requiring users to register. Events are queued locally in IndexedDB first, so calculations made offline can sync later when connectivity returns. The `/admin` management console shows aggregate usage across the deployed application.
 
 Analytics can distinguish:
 - `web` - normal browser usage
@@ -140,3 +140,47 @@ Analytics can distinguish:
 - historical backlog - calculations imported once from an existing user's local History
 
 The analytics implementation does not send calculator inputs or results. Run `supabase/analytics.sql` in Supabase before enabling the server-side analytics API.
+
+<!-- clinexia-distribution -->
+## Landing page, domains and app stores
+
+### Landing page and two domains
+
+The landing page lives at `/welcome`. With two domains configured, the **landing domain** shows it at `/` and redirects every app page to the **app domain** (`proxy.ts`). Nothing happens until the variables below are set, and hosts that are not listed (localhost, preview deployments, the old address) behave as before.
+
+| Variable | Example | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_LANDING_URL` | `https://example.com` | the marketing landing page |
+| `NEXT_PUBLIC_APP_URL` | `https://app.example.com` | the web app / PWA |
+| `NEXT_PUBLIC_SITE_URL` | `https://app.example.com` | metadata, robots and sitemap of the app |
+| `NEXT_PUBLIC_LEGACY_HOSTS` + `NEXT_PUBLIC_LEGACY_REDIRECT=on` | `old-address.vercel.app` | optional: retire an old address by redirecting it to the app domain |
+
+Variables starting with `NEXT_PUBLIC_` are baked in at build time: redeploy after changing them.
+
+### Download buttons on the landing page
+
+A channel with no URL shows "coming soon". Nothing is invented.
+
+| Variable | What it enables |
+|---|---|
+| `NEXT_PUBLIC_PLAY_STORE_URL` | Google Play button |
+| `NEXT_PUBLIC_FIREBASE_DIST_URL` | Firebase App Distribution beta invite link |
+| `NEXT_PUBLIC_APK_URL`, `NEXT_PUBLIC_APK_SHA256`, `NEXT_PUBLIC_APK_VERSION` | direct APK download, with its checksum shown |
+| `NEXT_PUBLIC_MS_STORE_URL` | Microsoft Store button |
+| `NEXT_PUBLIC_IARC_RATING_ID` | age-rating id written into the web manifest (Microsoft Store) |
+
+The Android build, signing, Firebase and Google Play steps are in the mobile repository (`docs/RELEASE.md`).
+
+### Windows: Microsoft Store with PWABuilder
+
+The web manifest (`app/manifest.ts`) is written to pass [PWABuilder](https://www.pwabuilder.com): a stable `id` and `scope`, `standalone` display, 192 and 512 px icons (including maskable), wide and narrow screenshots, shortcuts, categories, Edge side-panel and launch-handler hints, and optional `iarc_rating_id` and related-application entries.
+
+1. Deploy the app on HTTPS at the app domain.
+2. Open pwabuilder.com, enter the app URL and press **Start**. The Manifest, Service Worker and Security sections should pass. Fix anything it lists.
+3. **Package for stores → Windows.** Fill in the package id, publisher id and publisher display name from Microsoft Partner Center (Product identity), then generate the package.
+4. In Partner Center: reserve the name, upload the package, complete the age-rating questionnaire (copy the IARC id into `NEXT_PUBLIC_IARC_RATING_ID` and redeploy), add screenshots (`/screenshots/wide-*.png`) and a privacy policy URL (state the anonymous usage statistics honestly).
+5. When it is published, set `NEXT_PUBLIC_MS_STORE_URL` and redeploy.
+
+### Drug doses: mg per dose and mL per dose
+
+Single-drug dosing calculators show the dose in mg for one administration. Enter the product strength from its label (for example 125 mg in 5 mL) and they also show the volume per dose in mL. With no strength entered, no volume is shown, and nothing is assumed. Tablet-band regimens, fixed-dose combinations, fluids, infusion rates and multi-drug protocols are deliberately excluded. The logic is in `lib/calculators/dose-volume.ts`.

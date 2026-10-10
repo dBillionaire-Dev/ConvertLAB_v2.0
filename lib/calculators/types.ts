@@ -40,6 +40,8 @@ export interface CalculationResult {
   interpretation?: string
   /** Non-fatal warnings, e.g. "value outside typical range" */
   warnings?: string[]
+  /** The dose of ONE administration in mg (a range when the source gives one). Lets the app also show the volume per dose. */
+  perDoseMg?: { low: number; high?: number }
 }
 
 export type CalculatorGroup =
@@ -144,7 +146,7 @@ export const CALCULATOR_SUBCATEGORY_LABELS: Record<CalculatorGroup, Record<strin
 
 /** Standard disclaimer shown on every calculator result. */
 export const CALCULATION_DISCLAIMER =
-  "ConvertLAB provides mathematical calculations and estimates for educational and laboratory utility purposes. Results should be interpreted according to applicable laboratory procedures, validated methods, clinical context, and professional judgment. Reference ranges and formulas may vary."
+  "Clinexia provides mathematical calculations and estimates for educational and clinical reference purposes. Results should be interpreted according to local clinical protocols, product information, validated methods, clinical context, and professional judgment. Reference ranges, doses and formulas may vary."
 
 /** Shown on laboratory preparation tools (dilutions, solutions, density/molar conversions). */
 export const LAB_PREP_DISCLAIMER =
