@@ -52,14 +52,14 @@ export async function PATCH(request: Request) {
     })
 
     if (!response.ok) {
-      console.error("ConvertLAB admin user update failed:", await response.text())
+      console.error("Clinexia admin user update failed:", await response.text())
       return NextResponse.json({ error: "Unable to update user." }, { status: 502 })
     }
 
     return NextResponse.json({ updated: true, anonymousId: body.anonymousId, displayName: body.displayName })
   } catch (error) {
     if (error instanceof z.ZodError) return NextResponse.json({ error: "Invalid user name." }, { status: 400 })
-    console.error("ConvertLAB admin user update error:", error)
+    console.error("Clinexia admin user update error:", error)
     return NextResponse.json({ error: "Unable to update user." }, { status: 500 })
   }
 }
@@ -78,7 +78,7 @@ export async function DELETE(request: Request) {
       headers: headers(key, { Prefer: "return=minimal" }),
     })
     if (!eventsResponse.ok) {
-      console.error("ConvertLAB admin event deletion failed:", await eventsResponse.text())
+      console.error("Clinexia admin event deletion failed:", await eventsResponse.text())
       return NextResponse.json({ error: "Unable to delete user activity." }, { status: 502 })
     }
 
@@ -87,14 +87,14 @@ export async function DELETE(request: Request) {
       headers: headers(key, { Prefer: "return=minimal" }),
     })
     if (!deviceResponse.ok) {
-      console.error("ConvertLAB admin device deletion failed:", await deviceResponse.text())
+      console.error("Clinexia admin device deletion failed:", await deviceResponse.text())
       return NextResponse.json({ error: "User activity was removed, but the user directory could not be updated." }, { status: 502 })
     }
 
     return NextResponse.json({ deleted: true, anonymousId })
   } catch (error) {
     if (error instanceof z.ZodError) return NextResponse.json({ error: "Invalid user identifier." }, { status: 400 })
-    console.error("ConvertLAB admin user deletion error:", error)
+    console.error("Clinexia admin user deletion error:", error)
     return NextResponse.json({ error: "Unable to delete user." }, { status: 500 })
   }
 }

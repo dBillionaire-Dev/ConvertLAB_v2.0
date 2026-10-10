@@ -14,8 +14,10 @@ export function Footer() {
               rel="noopener noreferrer"
               className="hover:text-blue-300 transition-colors font-medium"
             >
-              <span>&copy; {new Date().getFullYear()} ConvertLAB by NexDev</span>
+              <span>&copy; {new Date().getFullYear()} Clinexia by NexDev</span>
             </Link>
+            <span aria-hidden>·</span>
+            <Link href="/privacy" className="hover:text-blue-300 transition-colors font-medium">Privacy</Link>
           </div>
         </div>
       </div>

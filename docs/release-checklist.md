@@ -1,4 +1,4 @@
-# ConvertLAB Release Checklist
+# Clinexia Release Checklist
 
 ## Phase 61  -  Accessibility
 

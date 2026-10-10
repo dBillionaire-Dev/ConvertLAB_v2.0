@@ -3,7 +3,7 @@ import { PageContainer } from "@/components/page-container"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Droplets, FlaskConical, Percent, Layers, Bug, Waves } from "lucide-react"
 
-export const metadata = { title: "Lab Tools - ConvertLAB" }
+export const metadata = { title: "Laboratory Tools" }
 
 const labTools = [
   { href: "/lab-tools/dilution", label: "C1V1 = C2V2 Dilution", description: "Solve for concentration or volume", icon: Droplets },

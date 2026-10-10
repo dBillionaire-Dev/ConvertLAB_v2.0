@@ -1,4 +1,4 @@
--- ConvertLAB anonymous calculation analytics
+-- Clinexia anonymous calculation analytics
 -- Run this once in the Supabase SQL Editor.
 
 create table if not exists public.calculation_events (

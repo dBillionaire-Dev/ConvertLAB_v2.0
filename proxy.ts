@@ -23,9 +23,9 @@ self.addEventListener("activate", (event) => {
  * Host router for the two-domain setup. Does nothing unless NEXT_PUBLIC_LANDING_URL and NEXT_PUBLIC_APP_URL are set,
  * and does nothing for any other host (localhost, previews, the old vercel.app address), which keeps working as before.
  *
- *   convertlab.co        "/" shows the landing page; every app page redirects to app.convertlab.co
- *   www.convertlab.co    redirects to convertlab.co
- *   app.convertlab.co    the app; /welcome redirects to convertlab.co
+ *   example.com        "/" shows the landing page; every app page redirects to app.example.com
+ *   www.convertlab.co    redirects to example.com
+ *   app.example.com    the app; /welcome redirects to example.com
  */
 const LANDING_PASS = [
   "/_next/", "/landing/", "/landing-seo/",

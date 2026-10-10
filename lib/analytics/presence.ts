@@ -22,6 +22,6 @@ export async function sendPresenceHeartbeat(): Promise<void> {
       keepalive: true,
     })
   } catch {
-    // Presence is best-effort and must never affect ConvertLAB.
+    // Presence is best-effort and must never affect Clinexia.
   }
 }

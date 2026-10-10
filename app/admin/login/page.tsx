@@ -30,7 +30,7 @@ export default async function AdminLoginPage({
         <div className="mb-6">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Activity className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            <span className="text-lg font-bold">ConvertLAB</span>
+            <span className="text-lg font-bold">Clinexia</span>
           </Link>
           <h1 className="mt-1 text-2xl font-bold tracking-tight">Management Console</h1>
           <p className="mt-2 text-sm text-muted-foreground">

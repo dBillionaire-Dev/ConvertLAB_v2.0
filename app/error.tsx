@@ -11,7 +11,7 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
   }, [])
 
   return (
-    <PageContainer title="Something went wrong" description="ConvertLAB could not complete this page. Your previous calculations are not changed.">
+    <PageContainer title="Something went wrong" description="Clinexia could not complete this page. Your previous calculations are not changed.">
       <div className="mx-auto max-w-lg rounded-lg border p-6 text-center">
         <AlertTriangle className="mx-auto mb-3 h-8 w-8 text-destructive" aria-hidden />
         <p className="text-sm text-muted-foreground mb-4">Try the page again. If the problem persists, use the navigation to return to the calculator directory.</p>

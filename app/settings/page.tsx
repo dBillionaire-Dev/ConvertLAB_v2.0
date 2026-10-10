@@ -25,7 +25,7 @@ export default function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Appearance</CardTitle>
-            <CardDescription>Choose how ConvertLAB looks on this device.</CardDescription>
+            <CardDescription>Choose how Clinexia looks on this device.</CardDescription>
           </CardHeader>
           <CardContent>
             <AppearanceRadioGroup />

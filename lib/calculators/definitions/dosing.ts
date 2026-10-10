@@ -61,6 +61,7 @@ export const mgPerKgDayCalculator: CalculatorDefinition = {
     const daily = round(dosePerKgDay * weight, 2)
     const perDose = round(daily / dosesPerDay, 2)
     return {
+      perDoseMg: { low: daily / dosesPerDay },
       value: daily,
       unit: "mg/day",
       display: fmt(daily, 2, "mg/day"),
@@ -873,6 +874,7 @@ export const amoxicillinPediatricCalculator: CalculatorDefinition = {
     const lowDose = round(lowDaily / 3, 1)
     const highDose = round(highDaily / 3, 1)
     return {
+      perDoseMg: { low: lowDaily / 3, high: highDaily / 3 },
       value: lowDaily,
       unit: "mg/day",
       display: `${lowDaily}–${highDaily} mg/day`,
@@ -915,6 +917,7 @@ export const amoxicillinClavulanatePediatricCalculator: CalculatorDefinition = {
     const lowDose = round(lowDaily / 3, 1)
     const highDose = round(highDaily / 3, 1)
     return {
+      perDoseMg: { low: lowDaily / 3, high: highDaily / 3 },
       value: lowDaily,
       unit: "mg/day amoxicillin component",
       display: `${lowDaily}–${highDaily} mg/day amoxicillin component`,
@@ -987,6 +990,7 @@ export const ceftriaxonePediatricCalculator: CalculatorDefinition = {
     const mgPerKg = indication === "meningitis" ? 100 : 50
     const dose = round(weight * mgPerKg, 1)
     return {
+      perDoseMg: { low: dose },
       value: dose,
       unit: "mg/day",
       display: `${dose} mg once daily`,
@@ -1016,6 +1020,7 @@ export const cephalexinPediatricCalculator: CalculatorDefinition = {
     const lowDaily = round(weight * 50, 1)
     const highDaily = round(weight * 100, 1)
     return {
+      perDoseMg: { low: lowDaily / 4, high: highDaily / 4 },
       value: lowDaily,
       unit: "mg/day",
       display: `${lowDaily}–${highDaily} mg/day`,
@@ -1045,6 +1050,7 @@ export const metronidazolePediatricCalculator: CalculatorDefinition = {
     const lowDaily = round(weight * 15, 1)
     const highDaily = round(weight * 30, 1)
     return {
+      perDoseMg: { low: lowDaily / 2, high: highDaily / 2 },
       value: lowDaily,
       unit: "mg/day",
       display: `${lowDaily}–${highDaily} mg/day`,
@@ -1183,6 +1189,7 @@ export const cloxacillinPediatricCalculator: CalculatorDefinition = {
       const low = round(weight * 25, 1)
       const high = round(weight * 50, 1)
       return {
+        perDoseMg: { low, high },
         value: low,
         unit: "mg/dose",
         display: `${low}–${high} mg IV every 12 hours`,
@@ -1194,6 +1201,7 @@ export const cloxacillinPediatricCalculator: CalculatorDefinition = {
     }
     const dose = round(weight * 25, 1)
     return {
+      perDoseMg: { low: dose },
       value: dose,
       unit: "mg/dose",
       display: `${dose} mg IV every 6 hours`,

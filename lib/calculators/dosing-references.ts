@@ -146,9 +146,9 @@ const PEDIATRIC_FLUID_DEFICIT: CalculatorReference = {
 
 const ONCOLOGY_REGIMEN: CalculatorReference = {
   source: "eviQ  -  Calculating anti-cancer drug doses / source protocol registry",
-  version: "Current eviQ education and ConvertLAB protocol registry",
+  version: "Current eviQ education and Clinexia protocol registry",
   url: "https://education.eviq.org.au/getmedia/aa5ddb9b-b698-4cdd-91de-9c0564ec775e/ADAC-V4-M4-Workbook-Adult-v2.aspx",
-  applicablePopulation: "Patients receiving a specifically selected source-backed oncology regimen in ConvertLAB.",
+  applicablePopulation: "Patients receiving a specifically selected source-backed oncology regimen in Clinexia.",
   lastVerified: VERIFIED_ON,
   status: "supporting",
   note: "BSA-based anti-cancer dosing is protocol-dependent. The selected regimen source remains authoritative for indication, population, schedule, dose modifications and administration requirements.",
@@ -157,7 +157,7 @@ const ONCOLOGY_REGIMEN: CalculatorReference = {
 const ONCOLOGY_REGIMEN_IDS = new Set(["oncology-regimen-dose"])
 
 const GENERIC: CalculatorReference = {
-  source: "ConvertLAB calculation method",
+  source: "Clinexia calculation method",
   version: "Mathematical reference",
   applicablePopulation: "General calculation use; no drug-specific regimen is selected.",
   lastVerified: VERIFIED_ON,
@@ -167,7 +167,7 @@ const GENERIC: CalculatorReference = {
 
 const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], CalculatorReference>> = {
   general: {
-    source: "National Cancer Institute  -  Body Surface Area formula reference; ConvertLAB general calculation methods",
+    source: "National Cancer Institute  -  Body Surface Area formula reference; Clinexia general calculation methods",
     version: "Mosteller formula reference",
     url: "https://ctep.cancer.gov/branches/pmb/inside_pmb/nov2011.pdf",
     applicablePopulation: "General calculation use; verify the intended population and formula for the specific clinical application.",
@@ -185,9 +185,9 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
     note: "Individual hematology calculators may require a more specific disease- or assay-specific reference.",
   },
   chemistry: {
-    source: "ConvertLAB clinical chemistry formula references",
+    source: "Clinexia clinical chemistry formula references",
     version: "Formula reference set",
-    applicablePopulation: "Clinical chemistry calculations in the ConvertLAB registry.",
+    applicablePopulation: "Clinical chemistry calculations in the Clinexia registry.",
     lastVerified: VERIFIED_ON,
     status: "supporting",
     note: "Formula-specific references are provided where available; remaining chemistry tools are mathematical calculation aids and require method-specific laboratory validation where clinically applied.",
@@ -239,7 +239,7 @@ const CATEGORY_REFERENCES: Partial<Record<CalculatorDefinition["category"], Calc
   },
   oncology: {
     source: "eviQ  -  oncology protocol and anti-cancer treatment resources",
-    version: "Current source-backed ConvertLAB oncology registry",
+    version: "Current source-backed Clinexia oncology registry",
     url: "https://www.eviq.org.au/",
     applicablePopulation: "Oncology calculations represented by the selected calculator or regimen.",
     lastVerified: VERIFIED_ON,

@@ -41,7 +41,7 @@ export function CommandPalette() {
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Search ConvertLAB..." value={query} onValueChange={setQuery} />
+      <CommandInput placeholder="Search Clinexia..." value={query} onValueChange={setQuery} />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
 

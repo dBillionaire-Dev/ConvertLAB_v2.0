@@ -66,7 +66,7 @@ export function MassVolumeConverter() {
           <div>
             <CardTitle>Mass ↔ Volume</CardTitle>
             <CardDescription>
-              Mass and volume are only interchangeable through density. ConvertLAB never assumes 1 g = 1 mL.
+              Mass and volume are only interchangeable through density. Clinexia never assumes 1 g = 1 mL.
             </CardDescription>
           </div>
           <Button variant="ghost" size="icon" aria-label="Reset conversion" onClick={handleReset}>

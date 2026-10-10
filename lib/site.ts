@@ -1,9 +1,9 @@
 /**
  * Two-domain setup (all optional; with none set, everything works on one domain as before).
  *
- *   NEXT_PUBLIC_LANDING_URL   https://convertlab.co        marketing landing page
- *   NEXT_PUBLIC_APP_URL       https://app.convertlab.co    the web app / PWA
- *   NEXT_PUBLIC_SITE_URL      https://app.convertlab.co    (already used for metadata, robots and the sitemap)
+ *   NEXT_PUBLIC_LANDING_URL   https://example.com        marketing landing page
+ *   NEXT_PUBLIC_APP_URL       https://app.example.com    the web app / PWA
+ *   NEXT_PUBLIC_SITE_URL      https://app.example.com    (already used for metadata, robots and the sitemap)
  *
  * They are inlined at build time, so set them in Vercel and redeploy.
  */

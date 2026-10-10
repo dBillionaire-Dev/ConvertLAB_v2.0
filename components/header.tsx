@@ -16,7 +16,7 @@ export function Header({ onOpenSearch }: { onOpenSearch?: () => void }) {
         <div className="flex items-center justify-between h-16 gap-4">
           <Link href="/welcome" className="flex items-center gap-2 shrink-0">
             <Activity className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-            <span className="text-lg font-bold">ConvertLAB</span>
+            <span className="text-lg font-bold">Clinexia</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
@@ -31,7 +31,7 @@ export function Header({ onOpenSearch }: { onOpenSearch?: () => void }) {
               onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
             >
               <Search className="h-4 w-4" />
-              <span>Search ConvertLAB...</span>
+              <span>Search Clinexia...</span>
               <kbd className="ml-2 text-[10px] bg-muted px-1.5 py-0.5 rounded border">⌘K</kbd>
             </Button>
             <Button

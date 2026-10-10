@@ -4,7 +4,7 @@ import { CalculatorRunner } from "@/components/calculators/calculator-runner"
 import { McFarlandReference } from "@/components/lab-tools/mcfarland-reference"
 import { Separator } from "@/components/ui/separator"
 
-export const metadata = { title: "Microbiology - ConvertLAB" }
+export const metadata = { title: "Microbiology - Clinexia" }
 
 export default function MicrobiologyPage() {
   const tools = getCalculatorsByCategory("microbiology")

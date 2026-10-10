@@ -1,4 +1,4 @@
-# ConvertLAB clinical validation and release audit
+# Clinexia clinical validation and release audit
 
 This document describes the validation gates introduced in phases 40–54.
 
@@ -60,7 +60,7 @@ For example, `pediatric antimalaria` is interpreted as a combined intent and ret
 
 ## Clinical scope limitation
 
-ConvertLAB is a calculation and reference utility. A source reference, formula, score, or regimen entry does not constitute an independent clinical validation of a patient's treatment plan. Current product information, guidelines, validated laboratory methods, institutional SOPs, and professional judgment remain authoritative.
+Clinexia is a calculation and reference utility. A source reference, formula, score, or regimen entry does not constitute an independent clinical validation of a patient's treatment plan. Current product information, guidelines, validated laboratory methods, institutional SOPs, and professional judgment remain authoritative.
 
 ## Release gate
 

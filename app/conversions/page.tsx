@@ -4,11 +4,11 @@ import { conversionCategories } from "@/lib/conversions/registry"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Droplet } from "lucide-react"
 
-export const metadata = { title: "Conversions - ConvertLAB" }
+export const metadata = { title: "Unit Conversions" }
 
 export default function ConversionsPage() {
   return (
-    <PageContainer title="Conversions" description="Standard unit conversions for laboratory and clinical work.">
+    <PageContainer title="Conversions" description="Standard unit conversions for clinical and laboratory work.">
       <div className="grid gap-3 sm:grid-cols-2">
         <Link href="/conversions/mass-volume">
           <Card className="hover:border-primary/50 transition-colors border-primary/30">

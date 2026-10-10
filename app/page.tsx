@@ -56,7 +56,7 @@ export default function HomePage() {
   return (
     <div className="container mx-auto px-4 py-8 sm:py-12 max-w-5xl">
       <div className="text-center mb-8 sm:mb-10">
-        {greeting ? <p className="text-sm text-muted-foreground mb-1">{greeting}</p> : "ConvertLAB"}
+        {greeting ? <p className="text-sm text-muted-foreground mb-1">{greeting}</p> : "Clinexia"}
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Your Clinical Toolkit</h1>
         <p className="text-muted-foreground mt-2 text-sm sm:text-base max-w-xl mx-auto">
           Calculators, conversions, and clinical tools, all stored locally on your device.

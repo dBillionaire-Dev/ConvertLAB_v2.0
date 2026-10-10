@@ -354,7 +354,7 @@ export const oncologyHematologicModificationCalculator: CalculatorDefinition = {
         interpretation: "No explicitly structured haematological modification rule in the selected registry entry matched the supplied findings.",
         warnings: [
           "A non-match does not mean treatment is safe or appropriate to administer.",
-          "Rules not yet structured in ConvertLAB are intentionally not inferred from free-text protocol notes.",
+          "Rules not yet structured in Clinexia are intentionally not inferred from free-text protocol notes.",
           "Review the complete current protocol, laboratory results and treating-team assessment before administration.",
         ],
       }
@@ -370,7 +370,7 @@ export const oncologyHematologicModificationCalculator: CalculatorDefinition = {
         ...(rule.appliesTo?.length ? [{ label: "Applies to", value: rule.appliesTo.join(", ") }] : []),
       ]),
       calculationSteps: assessment.map((rule) => `${rule.ruleId}: ${rule.action}`),
-      interpretation: `The selected ${regimen.name} protocol contains ${assessment.length} structured haematological rule${assessment.length === 1 ? "" : "s"} matching the supplied findings. ConvertLAB reports the protocol guidance and does not automatically alter any dose.`,
+      interpretation: `The selected ${regimen.name} protocol contains ${assessment.length} structured haematological rule${assessment.length === 1 ? "" : "s"} matching the supplied findings. Clinexia reports the protocol guidance and does not automatically alter any dose.`,
       warnings: [
         "Dose modification guidance is protocol-specific and requires clinical judgement; eviQ describes these recommendations as guidance rather than automatic prescribing decisions.",
         "Do not use this assessment alone to administer, reduce, delay or discontinue chemotherapy.",
@@ -498,7 +498,7 @@ export const oncologyRegimenDoseCalculator: CalculatorDefinition = {
       helpText: "Select the exact source-backed regimen; do not generalize the displayed protocol to other indications.",
       defaultValue: PATIENT_SPECIFIC_REGIMENS[0]?.id,
     },
-    { id: "bsa", label: "Body surface area", kind: "number", unit: "m²", min: 0.1, max: 5, step: 0.01, placeholder: "e.g. 1.80", helpText: "Use the BSA method required by the selected protocol. ConvertLAB does not silently recalculate or substitute a BSA method." },
+    { id: "bsa", label: "Body surface area", kind: "number", unit: "m²", min: 0.1, max: 5, step: 0.01, placeholder: "e.g. 1.80", helpText: "Use the BSA method required by the selected protocol. Clinexia does not silently recalculate or substitute a BSA method." },
     { id: "weightKg", label: "Weight", kind: "number", unit: "kg", min: 0.5, max: 500, step: 0.1, placeholder: "Optional unless the regimen contains a weight-based dose", optional: true },
     { id: "gfr", label: "GFR used by protocol", kind: "number", unit: "mL/min", min: 0.1, max: 300, step: 0.1, placeholder: "Required for AUC-based carboplatin", optional: true, helpText: "Only required when the selected regimen contains an AUC-based drug such as carboplatin. Use the renal-function method required by that protocol." },
   ],
@@ -531,7 +531,7 @@ export const oncologyRegimenDoseCalculator: CalculatorDefinition = {
       interpretation: `Protocol arithmetic only. ${regimen.name} is represented exactly as stored in the source-backed registry; the selected regimen, indication, population, cycle and dose-modification rules must be verified before use.`,
       warnings: [
         ...(regimen.warnings ?? []),
-        ...(regimen.status === "reference-only" ? ["This regimen is reference-only in ConvertLAB. Confirm the exact current institutional/protocol version before patient-specific use."] : []),
+        ...(regimen.status === "reference-only" ? ["This regimen is reference-only in Clinexia. Confirm the exact current institutional/protocol version before patient-specific use."] : []),
         "This tool does not determine indication, cycle selection, dose reductions, organ-function adjustments, supportive care, or whether treatment should be administered.",
         "Verify the protocol, patient identity, BSA method, laboratory results, organ function, prior treatment and required independent medication checks before administration.",
       ],
@@ -606,7 +606,7 @@ export const oncologyToxicitySafetyCalculator: CalculatorDefinition = {
         interpretation: "No explicitly structured non-haematological toxicity rule in the selected registry entry matched the supplied findings.",
         warnings: [
           "A non-match does not mean treatment is safe or appropriate to administer.",
-          "ConvertLAB does not infer unstructured toxicity rules or convert a toxicity grade into an automatic dose change.",
+          "Clinexia does not infer unstructured toxicity rules or convert a toxicity grade into an automatic dose change.",
           "Review the complete current protocol, CTCAE definition, laboratory/clinical findings and treating-team assessment before administration.",
         ],
       }
@@ -622,7 +622,7 @@ export const oncologyToxicitySafetyCalculator: CalculatorDefinition = {
         ...(rule.appliesTo?.length ? [{ label: "Applies to", value: rule.appliesTo.join(", ") }] : []),
       ]),
       calculationSteps: assessment.map((rule) => `${rule.ruleId}: ${rule.action}`),
-      interpretation: `The selected ${regimen.name} protocol contains ${assessment.length} structured toxicity rule${assessment.length === 1 ? "" : "s"} matching the supplied finding. ConvertLAB reports protocol guidance and does not automatically alter a dose.`,
+      interpretation: `The selected ${regimen.name} protocol contains ${assessment.length} structured toxicity rule${assessment.length === 1 ? "" : "s"} matching the supplied finding. Clinexia reports protocol guidance and does not automatically alter a dose.`,
       warnings: [
         "Non-haematological toxicity recommendations are protocol-specific and require clinical judgement; eviQ states its dose-modification recommendations are guidance rather than automatic prescribing decisions.",
         ...(regimen.warnings ?? []),
@@ -637,7 +637,7 @@ export const oncologyToxicitySafetyCalculator: CalculatorDefinition = {
   limitations: [
     "Only toxicity rules explicitly encoded in the selected regimen are evaluated.",
     "No automatic dose reduction, omission, delay or treatment cessation is performed.",
-    "CTCAE grading itself remains a clinician-assessed input and is not derived from symptoms by ConvertLAB.",
+    "CTCAE grading itself remains a clinician-assessed input and is not derived from symptoms by Clinexia.",
   ],
 }
 

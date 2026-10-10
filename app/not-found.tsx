@@ -32,7 +32,7 @@ export default function NotFound() {
           onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
         >
           <Search className="h-4 w-4 mr-2" />
-          Search ConvertLAB
+          Search Clinexia
         </Button>
       </div>
 

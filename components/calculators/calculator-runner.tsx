@@ -167,7 +167,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
   const resultText = () => {
     if (!result) return ""
     const lines = [
-      `ConvertLAB, ${definition.name}`,
+      `Clinexia, ${definition.name}`,
       "",
       `Result: ${result.display}`,
       "",
@@ -292,7 +292,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
           <CardHeader>
             {/* Print-only masthead  -  site header/nav is hidden when printing */}
             <div className="hidden print:block mb-2">
-              <p className="font-bold">ConvertLAB</p>
+              <p className="font-bold">Clinexia</p>
               <p className="text-xs text-muted-foreground">{definition.name}  -  {new Date().toLocaleDateString()}</p>
             </div>
             <CardTitle ref={resultHeadingRef} tabIndex={-1} className="text-sm font-medium text-muted-foreground focus:outline-none">Result</CardTitle>

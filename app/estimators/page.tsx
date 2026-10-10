@@ -5,7 +5,7 @@ import type { CalculatorGroup } from "@/lib/calculators/types"
 import { CALCULATOR_CATEGORY_LABELS } from "@/lib/calculators/types"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 
-export const metadata = { title: "Estimators - ConvertLAB" }
+export const metadata = { title: "Clinical Estimators" }
 
 // Estimators are grouped by clinical purpose rather than the raw data
 // category, anthropometric/energy estimates (BSA, IBW, BMR, TDEE) read
