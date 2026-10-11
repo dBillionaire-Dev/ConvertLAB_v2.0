@@ -15,18 +15,21 @@ const img = (name: string) => `/landing/${name}.webp`
 export const SHOTS: Shot[] = [
   { id: "web-home", device: "desktop", title: "Dashboard", caption: "Web app on a large screen", light: img("web-desktop-home-light"), dark: img("web-desktop-home-dark") },
   { id: "web-result", device: "desktop", title: "Red cell indices", caption: "Results with the formulas shown", light: img("web-desktop-result-light"), dark: img("web-desktop-result-dark") },
+  { id: "web-dosing", device: "desktop", title: "Drug dosing", caption: "The dose in mg and the volume in mL per dose", light: img("web-desktop-dosing-light"), dark: img("web-desktop-dosing-dark") },
   { id: "web-lab", device: "desktop", title: "Lab tools", caption: "Dilutions, solutions and spectrophotometry", light: img("web-desktop-labtools-light"), dark: img("web-desktop-labtools-dark") },
   { id: "pwa-home", device: "phone", title: "Dashboard", caption: "Installable web app (PWA) on a phone", light: img("web-phone-home-light"), dark: img("web-phone-home-dark") },
   { id: "pwa-result", device: "phone", title: "Red cell indices", caption: "A calculator on a phone screen", light: img("web-phone-result-light"), dark: img("web-phone-result-dark") },
+  { id: "pwa-dosing", device: "phone", title: "Drug dosing", caption: "mg per dose and mL per dose", light: img("web-phone-dosing-light"), dark: img("web-phone-dosing-dark") },
   { id: "pwa-conv", device: "phone", title: "Conversions", caption: "Unit conversions by category", light: img("web-phone-conversions-light"), dark: img("web-phone-conversions-dark") },
   { id: "app-home", device: "app", title: "Home", caption: "Android app", light: img("app-home-light"), dark: img("app-home-dark") },
   { id: "app-calcs", device: "app", title: "Calculators", caption: "Browse every category", light: img("app-calculators-light"), dark: img("app-calculators-dark") },
+  { id: "app-dose-result", device: "app", title: "Dose in mg and mL", caption: "Enter the product strength to get the volume", light: img("app-dose-result-light"), dark: img("app-dose-result-dark") },
   { id: "app-dosing", device: "app", title: "Drug dosing", caption: "Grouped by sub-category", light: img("app-dosing-light"), dark: img("app-dosing-dark") },
-  { id: "app-result", device: "app", title: "Result", caption: "Clear results with units", light: img("app-result-light") },
+  { id: "app-result", device: "app", title: "Result", caption: "Clear results with units", light: img("app-result-light"), dark: img("app-result-dark") },
   { id: "app-convert", device: "app", title: "Unit converter", caption: "Convert between units", light: img("app-convert-light"), dark: img("app-convert-dark") },
   { id: "app-history", device: "app", title: "History", caption: "Stored on your device", light: img("app-history-light"), dark: img("app-history-dark") },
   { id: "app-lab", device: "app", title: "Lab tools", caption: "Bench utilities", light: img("app-labtools-light"), dark: img("app-labtools-dark") },
-  { id: "app-settings", device: "app", title: "Settings", caption: "Light, dark or system theme", light: img("app-settings-dark"), dark: img("app-settings-dark") },
+  { id: "app-settings", device: "app", title: "Settings", caption: "Light, dark or system theme", light: img("app-settings-light"), dark: img("app-settings-dark") },
 ]
 
 export const shotById = (id: string): Shot => {
@@ -48,11 +51,13 @@ export const DEMO: Record<"desktop" | "phone", DemoScenario[]> = {
   desktop: [
     { id: "home", label: "Dashboard", path: "/", poster: "web-home" },
     { id: "rbc", label: "Red cell indices", path: "/calculators/hematology/red-cell-indices", poster: "web-result" },
+    { id: "dose", label: "Drug dosing", path: "/calculators/dosing/amoxicillin-pediatric-dose", poster: "web-dosing" },
     { id: "lab", label: "Lab tools", path: "/lab-tools", poster: "web-lab" },
   ],
   phone: [
     { id: "home", label: "Dashboard", path: "/", poster: "pwa-home" },
     { id: "rbc", label: "Red cell indices", path: "/calculators/hematology/red-cell-indices", poster: "pwa-result" },
+    { id: "dose", label: "Drug dosing", path: "/calculators/dosing/amoxicillin-pediatric-dose", poster: "pwa-dosing" },
     { id: "conv", label: "Conversions", path: "/conversions", poster: "pwa-conv" },
   ],
 }
