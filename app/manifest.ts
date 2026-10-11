@@ -35,6 +35,15 @@ export default function manifest(): MetadataRoute.Manifest {
       { src: "/icon-192x192.png", sizes: "192x192", type: "image/png", purpose: "any" },
       { src: "/icon-512x512.png", sizes: "512x512", type: "image/png", purpose: "any" },
       { src: "/icon-maskable-192x192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
+      { src: "/icon-maskable-512x512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+    ],
+    screenshots: [
+      { src: "/screenshots/wide-dashboard.png", sizes: "1280x800", type: "image/png", form_factor: "wide", label: "Dashboard on a large screen" },
+      { src: "/screenshots/wide-calculator.png", sizes: "1280x800", type: "image/png", form_factor: "wide", label: "A calculator with its working shown" },
+      { src: "/screenshots/wide-dosing.png", sizes: "1280x800", type: "image/png", form_factor: "wide", label: "Drug dosing with mg and mL per dose" },
+      { src: "/screenshots/narrow-dashboard.png", sizes: "780x1688", type: "image/png", form_factor: "narrow", label: "Dashboard on a phone" },
+      { src: "/screenshots/narrow-calculator.png", sizes: "780x1688", type: "image/png", form_factor: "narrow", label: "A calculator on a phone" },
+      { src: "/screenshots/narrow-dosing.png", sizes: "780x1688", type: "image/png", form_factor: "narrow", label: "Drug dosing on a phone" },
     ],
     shortcuts: [
       { name: "Calculators", short_name: "Calculators", description: "Browse all clinical calculators", url: "/calculators", icons: [{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" }] },
