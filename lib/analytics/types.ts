@@ -46,9 +46,11 @@ export interface AnalyticsSnapshot {
     lastCalculationAt: string | null
     lastCalculatorName: string | null
     calculationsToday: number
+    calculationsLast7Days?: number
     calculationsLast14Days: number
     totalCalculations: number
   }>
+  last7Days: number
   last14Days: number
   uniqueUsersToday: number
   uniqueUsersLast14Days: number

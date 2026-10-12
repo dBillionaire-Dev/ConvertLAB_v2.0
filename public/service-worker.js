@@ -317,28 +317,61 @@ async function deleteAnalyticsEvents(ids) {
   db.close()
 }
 
+async function postAnalyticsBatch(batch) {
+  return fetch("/api/analytics", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      events: batch.map((event) => ({
+        ...event,
+        source: event.source || "web",
+        environment: event.environment || "production",
+      })),
+    }),
+  })
+}
+
+// Returns true when every event in the batch was stored or permanently rejected.
+async function syncAnalyticsBatch(batch) {
+  const response = await postAnalyticsBatch(batch)
+
+  if (response.ok) {
+    const body = await response.json().catch(() => ({}))
+    const finished = [...(body.accepted || []), ...(body.rejected || [])]
+    await deleteAnalyticsEvents(finished)
+    const done = new Set(finished)
+    return batch.every((event) => done.has(event.id))
+  }
+
+  // The payload itself is bad: isolate the culprit so it cannot block the rest.
+  if (response.status === 400 || response.status === 413 || response.status === 422) {
+    if (batch.length > 1) {
+      let allDone = true
+      for (const event of batch) {
+        if (!(await syncAnalyticsBatch([event]))) allDone = false
+      }
+      return allDone
+    }
+    await deleteAnalyticsEvents([batch[0].id])
+    return true
+  }
+
+  return false
+}
+
 async function syncAnalyticsFromServiceWorker() {
   const events = await getAnalyticsEvents()
   if (!events.length) return
 
   for (let i = 0; i < events.length; i += 100) {
-    const batch = events.slice(i, i + 100)
-
+    let ok = false
     try {
-      const response = await fetch("/api/analytics", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ events: batch }),
-      })
-
-      if (!response.ok) return
-
-      const body = await response.json()
-      await deleteAnalyticsEvents(body.accepted || [])
+      ok = await syncAnalyticsBatch(events.slice(i, i + 100))
     } catch {
-      // Throwing causes Background Sync to retry when supported.
-      throw new Error("Clinexia analytics sync failed")
+      ok = false
     }
+    // Throwing makes Background Sync retry later (with its own backoff).
+    if (!ok) throw new Error("Clinexia analytics sync failed")
   }
 }
 

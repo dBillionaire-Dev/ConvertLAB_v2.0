@@ -124,6 +124,7 @@ export function AdminUserManagementTable({ users }: { users: User[] }) {
             <th className="pb-3 pr-4 font-medium">Source</th>
             <th className="pb-3 pr-4 font-medium">Environment</th>
             <th className="pb-3 pr-4 font-medium">Today</th>
+            <th className="pb-3 pr-4 font-medium">7 days</th>
             <th className="pb-3 pr-4 font-medium">14 days</th>
             <th className="pb-3 pr-4 font-medium">Total</th>
             <th className="pb-3 text-right font-medium">Actions</th>
@@ -182,6 +183,7 @@ export function AdminUserManagementTable({ users }: { users: User[] }) {
                 <td className="py-3 pr-4 capitalize">{item.source}</td>
                 <td className="py-3 pr-4">{item.environment}</td>
                 <td className="py-3 pr-4 font-medium">{number(item.calculationsToday)}</td>
+                <td className="py-3 pr-4 font-medium">{number(item.calculationsLast7Days ?? 0)}</td>
                 <td className="py-3 pr-4 font-medium">{number(item.calculationsLast14Days)}</td>
                 <td className="py-3 pr-4 font-medium">{number(item.totalCalculations)}</td>
                 <td className="py-3 text-right">

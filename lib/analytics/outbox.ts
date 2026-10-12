@@ -61,6 +61,25 @@ export async function queueCalculationEvent(
   return full
 }
 
+/** Queues many events in a single transaction. Re-queuing an existing ID simply overwrites it. */
+export async function queueCalculationEvents(events: CalculationEvent[]): Promise<void> {
+  if (!events.length) return
+  const db = await openDB()
+
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, "readwrite")
+      const store = tx.objectStore(STORE_NAME)
+      for (const event of events) store.put(event)
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => reject(tx.error)
+      tx.onabort = () => reject(tx.error)
+    })
+  } finally {
+    db.close()
+  }
+}
+
 export async function getPendingCalculationEvents(): Promise<CalculationEvent[]> {
   if (!isBrowser()) return []
 

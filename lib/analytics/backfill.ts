@@ -1,29 +1,38 @@
 "use client"
 
-import { getAllHistory, type HistoryItem } from "@/lib/history/db"
+import { getAllHistory } from "@/lib/history/db"
 import { getAnonymousId } from "./client-id"
-import { queueCalculationEvent } from "./outbox"
+import { queueCalculationEvents } from "./outbox"
 import { syncAnalytics } from "./sync"
 import { isStandaloneDisplayMode } from "@/lib/platform"
+import type { CalculationEvent } from "./types"
 
-const BACKFILL_KEY = "convertlab:analytics-history-backfill:v2"
+// v3: the original v2 backfill ran once, but the main calculator screen never reported
+// to analytics, so everything calculated after that run (and before this fix) was
+// missing from the dashboard. Running again is safe: event IDs are the history IDs and
+// the server ignores IDs it already has, so nothing is double counted.
+const BACKFILL_KEY = "convertlab:analytics-history-backfill:v3"
 const BACKFILL_APP_VERSION = "2.0.0-history-backfill"
 const APP_ENVIRONMENT = process.env.NEXT_PUBLIC_APP_ENV ?? "production"
 
 function hasCompletedBackfill() {
-  return typeof window !== "undefined" && window.localStorage.getItem(BACKFILL_KEY) === "1"
+  try {
+    return window.localStorage.getItem(BACKFILL_KEY) === "1"
+  } catch {
+    return false
+  }
 }
 
 function markBackfillComplete() {
-  window.localStorage.setItem(BACKFILL_KEY, "1")
+  try {
+    window.localStorage.setItem(BACKFILL_KEY, "1")
+  } catch {
+    // If storage is unavailable the backfill simply re-runs next launch, which is harmless.
+  }
 }
 
 /**
- * Imports the user's existing local calculation history into the analytics
- * outbox exactly once. Historical event IDs reuse the existing history IDs,
- * making retries idempotent even if the migration is interrupted.
- *
- * We intentionally do not include inputs/results in analytics.
+ * Re-queues the user's whole local history once. Inputs/results are never included.
  */
 export async function backfillExistingHistory(): Promise<number> {
   if (typeof window === "undefined" || !window.indexedDB) return 0
@@ -36,31 +45,24 @@ export async function backfillExistingHistory(): Promise<number> {
   }
 
   const anonymousId = getAnonymousId()
-  let queued = 0
+  const source = isStandaloneDisplayMode() ? "pwa" : "web"
 
-  for (const item of history) {
-    await queueHistoricalEvent(item, anonymousId)
-    queued += 1
-  }
+  const events: CalculationEvent[] = history.map((item) => ({
+    id: item.id,
+    anonymousId,
+    calculatorId: item.calculatorId,
+    calculatorName: item.calculatorName,
+    category: item.category,
+    occurredAt: item.timestamp,
+    appVersion: BACKFILL_APP_VERSION,
+    wasOffline: false,
+    source,
+    environment: APP_ENVIRONMENT,
+  }))
 
+  // One transaction for the whole history, and only marked complete once it is safely queued.
+  await queueCalculationEvents(events)
   markBackfillComplete()
   void syncAnalytics()
-  return queued
-}
-
-async function queueHistoricalEvent(item: HistoryItem, anonymousId: string) {
-  await queueCalculationEvent(
-    {
-      anonymousId,
-      calculatorId: item.calculatorId,
-      calculatorName: item.calculatorName,
-      category: item.category,
-      occurredAt: item.timestamp,
-      appVersion: BACKFILL_APP_VERSION,
-      wasOffline: false,
-      source: isStandaloneDisplayMode() ? "pwa" : "web",
-      environment: APP_ENVIRONMENT,
-    },
-    item.id,
-  )
+  return events.length
 }

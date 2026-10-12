@@ -12,33 +12,40 @@ export async function trackCalculation({
   calculatorId,
   calculatorName,
   category,
+  eventId,
+  occurredAt,
 }: {
   calculatorId: string
   calculatorName: string
   category: string
+  /** Pass the history item's ID so history and analytics share one identity (retries and backfills stay idempotent). */
+  eventId?: string
+  occurredAt?: string
 }) {
   try {
     // Landing-page demo frames are marketing, not usage.
     if (typeof window !== "undefined" && window.self !== window.top) return
 
-    await queueCalculationEvent({
-      anonymousId: getAnonymousId(),
-      calculatorId,
-      calculatorName,
-      category,
-      occurredAt: new Date().toISOString(),
-      appVersion: APP_VERSION,
-      wasOffline: typeof navigator !== "undefined" ? !navigator.onLine : false,
-      source: isStandaloneDisplayMode() ? "pwa" : "web",
-      environment: APP_ENVIRONMENT,
-    })
+    await queueCalculationEvent(
+      {
+        anonymousId: getAnonymousId(),
+        calculatorId,
+        calculatorName,
+        category,
+        occurredAt: occurredAt ?? new Date().toISOString(),
+        appVersion: APP_VERSION,
+        wasOffline: typeof navigator !== "undefined" ? navigator.onLine === false : false,
+        source: isStandaloneDisplayMode() ? "pwa" : "web",
+        environment: APP_ENVIRONMENT,
+      },
+      eventId,
+    )
     void syncAnalytics()
     void registerBackgroundSync()
   } catch {
     // Analytics must never break a calculator.
   }
 }
-
 
 async function registerBackgroundSync() {
   if (typeof navigator === "undefined" || !("serviceWorker" in navigator)) return
