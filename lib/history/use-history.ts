@@ -2,6 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { addHistoryItem, clearHistory, deleteHistoryItem, getAllHistory, type HistoryItem } from "./db"
+import { trackCalculation } from "@/lib/analytics/track-calculation"
+
+export interface RecordOptions {
+  /** Name sent to analytics when it should differ from the history label. */
+  analyticsName?: string
+}
 
 export function useHistory() {
   const [items, setItems] = useState<HistoryItem[]>([])
@@ -23,10 +29,30 @@ export function useHistory() {
     refresh()
   }, [refresh])
 
+  /**
+   * Saves a result to local history AND queues the matching analytics event.
+   *
+   * Every saved history entry produces exactly one analytics event that reuses the
+   * history ID, so what a user sees on their device and what the admin console
+   * counts cannot drift apart. If the local save fails (private mode, storage
+   * full) the calculation is still reported, just without a history ID.
+   */
   const record = useCallback(
-    async (item: Omit<HistoryItem, "id" | "timestamp">) => {
-      await addHistoryItem(item)
+    async (item: Omit<HistoryItem, "id" | "timestamp">, options?: RecordOptions) => {
+      let saved: HistoryItem | null = null
+      try {
+        saved = await addHistoryItem(item)
+      } finally {
+        void trackCalculation({
+          calculatorId: item.calculatorId,
+          calculatorName: options?.analyticsName ?? item.calculatorName,
+          category: item.category,
+          eventId: saved?.id,
+          occurredAt: saved?.timestamp,
+        })
+      }
       await refresh()
+      return saved
     },
     [refresh],
   )
