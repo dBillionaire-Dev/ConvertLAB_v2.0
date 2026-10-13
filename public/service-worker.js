@@ -9,7 +9,7 @@
  * functionality.
  */
 
-const CACHE_VERSION = "v6"
+const CACHE_VERSION = "v5"
 const CACHE_PREFIX = "clinexia-"
 const SHELL_CACHE = `${CACHE_PREFIX}shell-${CACHE_VERSION}`
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${CACHE_VERSION}`
