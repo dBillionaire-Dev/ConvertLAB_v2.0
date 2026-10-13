@@ -8,8 +8,6 @@ import type { MetadataRoute } from "next"
  *   NEXT_PUBLIC_IARC_RATING_ID   the IARC age-rating id from the Microsoft Store / Play age-rating questionnaire
  *   NEXT_PUBLIC_PLAY_STORE_URL   adds the Android app as a related application
  */
-const IARC = (process.env.NEXT_PUBLIC_IARC_RATING_ID ?? "").trim()
-const PLAY = (process.env.NEXT_PUBLIC_PLAY_STORE_URL ?? "").trim()
 
 export default function manifest(): MetadataRoute.Manifest {
   const manifest = {
@@ -51,8 +49,6 @@ export default function manifest(): MetadataRoute.Manifest {
       { name: "Conversions", short_name: "Convert", description: "Unit conversions", url: "/conversions", icons: [{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" }] },
       { name: "Lab tools", short_name: "Lab tools", description: "Dilutions, solutions and spectrophotometry", url: "/lab-tools", icons: [{ src: "/icon-192x192.png", sizes: "192x192", type: "image/png" }] },
     ],
-    ...(PLAY ? { related_applications: [{ platform: "play", url: PLAY, id: "com.clinexia.app" }], prefer_related_applications: false } : {}),
-    ...(IARC ? { iarc_rating_id: IARC } : {}),
   }
   return manifest as MetadataRoute.Manifest
 }
