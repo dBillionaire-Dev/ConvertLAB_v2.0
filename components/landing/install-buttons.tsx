@@ -96,7 +96,7 @@ export function InstallPwaButton({ variant = "outline", size = "lg", className }
   )
 }
 
-/** The first Android channel that is configured: Google Play, then the Firebase beta, then a direct APK. Otherwise an honest "coming soon". */
+/** The first Android channel that is configured: Google Play, then the Palm Store, then a direct APK. Otherwise an honest "coming soon". */
 export function AndroidButton({ variant = "secondary", size = "lg", className }: { variant?: "default" | "outline" | "secondary"; size?: "default" | "sm" | "lg"; className?: string }) {
   if (LANDING.playStoreUrl) {
     return (
@@ -112,15 +112,6 @@ export function AndroidButton({ variant = "secondary", size = "lg", className }:
       <Button asChild variant={variant} size={size} className={className}>
         <a href={LANDING.palmStoreUrl} target="_blank" rel="noopener noreferrer">
           <Smartphone className="mr-2 h-4 w-4" aria-hidden />Get it on Palm Store<ExternalLink className="ml-2 h-3.5 w-3.5 opacity-70" aria-hidden />
-        </a>
-      </Button>
-    )
-  }
-  if (LANDING.firebaseUrl) {
-    return (
-      <Button asChild variant={variant} size={size} className={className}>
-        <a href={LANDING.firebaseUrl} target="_blank" rel="noopener noreferrer">
-          <Smartphone className="mr-2 h-4 w-4" aria-hidden />Join the Android beta<ExternalLink className="ml-2 h-3.5 w-3.5 opacity-70" aria-hidden />
         </a>
       </Button>
     )
@@ -169,24 +160,15 @@ export function AndroidChannels() {
           <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.palmStoreUrl} target="_blank" rel="noopener noreferrer">Open the Palm Store listing</a>
         ) : "For Tecno, Infinix and itel phones (Android 7.0 or newer)."}
       </Channel>
-      <Channel title="Beta on Firebase App Distribution" status={LANDING.firebaseUrl ? "ready" : "soon"}>
-        {LANDING.firebaseUrl ? (
-          <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.firebaseUrl} target="_blank" rel="noopener noreferrer">Join the beta testers</a>
-        ) : "Early builds for testers, by invitation link."}
-      </Channel>
       <Channel title={`Direct download (APK)${LANDING.apkVersion ? ` · v${LANDING.apkVersion}` : ""}`} status={LANDING.apkUrl ? "ready" : "soon"}>
         {LANDING.apkUrl ? (
           <>
             <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.apkUrl} rel="noopener noreferrer" download>Download the APK</a>
-            {LANDING.apkSha256 && (
-              <p className="mt-2 break-all">SHA-256: <code className="rounded bg-muted px-1 py-0.5 text-[10px]">{LANDING.apkSha256}</code></p>
-            )}
             <details className="mt-2">
               <summary className="cursor-pointer font-medium text-foreground">How to install it</summary>
               <ol className="mt-1 list-decimal space-y-1 pl-4">
                 <li>Open the downloaded file. Android may ask you to allow installs from your browser or Files app: allow it for this install.</li>
                 <li>Tap Install. If Play Protect warns about an app from outside the Play Store, choose to install anyway only if you downloaded it from this page.</li>
-                <li>Optional: compare the SHA-256 above with the file&apos;s checksum before installing.</li>
               </ol>
             </details>
           </>

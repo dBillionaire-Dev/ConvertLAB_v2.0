@@ -17,12 +17,12 @@ const clean = (v: string | undefined) => (v ?? "").trim()
 export const LANDING = {
   playStoreUrl: clean(process.env.NEXT_PUBLIC_PLAY_STORE_URL),
   palmStoreUrl: clean(process.env.NEXT_PUBLIC_PALM_STORE_URL),
-  firebaseUrl: clean(process.env.NEXT_PUBLIC_FIREBASE_DIST_URL),
+  // firebaseUrl: clean(process.env.NEXT_PUBLIC_FIREBASE_DIST_URL),
   apkUrl: clean(process.env.NEXT_PUBLIC_APK_URL),
-  apkSha256: clean(process.env.NEXT_PUBLIC_APK_SHA256),
+  // apkSha256: clean(process.env.NEXT_PUBLIC_APK_SHA256),
   apkVersion: clean(process.env.NEXT_PUBLIC_APK_VERSION),
   microsoftStoreUrl: clean(process.env.NEXT_PUBLIC_MS_STORE_URL),
   developerUrl: "https://nex.is-a.dev/",
 }
 
-export const androidAvailable = Boolean(LANDING.playStoreUrl || LANDING.palmStoreUrl || LANDING.firebaseUrl || LANDING.apkUrl)
+export const androidAvailable = Boolean(LANDING.playStoreUrl || LANDING.palmStoreUrl || LANDING.apkUrl)
