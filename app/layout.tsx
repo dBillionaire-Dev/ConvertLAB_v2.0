@@ -18,7 +18,7 @@ import { AnalyticsSync } from "@/components/analytics-sync"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://convertlab-nex.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.clinexia.app"),
   title: {
     default: "Clinexia | Clinical Calculators, Drug Dosing and Unit Conversions",
     template: "%s | Clinexia",
