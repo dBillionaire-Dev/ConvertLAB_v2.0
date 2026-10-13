@@ -1,16 +1,24 @@
-// Clinexia service worker  -  enables full offline use.
-//
-// All calculation/conversion/substance data ships inside the app's JS
-// bundles, so once a page's HTML + JS are cached, its calculators work
-// fully offline with no network calls at all.
-//
-// Earlier versions of this service worker only precached the home page,
-// so opening any calculator that hadn't been visited online first would
-// fail offline. This version precaches every route in the app up front,
-// so the whole toolkit works offline immediately after install.
+/* Clinexia service worker  -  enables full offline use.
+ *
+ * Pre-caches configured routes and app assets, then caches successful
+ * same-origin navigation responses and eligible runtime requests.
+ *
+ * Offline availability depends on successful precaching and whether the
+ * required Next.js HTML, JavaScript chunks, styles, and data are cached.
+ * Test the production build in airplane mode before claiming full offline
+ * functionality.
+ */
+
 const CACHE_VERSION = "v5"
-const SHELL_CACHE = `convertlab-shell-${CACHE_VERSION}`
-const RUNTIME_CACHE = `convertlab-runtime-${CACHE_VERSION}`
+const CACHE_PREFIX = "clinexia-"
+const SHELL_CACHE = `${CACHE_PREFIX}shell-${CACHE_VERSION}`
+const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-${CACHE_VERSION}`
+
+// Cache names owned by previous versions of this app.
+const LEGACY_APP_CACHES = [
+  "convertlab-shell-v5",
+  "convertlab-runtime-v5",
+]
 
 const STATIC_ROUTES = [
   "/",
@@ -233,41 +241,67 @@ const PRECACHE_URLS = [
   ...ASSET_URLS,
 ]
 
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(SHELL_CACHE).then((cache) =>
-      Promise.all(
-        PRECACHE_URLS.map((url) =>
-          cache.add(url).catch(() => {
-            // Ignore individual failures so one bad URL doesn't block install  - 
-            // that route just falls back to network-then-runtime-cache instead.
-          }),
-        ),
-      ),
-    ),
+    (async () => {
+      const cache = await caches.open(SHELL_CACHE)
+
+      await Promise.all(
+        PRECACHE_URLS.map(async (url) => {
+          try {
+            const request = new Request(url, {
+              cache: "reload",
+              credentials: "same-origin",
+            })
+
+            const response = await fetch(request)
+
+            // Cache successful, same-origin responses only.
+            if (
+              response.ok &&
+              response.type === "basic" &&
+              new URL(response.url).origin === self.location.origin
+            ) {
+              await cache.put(url, response)
+            }
+          } catch {
+            // A failed route should not prevent installation.
+            // Check failed routes during offline testing.
+          }
+        }),
+      )
+
+      await self.skipWaiting()
+    })(),
   )
-  self.skipWaiting()
 })
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((names) =>
-        Promise.all(
-          names
-            .filter((name) => name !== SHELL_CACHE && name !== RUNTIME_CACHE)
-            .map((name) => caches.delete(name)),
-        ),
+    (async () => {
+      const cacheNames = await caches.keys()
+
+      await Promise.all(
+        cacheNames
+          .filter((name) => {
+            const isOldClinexiaCache =
+              name.startsWith(CACHE_PREFIX) &&
+              name !== SHELL_CACHE &&
+              name !== RUNTIME_CACHE
+
+            const isLegacyAppCache =
+              LEGACY_APP_CACHES.includes(name)
+
+            return isOldClinexiaCache || isLegacyAppCache
+          })
+          .map((name) => caches.delete(name)),
       )
-      .then(() => self.clients.claim()),
+
+      await self.clients.claim()
+    })(),
   )
 })
-
-function isSameOrigin(url) {
-  return new URL(url).origin === self.location.origin
-}
-
 
 
 self.addEventListener("sync", (event) => {
@@ -382,52 +416,123 @@ async function syncAnalyticsFromServiceWorker() {
   }
 }
 
+
+
+function isSameOrigin(url) {
+  return new URL(url).origin === self.location.origin
+}
+
+function isCacheableResponse(response) {
+  return Boolean(
+    response &&
+      response.ok &&
+      response.type === "basic" &&
+      new URL(response.url).origin === self.location.origin,
+  )
+}
+
+async function cacheResponse(cacheName, request, response) {
+  if (!isCacheableResponse(response)) return
+
+  const cache = await caches.open(cacheName)
+  await cache.put(request, response.clone())
+}
+
+async function matchAppCache(request) {
+  const shellCache = await caches.open(SHELL_CACHE)
+  const runtimeCache = await caches.open(RUNTIME_CACHE)
+
+  return (
+    (await shellCache.match(request)) ||
+    (await runtimeCache.match(request))
+  )
+}
+
+async function handleNavigation(request) {
+  const cached = await matchAppCache(request)
+
+  if (cached) {
+    // Return cached HTML immediately; refresh it in the background.
+    void fetch(request)
+      .then(async (response) => {
+        if (isCacheableResponse(response)) {
+          await cacheResponse(SHELL_CACHE, request, response)
+        }
+      })
+      .catch(() => {})
+
+    return cached
+  }
+
+  try {
+    const response = await fetch(request)
+
+    if (isCacheableResponse(response)) {
+      await cacheResponse(RUNTIME_CACHE, request, response)
+    }
+
+    return response
+  } catch {
+    const home = await matchAppCache("/")
+
+    if (home) return home
+
+    return new Response(
+      `<!doctype html>
+      <html lang="en">
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>Clinexia offline</title>
+        </head>
+        <body>
+          <h1>You are offline</h1>
+          <p>This page is not available offline. Reconnect and try again.</p>
+          <a href="/">Return to Clinexia</a>
+        </body>
+      </html>`,
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+        },
+      },
+    )
+  }
+}
+
+async function handleAsset(request) {
+  const url = new URL(request.url)
+
+  // API responses should not be cached by this generic handler.
+  if (url.pathname.startsWith("/api/")) {
+    return fetch(request)
+  }
+
+  const cached = await matchAppCache(request)
+
+  if (cached) return cached
+
+  const response = await fetch(request)
+
+  // Cache successful same-origin responses only.
+  if (isCacheableResponse(response)) {
+    await cacheResponse(RUNTIME_CACHE, request, response)
+  }
+
+  return response
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event
-  if (request.method !== "GET" || !isSameOrigin(request.url)) return
 
-  // Navigations (direct URL entry, reload, opening a new tab): try the
-  // precached shell first so offline works instantly and reliably: only
-  // fall back to network if this exact route wasn't precached, and cache
-  // whatever we get for next time.
+  if (request.method !== "GET") return
+  if (!isSameOrigin(request.url)) return
+
   if (request.mode === "navigate") {
-    event.respondWith(
-      caches.match(request).then((cached) => {
-        if (cached) {
-          // Still refresh in the background when online, so content
-          // doesn't go stale forever.
-          fetch(request)
-            .then((response) => caches.open(SHELL_CACHE).then((cache) => cache.put(request, response)))
-            .catch(() => {})
-          return cached
-        }
-        return fetch(request)
-          .then((response) => {
-            const copy = response.clone()
-            caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy))
-            return response
-          })
-          .catch(() => caches.match("/"))
-      }),
-    )
+    event.respondWith(handleNavigation(request))
     return
   }
 
-  // Everything else (JS/CSS chunks, RSC data fetches for client-side
-  // navigation, icons, fonts): cache-first, populate the runtime cache on
-  // first fetch so subsequent offline loads work.
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached
-      return fetch(request)
-        .then((response) => {
-          if (response && response.ok) {
-            const copy = response.clone()
-            caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, copy))
-          }
-          return response
-        })
-        .catch(() => cached)
-    }),
-  )
+  event.respondWith(handleAsset(request))
 })
