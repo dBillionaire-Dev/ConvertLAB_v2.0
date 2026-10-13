@@ -1,4 +1,5 @@
 import type { CalculatorDefinition } from "./types"
+import { EVERYDAY_REFERENCES } from "./everyday-references"
 
 export interface CalculatorReference {
   source: string
@@ -332,6 +333,7 @@ const GENERIC_DOSING_IDS = new Set([
 ])
 
 export function getCalculatorReferences(definition: CalculatorDefinition): CalculatorReference[] {
+  if (EVERYDAY_REFERENCES[definition.id]) return [EVERYDAY_REFERENCES[definition.id]]
   if (CHEMISTRY_REFERENCES[definition.id]) return [CHEMISTRY_REFERENCES[definition.id]]
   if (MALARIA_IDS.has(definition.id)) return [WHO_MALARIA]
   if (INFANT_IDS.has(definition.id)) return [WHO_INFANTS]
