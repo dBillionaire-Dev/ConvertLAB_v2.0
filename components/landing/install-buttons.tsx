@@ -107,6 +107,15 @@ export function AndroidButton({ variant = "secondary", size = "lg", className }:
       </Button>
     )
   }
+  if (LANDING.palmStoreUrl) {
+    return (
+      <Button asChild variant={variant} size={size} className={className}>
+        <a href={LANDING.palmStoreUrl} target="_blank" rel="noopener noreferrer">
+          <Smartphone className="mr-2 h-4 w-4" aria-hidden />Get it on Palm Store<ExternalLink className="ml-2 h-3.5 w-3.5 opacity-70" aria-hidden />
+        </a>
+      </Button>
+    )
+  }
   if (LANDING.firebaseUrl) {
     return (
       <Button asChild variant={variant} size={size} className={className}>
@@ -154,6 +163,11 @@ export function AndroidChannels() {
         {LANDING.playStoreUrl ? (
           <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.playStoreUrl} target="_blank" rel="noopener noreferrer">Open the Play Store listing</a>
         ) : "Automatic updates once the listing is live."}
+      </Channel>
+      <Channel title="Palm Store (Tecno, Infinix, itel)" status={LANDING.palmStoreUrl ? "ready" : "soon"}>
+        {LANDING.palmStoreUrl ? (
+          <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.palmStoreUrl} target="_blank" rel="noopener noreferrer">Open the Palm Store listing</a>
+        ) : "For Tecno, Infinix and itel phones (Android 7.0 or newer)."}
       </Channel>
       <Channel title="Beta on Firebase App Distribution" status={LANDING.firebaseUrl ? "ready" : "soon"}>
         {LANDING.firebaseUrl ? (

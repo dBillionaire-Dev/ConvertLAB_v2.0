@@ -3,6 +3,7 @@
  * no code change needed. They are inlined at build time, so redeploy after changing them.
  *
  *   NEXT_PUBLIC_PLAY_STORE_URL     Google Play listing, e.g. https://play.google.com/store/apps/details?id=com.clinexia.app
+ *   NEXT_PUBLIC_PALM_STORE_URL     Palm Store listing (the store preinstalled on Tecno, Infinix and itel phones)
  *   NEXT_PUBLIC_FIREBASE_DIST_URL  Firebase App Distribution public invite link (tester beta)
  *   NEXT_PUBLIC_APK_URL            direct link to the signed APK (a GitHub Release asset works well)
  *   NEXT_PUBLIC_APK_SHA256         SHA-256 of that APK, shown so people can verify the download
@@ -15,6 +16,7 @@ const clean = (v: string | undefined) => (v ?? "").trim()
 
 export const LANDING = {
   playStoreUrl: clean(process.env.NEXT_PUBLIC_PLAY_STORE_URL),
+  palmStoreUrl: clean(process.env.NEXT_PUBLIC_PALM_STORE_URL),
   firebaseUrl: clean(process.env.NEXT_PUBLIC_FIREBASE_DIST_URL),
   apkUrl: clean(process.env.NEXT_PUBLIC_APK_URL),
   apkSha256: clean(process.env.NEXT_PUBLIC_APK_SHA256),
@@ -23,4 +25,4 @@ export const LANDING = {
   developerUrl: "https://nex.is-a.dev/",
 }
 
-export const androidAvailable = Boolean(LANDING.playStoreUrl || LANDING.firebaseUrl || LANDING.apkUrl)
+export const androidAvailable = Boolean(LANDING.playStoreUrl || LANDING.palmStoreUrl || LANDING.firebaseUrl || LANDING.apkUrl)

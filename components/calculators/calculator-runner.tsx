@@ -5,6 +5,8 @@ import Link from "next/link"
 import { Calculator, Copy, Save, Share2, Star, AlertTriangle, FileDown, RotateCcw } from "lucide-react"
 import type { CalculatorDefinition, CalculationResult } from "@/lib/calculators/types"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
+import { ClinicalUseNotice } from "@/components/clinical-use-notice"
+import { SHARE_FOOTER, isHighRiskCategory } from "@/lib/legal"
 import { getCalculatorById, getRecommendedCalculators } from "@/lib/calculators/registry"
 import { CalculatorField } from "./calculator-field"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -175,6 +177,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
       ...resolvedInputs.map((input) => `${input.label}: ${input.display}`),
     ]
     if (definition.formula) lines.push("", `Formula: ${definition.formula}`)
+    lines.push("", SHARE_FOOTER)
     return lines.join("\n")
   }
 
@@ -249,6 +252,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
           </div>
         </CardHeader>
         <CardContent className="space-y-5">
+          <ClinicalUseNotice category={definition.category} />
           <form
             className="space-y-5"
             onSubmit={(event) => {
@@ -480,8 +484,8 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
               </div>
             ) : null}
             <p className="text-xs text-muted-foreground">{CALCULATION_DISCLAIMER}</p>
-            {definition.category === "dosing" ? (
-              <p className="text-xs text-amber-700 dark:text-amber-300">Drug-dose results are calculation aids, not prescriptions. Verify the indication, patient population, route, formulation, maximum dose, current guideline and local protocol before administration.</p>
+            {isHighRiskCategory(definition.category) ? (
+              <p className="text-xs text-amber-700 dark:text-amber-300">Results are calculation aids, not prescriptions or treatment orders. Verify the indication, patient population, route, formulation, maximum dose, current guideline and local protocol before acting on them.</p>
             ) : null}
           </CardContent>
         </Card>

@@ -18,6 +18,8 @@ export function Footer() {
             </Link>
             <span aria-hidden>·</span>
             <Link href="/privacy" className="hover:text-blue-300 transition-colors font-medium">Privacy</Link>
+            <span aria-hidden>·</span>
+            <Link href="/terms" className="hover:text-blue-300 transition-colors font-medium">Terms</Link>
           </div>
         </div>
       </div>
