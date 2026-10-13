@@ -1,4 +1,4 @@
-export type InputKind = "number" | "select"
+export type InputKind = "number" | "select" | "date"
 
 export interface SelectOption {
   value: string

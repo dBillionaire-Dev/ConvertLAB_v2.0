@@ -1,5 +1,14 @@
 import type { CalculatorDefinition, CalculatorGroup } from "./types"
 import { withDoseVolume } from "./dose-volume"
+import {
+  dailyWaterIntakeCalculator,
+  estimatedDueDateCalculator,
+  gestationalAgeCalculator,
+  leanBodyMassCalculator,
+  targetHeartRateCalculator,
+  packYearsCalculator,
+  alcoholUnitsCalculator,
+} from "./definitions/everyday"
 import { CALCULATOR_CATEGORY_LABELS } from "./types"
 import {
   bmiCalculator,
@@ -152,6 +161,13 @@ const baseCalculators: CalculatorDefinition[] = [
   estimatedCalorieRequirementCalculator,
   waistToHeightRatioCalculator,
   waistToHipRatioCalculator,
+  dailyWaterIntakeCalculator,
+  estimatedDueDateCalculator,
+  gestationalAgeCalculator,
+  leanBodyMassCalculator,
+  targetHeartRateCalculator,
+  packYearsCalculator,
+  alcoholUnitsCalculator,
   creatinineClearanceCalculator,
   egfrCalculator,
   bunCreatinineRatioCalculator,

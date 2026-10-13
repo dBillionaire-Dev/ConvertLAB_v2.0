@@ -47,6 +47,29 @@ export function CalculatorField({ input, value, onChange, onEnter }: CalculatorF
     )
   }
 
+  if (input.kind === "date") {
+    return (
+      <div className="space-y-1.5">
+        <Label htmlFor={input.id}>
+          {input.label}
+          {input.optional ? <span className="text-muted-foreground font-normal"> (optional)</span> : null}
+        </Label>
+        <Input
+          id={input.id}
+          type="date"
+          value={value}
+          aria-required={!input.optional}
+          aria-describedby={input.helpText ? `${input.id}-help` : undefined}
+          onChange={(e) => onChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") onEnter?.()
+          }}
+        />
+        {input.helpText ? <p id={`${input.id}-help`} className="text-xs text-muted-foreground">{input.helpText}</p> : null}
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-1.5">
       <Label htmlFor={input.id}>
