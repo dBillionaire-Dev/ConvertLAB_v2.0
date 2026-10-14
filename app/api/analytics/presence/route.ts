@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
+import { isLikelyBot } from "@/lib/analytics/bots"
 
 const presenceSchema = z.object({
   anonymousId: z.string().min(1).max(100),
@@ -22,6 +23,9 @@ function displayNameFor(anonymousId: string) {
 }
 
 export async function POST(request: Request) {
+  // Crawlers and scanners load pages with empty storage, so each visit would look like a new user. Acknowledge and ignore.
+  if (isLikelyBot(request.headers.get("user-agent"))) return NextResponse.json({ ignored: true })
+
   try {
     const body = presenceSchema.parse(await request.json())
     const { url, key } = config()

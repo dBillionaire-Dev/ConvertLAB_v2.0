@@ -5,6 +5,7 @@ import type { CalculationEvent } from "./types"
 
 const BATCH_SIZE = 100
 const RETRY_DELAYS_MS = [15_000, 60_000, 5 * 60_000]
+const REQUEST_TIMEOUT_MS = 20_000
 
 let syncInFlight: Promise<void> | null = null
 let rerunRequested = false
@@ -71,8 +72,14 @@ async function flushOutbox(): Promise<void> {
 }
 
 async function sendBatch(batch: CalculationEvent[]): Promise<BatchOutcome> {
+  // A stalled connection must not hold the whole queue hostage: every request has a deadline.
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+  let response: Response
+  let body: { accepted?: string[]; rejected?: string[] } = {}
+
   try {
-    const response = await fetch("/api/analytics", {
+    response = await fetch("/api/analytics", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -83,10 +90,17 @@ async function sendBatch(batch: CalculationEvent[]): Promise<BatchOutcome> {
         })),
       }),
       keepalive: batch.length <= 20,
+      signal: controller.signal,
     })
+    if (response.ok) body = (await response.json().catch(() => ({}))) as typeof body
+  } catch {
+    return "retry"
+  } finally {
+    clearTimeout(timer)
+  }
 
+  try {
     if (response.ok) {
-      const body = (await response.json().catch(() => ({}))) as { accepted?: string[]; rejected?: string[] }
       const finished = [...(body.accepted ?? []), ...(body.rejected ?? [])]
       await removeCalculationEvents(finished)
       // Anything the server neither stored nor rejected stays queued for the next pass.
