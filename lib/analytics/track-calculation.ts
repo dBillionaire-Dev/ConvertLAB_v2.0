@@ -3,7 +3,7 @@
 import { getAnonymousId } from "./client-id"
 import { queueCalculationEvent } from "./outbox"
 import { syncAnalytics } from "./sync"
-import { isStandaloneDisplayMode } from "@/lib/platform"
+import { getPlatform } from "@/lib/platform"
 
 const APP_VERSION = "2.0.0"
 const APP_ENVIRONMENT = process.env.NEXT_PUBLIC_APP_ENV ?? "production"
@@ -35,7 +35,7 @@ export async function trackCalculation({
         occurredAt: occurredAt ?? new Date().toISOString(),
         appVersion: APP_VERSION,
         wasOffline: typeof navigator !== "undefined" ? navigator.onLine === false : false,
-        source: isStandaloneDisplayMode() ? "pwa" : "web",
+        source: getPlatform(),
         environment: APP_ENVIRONMENT,
       },
       eventId,

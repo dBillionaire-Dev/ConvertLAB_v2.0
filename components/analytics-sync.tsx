@@ -6,6 +6,7 @@ import { isLandingSite } from "@/lib/site"
 import { syncAnalytics } from "@/lib/analytics/sync"
 import { backfillExistingHistory } from "@/lib/analytics/backfill"
 import { sendPresenceHeartbeat } from "@/lib/analytics/presence"
+import { reportInstall } from "@/lib/analytics/install"
 import { hasInteracted, looksAutomated, onFirstInteraction } from "@/lib/analytics/human"
 
 const PERIODIC_SYNC_MS = 5 * 60 * 1000
@@ -56,11 +57,16 @@ export function AnalyticsSync() {
       beat()
     }
 
+    // Counts app installs (not fired by Safari/iOS, so this is a lower bound).
+    const handleInstalled = () => void reportInstall()
+
+    window.addEventListener("appinstalled", handleInstalled)
     window.addEventListener("online", handleOnline)
     window.addEventListener("pageshow", handleVisible)
     document.addEventListener("visibilitychange", handleVisible)
     return () => {
       stopWatching()
+      window.removeEventListener("appinstalled", handleInstalled)
       window.removeEventListener("online", handleOnline)
       window.removeEventListener("pageshow", handleVisible)
       document.removeEventListener("visibilitychange", handleVisible)

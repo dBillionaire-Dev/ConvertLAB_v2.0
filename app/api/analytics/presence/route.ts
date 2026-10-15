@@ -4,7 +4,7 @@ import { isLikelyBot } from "@/lib/analytics/bots"
 
 const presenceSchema = z.object({
   anonymousId: z.string().min(1).max(100),
-  source: z.enum(["web", "pwa", "android"]).default("web"),
+  source: z.enum(["web", "pwa", "android", "windows"]).default("web"),
   environment: z.string().min(1).max(40).default("production"),
   appVersion: z.string().min(1).max(40).default("unknown"),
 })
@@ -52,6 +52,19 @@ export async function POST(request: Request) {
     if (!response.ok) {
       console.error("Clinexia presence update failed:", await response.text())
       return NextResponse.json({ error: "Unable to record presence." }, { status: 502 })
+    }
+
+    // Traction metrics: one row per visitor per day (best-effort, never blocks presence).
+    if (body.environment === "production") {
+      try {
+        await fetch(`${url}/rest/v1/rpc/traction_touch_visitor_day`, {
+          method: "POST",
+          headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ p_anonymous_id: body.anonymousId, p_platform: body.source, p_app_version: body.appVersion }),
+        })
+      } catch (error) {
+        console.error("Clinexia visitor-day update failed:", error)
+      }
     }
 
     return NextResponse.json({ displayName })
