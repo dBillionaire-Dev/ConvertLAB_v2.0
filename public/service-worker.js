@@ -38,6 +38,7 @@ const STATIC_ROUTES = [
   "/lab-tools/spectrophotometry",
   "/reference",
   "/settings",
+  "/diagnostics",
 ]
 
 const CALCULATOR_CATEGORIES = [

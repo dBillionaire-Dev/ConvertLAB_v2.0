@@ -280,3 +280,14 @@ On Chrome and Edge for Windows an installed app window and a normal tab share th
 
 ### Tests
 `lib/update/policy.test.ts` covers the refresh rules, the no-reload-loop guard, the report (including that the full anonymous id is never printed) and keeps the diagnostics page's history re-send flag in step with `lib/analytics/backfill.ts`.
+
+<!-- clinexia-landing-apk -->
+## Diagnostics shortcut and the landing-page APK
+
+### Shortcut to the diagnostics page
+Press **Win + Shift + D** (Cmd + Shift + D on a Mac) anywhere in the app to open `/diagnostics`. It works in the browser, the installed app and the Windows app, because they all run the same web code (`components/diagnostics-shortcut.tsx`). **Ctrl + Alt + Shift + D** does the same and is there for machines where Windows, a keyboard utility or the desktop environment keeps the Windows key for itself. Plain Win+D, Ctrl+Shift+D and typing a capital D are never captured. Phones have no keyboard, so there is no shortcut there. `/diagnostics` is also in the offline cache, so it opens without a connection.
+
+### The landing page follows the latest Android release
+`app/welcome/page.tsx` reads `version.json` from the mobile repo's `main` branch on the server (`lib/latest-apk.ts`) and links the newest release asset, with its version number. The page refreshes in the background at most every 10 minutes, so a release shows up on the landing page by itself, with nothing to change in Vercel. Only a `.apk` release asset of the repo named in `APK_REPO` (default `dBillionaire-Dev/Clinexia_V3.0-Mobile`) is accepted, and visitors' browsers never contact GitHub.
+
+If GitHub cannot be reached, the page falls back to `NEXT_PUBLIC_APK_URL`. Set that to the stable address `https://github.com/<owner>/<repo>/releases/latest/download/Clinexia.apk` (the mobile release now uploads a version-less `Clinexia.apk` with every release) and it never goes out of date either. `NEXT_PUBLIC_APK_VERSION` is no longer needed; remove it, or the label could briefly show an old number when the fallback is used. If the mobile repo is private, the server cannot read `version.json`, and the fallback link will not work for visitors either.

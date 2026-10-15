@@ -3,6 +3,7 @@ import { ArrowRight, ArrowLeftRight, BookOpenText, Calculator, Gauge, Globe, Mon
 import { calculatorCategories, calculators } from "@/lib/calculators/registry"
 import { conversionCategories } from "@/lib/conversions/registry"
 import { LANDING, androidAvailable } from "@/lib/landing-config"
+import { getLatestApk } from "@/lib/latest-apk"
 import { LANDING_URL, splitEnabled } from "@/lib/site"
 import { AppLink } from "@/components/landing/app-link"
 import { shotById } from "@/lib/landing-data"
@@ -37,9 +38,12 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: `Clinexia | ${TITLE}`, description: DESCRIPTION, images: [OG_IMAGE] },
 }
 
-const androidReady = androidAvailable
+// Rebuilt in the background at most every 10 minutes, so the Android download follows new releases by itself.
+export const revalidate = 600
 
-export default function WelcomePage() {
+export default async function WelcomePage() {
+  const latestApk = await getLatestApk()
+  const androidReady = androidAvailable || Boolean(latestApk)
   const total = calculators.length
   const estimators = calculators.filter((c) => c.isEstimator).length
   const categories = calculatorCategories.length
@@ -93,7 +97,7 @@ export default function WelcomePage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button asChild size="lg"><AppLink path="/">Open the web app<ArrowRight className="ml-2 h-4 w-4" aria-hidden /></AppLink></Button>
-              <AndroidButton variant="secondary" />
+              <AndroidButton variant="secondary" latest={latestApk} />
               <InstallPwaButton variant="outline" />
             </div>
             <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
@@ -164,7 +168,7 @@ export default function WelcomePage() {
               <Smartphone className="h-7 w-7 text-primary" aria-hidden />
               <h3 className="mt-3 text-lg font-semibold">Android app</h3>
               <p className="mt-1 text-sm text-muted-foreground">{androidReady ? "The native app for Android phones and tablets. Fully offline." : "The native Android app is being prepared. Install the web app in the meantime. It is the same toolkit."}</p>
-              <AndroidChannels />
+              <AndroidChannels latest={latestApk} />
             </div>
             <div className="flex flex-col rounded-xl border bg-card p-6">
               <Monitor className="h-7 w-7 text-primary" aria-hidden />
@@ -223,7 +227,7 @@ export default function WelcomePage() {
           <p className="mt-3 text-muted-foreground">Open it now. No sign-up, no setup.</p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg"><AppLink path="/">Open the web app<ArrowRight className="ml-2 h-4 w-4" aria-hidden /></AppLink></Button>
-            <AndroidButton variant="secondary" />
+            <AndroidButton variant="secondary" latest={latestApk} />
           </div>
         </div>
       </section>
