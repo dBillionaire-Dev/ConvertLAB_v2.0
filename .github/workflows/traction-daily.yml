@@ -1,0 +1,39 @@
+name: Traction daily sync
+
+on:
+  schedule:
+    - cron: "20 3 * * *"   # 03:20 UTC every day
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: "Also backfill Search Console history (~16 months)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: traction-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      APK_REPO: ${{ vars.APK_GITHUB_REPO || 'dBillionaire-Dev/Clinexia_V3.0-Mobile' }}
+      APK_GITHUB_TOKEN: ${{ secrets.APK_GITHUB_TOKEN }}
+      GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+      GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: GitHub APK download snapshot
+        run: node scripts/traction/sync-github.mjs
+      - name: Search Console sync
+        if: env.GSC_SERVICE_ACCOUNT_JSON != ''
+        run: node scripts/traction/sync-search-console.mjs ${{ inputs.backfill && '--backfill' || '' }}
+      - name: Rebuild rollups
+        run: node scripts/traction/rebuild-rollups.mjs --since-days 45
