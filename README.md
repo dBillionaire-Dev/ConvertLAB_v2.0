@@ -184,3 +184,67 @@ The web manifest (`app/manifest.ts`) is written to pass [PWABuilder](https://www
 ### Drug doses: mg per dose and mL per dose
 
 Single-drug dosing calculators show the dose in mg for one administration. Enter the product strength from its label (for example 125 mg in 5 mL) and they also show the volume per dose in mL. With no strength entered, no volume is shown, and nothing is assumed. Tablet-band regimens, fixed-dose combinations, fluids, infusion rates and multi-drug protocols are deliberately excluded. The logic is in `lib/calculators/dose-volume.ts`.
+
+<!-- clinexia-traction -->
+## Traction metrics (admin)
+
+Verifiable, privacy-first usage metrics for due diligence. Read-only dashboard at **`/admin/traction`** (same password login as `/admin`), a printable **Buyer report** at `/admin/traction/report`, and manual **Revenue** entry at `/admin/traction/revenue`.
+
+### What is stored (and what is not)
+Only: event type, tool id/name, platform (`web | pwa | android | windows`), app version, an anonymous random visitor id and a timestamp. Never patient data, calculator inputs or results, IP addresses or anything personally identifying. Search Console and GitHub data are aggregate counts from those services.
+
+**Privacy page.** Before shipping, add one sentence to `app/privacy/page.tsx` where anonymous statistics are described, for example: *"We also record, per day, whether an installation was active (and roughly how many sessions), and when the app was installed, using the same anonymous random ID. We do not use this to identify anyone."* The tool-usage events and anonymous ID are already described there.
+
+### Setup
+1. **Database:** run `supabase/traction.sql` once in the Supabase SQL editor (safe to re-run). It creates the new tables, the activity view and two helper functions, with row-level security on and no public access.
+2. **Env vars** (server only; the first two already exist for analytics):
+
+| Variable | Purpose |
+|---|---|
+| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | database access |
+| `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` | admin login (existing) |
+| `APK_REPO` | `owner/repo` of the mobile repo, default `dBillionaire-Dev/Clinexia_V3.0-Mobile` |
+| `APK_GITHUB_TOKEN` | optional; only needed if that repo is private (read-only access to releases) |
+| `GSC_SITE_URL` | Search Console property: `sc-domain:example.com` (Domain property) or `https://example.com/` (URL-prefix; the trailing slash matters) |
+| `GSC_SERVICE_ACCOUNT_JSON` | the service-account key file contents (or `GSC_CLIENT_EMAIL` + `GSC_PRIVATE_KEY`) |
+
+3. **Daily job:** `.github/workflows/traction-daily.yml` runs every day at 03:20 UTC (GitHub Actions, free). Add the variables above as repository **secrets** (and `APK_GITHUB_REPO` as a repository *variable* if you need to override the repo). It takes the GitHub snapshot, syncs Search Console, then rebuilds rollups. Run it by hand from the Actions tab; tick *backfill* to pull Search Console history.
+
+### Giving the API access to Search Console
+1. Google Cloud Console → create/select a project → **APIs & Services → Library** → enable **Google Search Console API**.
+2. **IAM & Admin → Service Accounts → Create**, then **Keys → Add key → JSON** and download the file. Note the service account's email (`…@….iam.gserviceaccount.com`).
+3. [Search Console](https://search.google.com/search-console) → pick your property → **Settings → Users and permissions → Add user** → paste the service-account email → permission **Restricted** (read-only) is enough.
+4. Put the whole JSON file's contents in `GSC_SERVICE_ACCOUNT_JSON` and set `GSC_SITE_URL` to the property exactly as listed in Search Console.
+
+### Backfill and manual runs
+Locally, with the vars in `.env.local` (Node 22+):
+
+```bash
+pnpm traction:rebuild          # rebuild daily_rollups / tool_usage_daily / pwa_installs_daily from EVERY stored event (idempotent)
+pnpm traction:github           # store today's APK download snapshot (+ baseline for first-seen releases)
+pnpm traction:gsc-backfill     # ~16 months of Search Console history (the API maximum)
+pnpm traction:gsc              # last 10 days (recent days get revised, so they are overwritten)
+```
+All jobs upsert by primary key, so they are safe to re-run. Order for a first run: `traction:rebuild`, `traction:github`, `traction:gsc-backfill`.
+
+### How the numbers are defined
+- **Active user:** a distinct anonymous id with ≥1 production calculation *or* ≥1 heartbeat that day. Before heartbeats were stored, only users who ran a calculation can be counted, and devices that never returned after analytics shipped are invisible. The Data coverage panel states this.
+- **New / returning:** first-ever active day in stored data / active on a later day. **Returning %** = share of users active in the last 30 days who were seen on 2+ different days. **D1/D7/D30** = share of a first-day cohort active exactly N days later (only cohorts old enough are counted).
+- **Sessions:** a heartbeat that is the first of the day or >30 min after the previous one. Recorded only from the day this feature is deployed; earlier days show “–”, not zero.
+- **APK downloads:** GitHub exposes cumulative counts only. The first time a release asset is seen, its current total is stored as a *baseline* dated to the release's published date (the exact day-by-day split is unknown); later daily snapshots give real daily deltas. Only GitHub downloads are counted. A decreasing counter (asset deleted and re-uploaded) is treated as a reset.
+- **PWA installs:** the browser `appinstalled` event, one per anonymous id. Safari/iOS never fires it, so this undercounts.
+- **Windows:** standalone display mode on a Windows user agent. An installed Chrome/Edge PWA and the Microsoft Store package cannot be told apart, so treat it as best-effort.
+- Days use the **Africa/Lagos** calendar. Search Console reports in Pacific time and lags about 2 days.
+
+### Verifying the numbers against the raw sources
+- **Usage:** in Supabase, `select count(*) from calculation_events where environment='production';` should equal the sum of `daily_rollups.tool_uses` where `platform='all'`. `select count(distinct anonymous_id) from traction_activity_days where day between current_date - 29 and current_date;` matches the MAU card (use the Lagos date).
+- **APK:** compare the latest `apk_downloads_snapshots.download_count` per asset with `https://api.github.com/repos/<owner>/<repo>/releases` (`download_count` on each asset).
+- **Search Console:** export the same date range from the Search Console UI (Performance → Export) and compare clicks/impressions; query-level totals are lower because Google omits anonymized queries.
+- **Installs:** `select count(*) from pwa_install_events;`.
+- Every dashboard table has an **Export CSV** link for independent checking.
+
+### Tests
+`pnpm test` includes `lib/traction/*.test.ts`: rollup, retention, window, GitHub snapshot/delta, Search Console mapping/JWT and CSV tests.
+
+### Security notes
+The login now uses a constant-time password check and a best-effort in-memory throttle (serverless instances do not share memory, so use a long `ADMIN_PASSWORD`). The users table in `/admin` can rename pseudonymous users; avoid entering real names there, and do not show that table to buyers.
