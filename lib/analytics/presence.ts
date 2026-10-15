@@ -1,7 +1,7 @@
 "use client"
 
 import { getAnonymousId } from "./client-id"
-import { isStandaloneDisplayMode } from "@/lib/platform"
+import { getPlatform } from "@/lib/platform"
 
 const APP_VERSION = "2.0.0"
 const APP_ENVIRONMENT = process.env.NEXT_PUBLIC_APP_ENV ?? "production"
@@ -15,7 +15,7 @@ export async function sendPresenceHeartbeat(): Promise<void> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         anonymousId: getAnonymousId(),
-        source: isStandaloneDisplayMode() ? "pwa" : "web",
+        source: getPlatform(),
         environment: APP_ENVIRONMENT,
         appVersion: APP_VERSION,
       }),

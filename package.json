@@ -12,7 +12,11 @@
     "typecheck": "tsc --noEmit",
     "verify": "pnpm typecheck && pnpm test && pnpm build",
     "audit": "pnpm typecheck && pnpm test",
-    "release:audit": "node scripts/release-audit.mjs"
+    "release:audit": "node scripts/release-audit.mjs",
+    "traction:rebuild": "node --env-file=.env.local scripts/traction/rebuild-rollups.mjs",
+    "traction:github": "node --env-file=.env.local scripts/traction/sync-github.mjs",
+    "traction:gsc": "node --env-file=.env.local scripts/traction/sync-search-console.mjs",
+    "traction:gsc-backfill": "node --env-file=.env.local scripts/traction/sync-search-console.mjs --backfill"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

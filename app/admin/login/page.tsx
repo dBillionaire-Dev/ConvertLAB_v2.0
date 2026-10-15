@@ -1,7 +1,9 @@
 import { Activity } from "lucide-react"
 import Link from "next/link"
+import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { setAdminCookie } from "@/lib/admin-auth"
+import { clearLoginFailures, isLoginBlocked, passwordsMatch, recordLoginFailure } from "@/lib/admin-login-guard"
 
 async function login(formData: FormData) {
   "use server"
@@ -9,10 +11,16 @@ async function login(formData: FormData) {
   const password = String(formData.get("password") ?? "")
   const expected = process.env.ADMIN_PASSWORD
 
-  if (!expected || password !== expected) {
+  const forwarded = (await headers()).get("x-forwarded-for") ?? "unknown"
+  const clientKey = forwarded.split(",")[0].trim()
+  if (isLoginBlocked(clientKey)) redirect("/admin/login?error=1")
+
+  if (!expected || !passwordsMatch(password, expected)) {
+    recordLoginFailure(clientKey)
     redirect("/admin/login?error=1")
   }
 
+  clearLoginFailures(clientKey)
   await setAdminCookie()
   redirect("/admin")
 }

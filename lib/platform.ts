@@ -27,6 +27,17 @@ export function isSafari(): boolean {
   return /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(ua)
 }
 
+/**
+ * Where the app is running, for anonymous usage statistics.
+ * "android" is set by the Capacitor app itself (it reports its own source); this covers the web build.
+ * "windows" = installed/standalone window on a Windows user agent (installed PWA or Microsoft Store package);
+ * the two cannot be told apart reliably, so treat it as best-effort.
+ */
+export function getPlatform(): "web" | "pwa" | "windows" {
+  if (!isStandaloneDisplayMode()) return "web"
+  return typeof navigator !== "undefined" && /Windows/i.test(navigator.userAgent) ? "windows" : "pwa"
+}
+
 /** Neither iOS nor macOS Safari support the beforeinstallprompt flow  -  they need manual instructions. */
 export function needsManualInstallInstructions(): boolean {
   return isIOS() || (isMac() && isSafari())

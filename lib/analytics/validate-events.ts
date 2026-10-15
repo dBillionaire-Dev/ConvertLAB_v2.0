@@ -19,7 +19,7 @@ export interface ValidEvent {
   occurredAt: string
   appVersion: string
   wasOffline: boolean
-  source: "web" | "pwa" | "android"
+  source: "web" | "pwa" | "android" | "windows"
   environment: string
 }
 
@@ -32,7 +32,7 @@ export interface ParsedEvents {
 export const MAX_EVENTS_PER_REQUEST = 500
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-const SOURCES = new Set(["web", "pwa", "android"])
+const SOURCES = new Set(["web", "pwa", "android", "windows"])
 /** Device clocks drift. Anything further ahead than this is treated as "now". */
 const FUTURE_TOLERANCE_MS = 5 * 60 * 1000
 

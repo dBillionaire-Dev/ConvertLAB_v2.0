@@ -4,7 +4,7 @@ import { getAllHistory } from "@/lib/history/db"
 import { getAnonymousId } from "./client-id"
 import { queueCalculationEvents } from "./outbox"
 import { syncAnalytics } from "./sync"
-import { isStandaloneDisplayMode } from "@/lib/platform"
+import { getPlatform } from "@/lib/platform"
 import type { CalculationEvent } from "./types"
 
 // v3: the original v2 backfill ran once, but the main calculator screen never reported
@@ -45,7 +45,7 @@ export async function backfillExistingHistory(): Promise<number> {
   }
 
   const anonymousId = getAnonymousId()
-  const source = isStandaloneDisplayMode() ? "pwa" : "web"
+  const source = getPlatform()
 
   const events: CalculationEvent[] = history.map((item) => ({
     id: item.id,
