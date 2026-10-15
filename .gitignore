@@ -31,3 +31,6 @@ next-env.d.ts
 
 # Clinexia analytics fix backups
 .clinexia-fix-backup/
+
+# backups made by clinexia-apply.sh
+.clinexia-backup/

@@ -33,3 +33,17 @@ describe("parseLatestApk", () => {
     expect(parseLatestApk("x", repo)).toBeNull()
   })
 })
+
+import { readFileSync } from "node:fs"
+
+describe("landing wiring", () => {
+  it("the welcome layout provides the latest release and the Android buttons read it", () => {
+    expect(readFileSync("app/welcome/layout.tsx", "utf8")).toContain("LatestApkProvider")
+    expect(readFileSync("components/landing/install-buttons.tsx", "utf8")).toContain("useLatestApk()")
+  })
+  it("the welcome page itself no longer passes a `latest` prop (the earlier approach)", () => {
+    const page = readFileSync("app/welcome/page.tsx", "utf8")
+    expect(page).not.toContain("latest={")
+    expect(page).not.toContain("getLatestApk")
+  })
+})

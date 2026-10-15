@@ -1,4 +1,5 @@
 "use client"
+import { useLatestApk } from "@/components/landing/latest-apk"
 
 import Link from "next/link"
 import { useCallback, useEffect, useState } from "react"
@@ -98,6 +99,8 @@ export function InstallPwaButton({ variant = "outline", size = "lg", className }
 
 /** The first Android channel that is configured: Google Play, then the Palm Store, then a direct APK. Otherwise an honest "coming soon". */
 export function AndroidButton({ variant = "secondary", size = "lg", className }: { variant?: "default" | "outline" | "secondary"; size?: "default" | "sm" | "lg"; className?: string }) {
+  const latestApk = useLatestApk()
+  const apkUrl = latestApk?.url || LANDING.apkUrl
   if (LANDING.playStoreUrl) {
     return (
       <Button asChild variant={variant} size={size} className={className}>
@@ -116,10 +119,10 @@ export function AndroidButton({ variant = "secondary", size = "lg", className }:
       </Button>
     )
   }
-  if (LANDING.apkUrl) {
+  if (apkUrl) {
     return (
       <Button asChild variant={variant} size={size} className={className}>
-        <a href={LANDING.apkUrl} rel="noopener noreferrer" download>
+        <a href={apkUrl} rel="noopener noreferrer" download>
           <Download className="mr-2 h-4 w-4" aria-hidden />Download for Android (APK)
         </a>
       </Button>
@@ -148,6 +151,9 @@ function Channel({ title, status, children }: { title: string; status: "ready" |
 
 /** All the ways to get the Android app, each honest about whether it exists yet. */
 export function AndroidChannels() {
+  const latestApk = useLatestApk()
+  const apkUrl = latestApk?.url || LANDING.apkUrl
+  const apkVersion = latestApk?.version || LANDING.apkVersion
   return (
     <ul className="mt-4 space-y-2">
       {/*<Channel title="Google Play" status={LANDING.playStoreUrl ? "ready" : "soon"}>
@@ -160,10 +166,10 @@ export function AndroidChannels() {
           <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.palmStoreUrl} target="_blank" rel="noopener noreferrer">Open the Palm Store listing</a>
         ) : "For Tecno, Infinix and itel phones (Android 7.0 or newer)."}
       </Channel>*/}
-      <Channel title={`Direct download (APK)`} status={LANDING.apkUrl ? "ready" : "soon"}>
-        {LANDING.apkUrl ? (
+      <Channel title={`Direct download (APK)`} status={apkUrl ? "ready" : "soon"}>
+        {apkUrl ? (
           <>
-            <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.apkUrl} rel="noopener noreferrer" download>Download the APK</a>
+            <a className="font-medium text-primary underline-offset-4 hover:underline" href={apkUrl} rel="noopener noreferrer" download>Download the APK</a>
             <details className="mt-2">
               <summary className="cursor-pointer font-medium text-foreground">How to install it</summary>
               <ol className="mt-1 list-decimal space-y-1 pl-4">
