@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { redirect } from "next/navigation"
 import { clearAdminCookie, isAdminAuthenticated } from "@/lib/admin-auth"
 import type { AnalyticsSnapshot } from "@/lib/analytics/types"
@@ -148,6 +149,12 @@ export default async function AdminPage() {
             </button>
           </form>
         </div>
+
+        <nav className="mb-6 flex flex-wrap gap-2 text-sm">
+          <Link href="/admin/traction" className="rounded-md border bg-background px-3 py-2 font-medium hover:bg-muted">Traction metrics</Link>
+          <Link href="/admin/traction/report" className="rounded-md border bg-background px-3 py-2 font-medium hover:bg-muted">Buyer report</Link>
+          <Link href="/admin/traction/revenue" className="rounded-md border bg-background px-3 py-2 font-medium hover:bg-muted">Revenue</Link>
+        </nav>
 
         {error ? (
           <div role="alert" className="mb-6 rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
