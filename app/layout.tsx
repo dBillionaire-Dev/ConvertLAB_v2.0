@@ -15,6 +15,7 @@ import { SkipToContent } from "@/components/skip-to-content"
 import { ApplyPreferences } from "@/components/apply-preferences"
 import { AnalyticsSync } from "@/components/analytics-sync"
 import { UpdateWatcher } from "@/components/update-watcher"
+import { DiagnosticsShortcut } from "@/components/diagnostics-shortcut"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -111,6 +112,7 @@ export default function RootLayout({
           <ApplyPreferences />
           <AnalyticsSync />
           <UpdateWatcher />
+          <DiagnosticsShortcut />
           <Toaster />
         </ThemeProvider>
       </body>
