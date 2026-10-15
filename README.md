@@ -248,3 +248,35 @@ All jobs upsert by primary key, so they are safe to re-run. Order for a first ru
 
 ### Security notes
 The login now uses a constant-time password check and a best-effort in-memory throttle (serverless instances do not share memory, so use a long `ADMIN_PASSWORD`). The users table in `/admin` can rename pseudonymous users; avoid entering real names there, and do not show that table to buyers.
+
+<!-- clinexia-diagnostics -->
+## Keeping open windows current, and the diagnostics page
+
+### The problem this solves
+The app is an installed, offline-first web app. After a deploy, a window that stays open (an office PC, an installed PWA) keeps running the old version, because the service worker serves cached pages first and nothing told the open page that a newer one exists.
+
+### How it updates now
+`components/update-watcher.tsx` (mounted in `app/layout.tsx`) compares this copy's build id with the live one from `GET /api/version`:
+
+| Situation | What happens |
+|---|---|
+| App just opened (first 20 s) and nothing touched yet | refreshes itself immediately |
+| Window in use | a small banner: **A new version of Clinexia is ready. [Refresh now] [Later]** |
+| Window hidden or minimised for 2+ minutes | refreshes itself |
+| Window untouched for 15+ minutes | refreshes itself |
+| Quick alt-tab | never refreshes |
+| Offline, or the live version cannot be reached | does nothing |
+
+It checks 2 seconds after opening, every 15 minutes, when the window is brought back to the front, and when the connection returns. Before reloading it replaces the cached copy of the current page with a fresh one (otherwise the service worker would show the old page again), and after the update it re-fetches the offline cache in the background, once per build. It will not reload twice in a row for the same build, so a failure can never become a reload loop. The service worker file itself is unchanged.
+
+**Build id.** `next.config.mjs` sets `NEXT_PUBLIC_BUILD_ID` from `VERCEL_DEPLOYMENT_ID` (or `VERCEL_GIT_COMMIT_SHA`). On Vercel keep *Settings → Environment Variables → Automatically expose System Environment Variables* on. On other hosts set `NEXT_PUBLIC_BUILD_ID` to something that changes on every deploy. If it is empty, automatic updating is simply off (the diagnostics page says so). If you use Vercel *Skew Protection*, check that `/api/version` from an old page returns the newest deployment's id; if it does not, turn skew protection off for this project or the old windows will not notice.
+
+The first deploy that contains this feature cannot reach windows that are already open on an older version; those pick it up the next time they are reloaded or reopened. Every deploy after that reaches them by itself.
+
+### Diagnostics page
+`/diagnostics` (on the app address) is hidden: not linked, not in the sitemap, `noindex`. It shows the app version and build, whether a newer version is live, how many usage events are waiting to send (and the oldest), whether the history re-send has run on this device, the service worker and offline cache state, and a masked anonymous id. **Check again**, **Send waiting events now**, **Copy report** and **Update now** are on the page. It reads only this device and shows no calculator inputs, results or history (only a count of history items). A screenshot of it is enough for support.
+
+On Chrome and Edge for Windows an installed app window and a normal tab share the same stored data, so opening `/diagnostics` in a tab on that PC shows the same counts; the *Running as* row will say "browser tab".
+
+### Tests
+`lib/update/policy.test.ts` covers the refresh rules, the no-reload-loop guard, the report (including that the full anonymous id is never printed) and keeps the diagnostics page's history re-send flag in step with `lib/analytics/backfill.ts`.

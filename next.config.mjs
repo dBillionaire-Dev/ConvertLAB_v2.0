@@ -15,6 +15,11 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
   poweredByHeader: false,
+  env: {
+    // Identifies this deployment, so an open copy of the app can tell when a newer one is live.
+    // Empty (local builds, hosts that do not set one) turns automatic updating off, never on by mistake.
+    NEXT_PUBLIC_BUILD_ID: (process.env.VERCEL_DEPLOYMENT_ID || process.env.VERCEL_GIT_COMMIT_SHA || process.env.NEXT_PUBLIC_BUILD_ID || "").slice(0, 60),
+  },
   async headers() {
     return [
       {
