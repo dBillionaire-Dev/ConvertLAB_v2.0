@@ -150,7 +150,7 @@ function Channel({ title, status, children }: { title: string; status: "ready" |
 export function AndroidChannels() {
   return (
     <ul className="mt-4 space-y-2">
-      <Channel title="Google Play" status={LANDING.playStoreUrl ? "ready" : "soon"}>
+      {/*<Channel title="Google Play" status={LANDING.playStoreUrl ? "ready" : "soon"}>
         {LANDING.playStoreUrl ? (
           <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.playStoreUrl} target="_blank" rel="noopener noreferrer">Open the Play Store listing</a>
         ) : "Automatic updates once the listing is live."}
@@ -159,8 +159,8 @@ export function AndroidChannels() {
         {LANDING.palmStoreUrl ? (
           <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.palmStoreUrl} target="_blank" rel="noopener noreferrer">Open the Palm Store listing</a>
         ) : "For Tecno, Infinix and itel phones (Android 7.0 or newer)."}
-      </Channel>
-      <Channel title={`Direct download (APK)${LANDING.apkVersion ? ` · v${LANDING.apkVersion}` : ""}`} status={LANDING.apkUrl ? "ready" : "soon"}>
+      </Channel>*/}
+      <Channel title={`Direct download (APK)`} status={LANDING.apkUrl ? "ready" : "soon"}>
         {LANDING.apkUrl ? (
           <>
             <a className="font-medium text-primary underline-offset-4 hover:underline" href={LANDING.apkUrl} rel="noopener noreferrer" download>Download the APK</a>
