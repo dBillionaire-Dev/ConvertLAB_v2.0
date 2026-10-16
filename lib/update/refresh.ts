@@ -20,6 +20,23 @@ export async function fetchServerBuild(timeoutMs = 8000): Promise<string | null>
   }
 }
 
+/** Asks the server which version is live and times the round trip. Both are null when it cannot be reached. */
+export async function pingServer(timeoutMs = 8000): Promise<{ build: string | null; ms: number | null }> {
+  try {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), timeoutMs)
+    const started = performance.now()
+    const response = await fetch("/api/version", { cache: "no-store", signal: controller.signal })
+    const ms = Math.round(performance.now() - started)
+    clearTimeout(timer)
+    if (!response.ok) return { build: null, ms: null }
+    const body = (await response.json()) as { build?: unknown }
+    return { build: typeof body.build === "string" ? body.build : null, ms }
+  } catch {
+    return { build: null, ms: null }
+  }
+}
+
 async function appCacheNames(): Promise<string[]> {
   if (typeof caches === "undefined") return []
   return (await caches.keys()).filter((name) => name.startsWith("clinexia-"))

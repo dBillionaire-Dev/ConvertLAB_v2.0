@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function DiagnosticsPage() {
   return (
-    <div className="mx-auto w-full max-w-xl px-4 py-8">
+    <div className="dark min-h-screen bg-neutral-950  text-neutral-100 w-full px-4 py-8 sm:px-8">
       <DiagnosticsPanel />
     </div>
   )

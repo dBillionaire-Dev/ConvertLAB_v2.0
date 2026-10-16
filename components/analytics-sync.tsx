@@ -1,4 +1,5 @@
 "use client"
+import { DiagnosticsShortcut } from "@/components/diagnostics-shortcut"
 
 import { useEffect } from "react"
 import { usePathname } from "next/navigation"
@@ -75,5 +76,5 @@ export function AnalyticsSync() {
     }
   }, [pathname])
 
-  return null
+  return <DiagnosticsShortcut />
 }
