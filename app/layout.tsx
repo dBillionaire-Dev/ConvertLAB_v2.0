@@ -4,9 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { ChromeGate } from "@/components/landing/chrome-gate"
+import { AppHeader, AppFooter } from "@/components/app-chrome"
 import { SITE_BOOTSTRAP } from "@/lib/site"
 import { CommandPalette } from "@/components/command-palette"
 import { InstallPrompt } from "@/components/install-prompt"
@@ -100,11 +98,17 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SkipToContent />
           <div className="min-h-screen flex flex-col bg-background">
-            <ChromeGate><Header /></ChromeGate>
-            <main id="main-content" tabIndex={-1} className="flex-1 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
-              {children}
-            </main>
-            <ChromeGate><Footer /></ChromeGate>
+            <AppHeader />
+
+                 <main
+                   id="main-content"
+                   tabIndex={-1}
+                   className="flex-1 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+                 >
+                   {children}
+                 </main>
+
+                 <AppFooter />
           </div>
           <CommandPalette />
           <InstallPrompt />
