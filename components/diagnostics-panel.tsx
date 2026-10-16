@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import Link from "next/link"
-import { Activity, Home } from "lucide-react"
 import { APP_VERSION, BUILD_ID } from "@/lib/build-info"
 import { getAnonymousId } from "@/lib/analytics/client-id"
 import { getPendingCalculationEvents } from "@/lib/analytics/outbox"
 import { syncAnalytics } from "@/lib/analytics/sync"
 import { getAllHistory } from "@/lib/history/db"
+import { Activity, Home } from "lucide-react"
 import { getPlatform, isStandaloneDisplayMode } from "@/lib/platform"
 import { alreadyTried, applyUpdate, pingServer } from "@/lib/update/refresh"
 import {
@@ -177,7 +177,7 @@ function Row({ label, children, tone }: { label: string; children: ReactNode; to
   return (
     <div className="flex items-start justify-between gap-4 border-b py-2 text-sm last:border-0">
       <dt className="text-muted-foreground">{label}</dt>
-      <dd className={`min-w-0 break-words text-right font-medium ${tone === "warn" ? "text-amber-600" : tone === "ok" ? "text-emerald-600" : ""}`}>{children}</dd>
+      <dd className={`min-w-0 break-words text-right font-medium ${tone === "warn" ? "text-red-600" : tone === "ok" ? "text-emerald-600" : ""}`}>{children}</dd>
     </div>
   )
 }
@@ -300,28 +300,28 @@ export function DiagnosticsPanel() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <Activity className="h-6 w-6 shrink-0 text-blue-600 dark:text-blue-400" />
-            <h1 className="text-2xl font-bold tracking-tight">
-              Clinexia Local Diagnostics
-            </h1>
-          </div>
-          <p className="mt-1 text-sm text-muted-foreground">
-            A live check of this device. Nothing here is sent anywhere, and no
-            calculator inputs, results or history are shown. A screenshot of this
-            page is enough for support.
-          </p>
-        </div>
+         <div className="flex items-start justify-between gap-4">
+           <div>
+             <div className="flex items-center gap-2">
+               <Activity className="h-6 w-6 shrink-0 text-blue-600 dark:text-blue-400" />
+               <h1 className="text-2xl font-bold tracking-tight">
+                 Clinexia Local Diagnostics
+               </h1>
+             </div>
+             <p className="mt-1 text-sm text-muted-foreground">
+               A live check of this device. Nothing here is sent anywhere, and no
+               calculator inputs, results or history are shown. A screenshot of this
+               page is enough for support.
+             </p>
+           </div>
 
-        <Link
-          href="/"
-          className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-neutral-700 bg-neutral-900 px-5 py-3 text-sm font-medium text-neutral-100 transition-colors hover:border-neutral-500 hover:bg-neutral-800"
-        >
-          <Home className="h-4 w-4" />
-        </Link>
-      </div>
+           <Link
+             href="/"
+             className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-neutral-700 bg-neutral-900 px-5 py-3 text-sm font-medium text-neutral-100 transition-colors hover:border-neutral-500 hover:bg-neutral-800"
+           >
+             <Home className="h-4 w-4" />
+           </Link>
+         </div>
 
       {/* Status strip */}
       <section
@@ -421,7 +421,7 @@ export function DiagnosticsPanel() {
       </div>
       {message ? <p role="status" className="text-center text-sm text-muted-foreground">{message}</p> : null}
       <p className="text-center text-xs text-muted-foreground">
-        Open this page from anywhere in the app with Win ⌘ + Shift + D (Cmd ⌘ + Shift + D on a Mac), or Ctrl + Alt + Shift + D.
+        Open this page from anywhere in the app: tap the logo three times quickly, or press Win ⌘ + Shift + D (Cmd ⌘ + Shift + D on a Mac) or Ctrl + Alt + Shift + D.
       </p>
     </div>
   )

@@ -18,3 +18,14 @@ export function isDiagnosticsShortcut(e: KeyLike): boolean {
   const fallback = e.ctrlKey && e.altKey && !e.metaKey
   return windowsKey || fallback
 }
+
+/**
+ * Counts quick repeated taps (the logo easter egg). Pass the previous tap times and the current time; it returns the
+ * new list and whether this tap completed the pattern. Taps older than `windowMs` are forgotten, and the list is
+ * cleared once the pattern fires, so four fast taps open the page once, not twice.
+ */
+export function registerTap(previous: number[], now: number, taps = 3, windowMs = 1000): { taps: number[]; fired: boolean } {
+  const recent = [...previous.filter((t) => now - t <= windowMs && t <= now), now]
+  if (recent.length >= taps) return { taps: [], fired: true }
+  return { taps: recent, fired: false }
+}
