@@ -46,6 +46,21 @@ export default async function TractionPage({ searchParams }: { searchParams: Pro
 
         {data ? (
           <>
+            <Section title="Road to 1,000 users">
+              <div className="rounded-xl border bg-background p-4">
+                <div className="flex items-baseline justify-between">
+                  <p className="text-sm text-muted-foreground">Different people who have used Clinexia (all time, anonymous)</p>
+                  <p className="text-2xl font-bold tabular-nums">{num(data.cards.totalUsers)} <span className="text-base font-normal text-muted-foreground">of 1,000</span></p>
+                </div>
+                <div className="mt-3 h-3 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuemin={0} aria-valuemax={1000} aria-valuenow={Math.min(data.cards.totalUsers, 1000)}>
+                  <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${Math.min(100, (data.cards.totalUsers / 1000) * 100)}%` }} />
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {data.cards.totalUsers >= 1000 ? "Goal reached." : `${num(1000 - data.cards.totalUsers)} to go.`} Counts distinct anonymous ids, so one person on two devices counts twice, and a cleared browser counts again.
+                </p>
+              </div>
+            </Section>
+
             <Section title="Overview">
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <Card label="MAU (last 30 days)" value={num(data.cards.mau)} />
