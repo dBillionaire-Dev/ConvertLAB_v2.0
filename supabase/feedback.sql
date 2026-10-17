@@ -6,11 +6,29 @@ create table if not exists public.feedback_settings (
   id integer primary key default 1 check (id = 1),     -- a single settings row
   enabled boolean not null default true,
   survey_version integer not null default 1,           -- raise it to ask everyone again
-  remind_after_hours integer not null default 7 check (remind_after_hours between 0 and 24),
-  max_reminders integer not null default 3 check (max_reminders between 0 and 50),
+  remind_after_hours integer not null default 8,       -- how long "Later" waits before asking again
+  max_reminders integer not null default 50,           -- how many "Later" taps before it stops for good
   updated_at timestamptz not null default now()
 );
 insert into public.feedback_settings (id) values (1) on conflict (id) do nothing;
+
+-- Migration, safe to re-run. Earlier versions of this file stored whole days and allowed fewer reminders.
+alter table public.feedback_settings add column if not exists remind_after_hours integer not null default 8;
+do $$
+begin
+  if exists (select 1 from information_schema.columns
+             where table_schema = 'public' and table_name = 'feedback_settings' and column_name = 'remind_after_days') then
+    update public.feedback_settings set remind_after_hours = remind_after_days * 24;   -- keep the wait the admin had chosen
+    alter table public.feedback_settings drop column remind_after_days;
+  end if;
+end $$;
+update public.feedback_settings
+  set remind_after_hours = least(8760, greatest(1, remind_after_hours)),
+      max_reminders = least(50, greatest(0, max_reminders));
+alter table public.feedback_settings drop constraint if exists feedback_settings_remind_after_hours_check;
+alter table public.feedback_settings add constraint feedback_settings_remind_after_hours_check check (remind_after_hours between 1 and 8760);
+alter table public.feedback_settings drop constraint if exists feedback_settings_max_reminders_check;
+alter table public.feedback_settings add constraint feedback_settings_max_reminders_check check (max_reminders between 0 and 50);
 
 create table if not exists public.feedback_responses (
   id uuid primary key default gen_random_uuid(),

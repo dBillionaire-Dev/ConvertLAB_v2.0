@@ -242,7 +242,7 @@ export function FeedbackForm() {
                   <Chips label="Who pays" options={PAY_WHO} value={d.payWho} onChange={(v) => set("payWho", v)} />
                 </Question>
                 <Question title="If a facility bought 10 seats, what monthly price for the whole team would be reasonable?" hint="Optional. In NG Naira, for all 10 people together.">
-                  <Chips label="Team price per year" options={PRICE_TEAM} value={d.priceTeam} onChange={(v) => set("priceTeam", v)} />
+                  <Chips label="Team price per month" options={PRICE_TEAM} value={d.priceTeam} onChange={(v) => set("priceTeam", v)} />
                 </Question>
               </>
             ) : null}

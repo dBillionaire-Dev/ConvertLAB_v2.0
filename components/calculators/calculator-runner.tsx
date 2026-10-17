@@ -2,6 +2,8 @@
 
 import { useMemo, useRef, useState } from "react"
 import Link from "next/link"
+import { PremiumGate } from "@/components/account/premium-gate"
+import { AccessBadge } from "@/components/account/access-badge"
 import { Calculator, Copy, Save, Share2, Star, AlertTriangle, FileDown, RotateCcw } from "lucide-react"
 import type { CalculatorDefinition, CalculationResult } from "@/lib/calculators/types"
 import { CALCULATION_DISCLAIMER } from "@/lib/calculators/types"
@@ -35,7 +37,7 @@ function defaultValues(def: CalculatorDefinition | undefined): Record<string, st
   return values
 }
 
-export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
+function CalculatorRunnerInner({ calculatorId }: { calculatorId: string }) {
   const definition = getCalculatorById(calculatorId)
   const [values, setValues] = useState<Record<string, string>>(() => defaultValues(definition))
   const [result, setResult] = useState<CalculationResult | null>(null)
@@ -223,7 +225,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
           <div>
             <div className="flex items-center gap-2">
               <Calculator className="h-5 w-5 text-primary" aria-hidden />
-              <CardTitle>{definition.name}</CardTitle>
+              <CardTitle>{definition.name}<AccessBadge id={definition.id} category={definition.category} /></CardTitle>
               {definition.isEstimator ? <Badge variant="secondary">Estimator</Badge> : null}
             </div>
             <CardDescription className="mt-1.5">{definition.description}</CardDescription>
@@ -498,7 +500,7 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
             {related.map((tool) => (
               <Link key={tool.id} href={`/calculators/${tool.category}/${tool.id}`}>
                 <Badge variant="outline" className="cursor-pointer hover:bg-accent">
-                  {tool.shortName ?? tool.name}
+                  {tool.shortName ?? tool.name}<AccessBadge id={tool.id} category={tool.category} />
                 </Badge>
               </Link>
             ))}
@@ -506,5 +508,14 @@ export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
         </div>
       ) : null}
     </div>
+  )
+}
+
+/** Public entry point: the runner behind the premium lock (a no-op unless locking is switched on). */
+export function CalculatorRunner({ calculatorId }: { calculatorId: string }) {
+  return (
+    <PremiumGate id={calculatorId}>
+      <CalculatorRunnerInner calculatorId={calculatorId} />
+    </PremiumGate>
   )
 }

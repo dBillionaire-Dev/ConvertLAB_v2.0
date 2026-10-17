@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { PageContainer } from "@/components/page-container"
+import { AccessBadge } from "@/components/account/access-badge"
 import { clearRecentlyUsed, getRecentlyUsed, subscribeRecentlyUsed } from "@/lib/recently-used"
 import { getCalculatorById } from "@/lib/calculators/registry"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -37,7 +38,7 @@ export default function RecentCalculatorsPage() {
                   <CardHeader className="flex flex-row items-start gap-3 py-4">
                     <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
                     <div className="min-w-0">
-                      <CardTitle className="text-base">{tool.name}</CardTitle>
+                      <CardTitle className="text-base">{tool.name}<AccessBadge id={tool.id} category={tool.category} /></CardTitle>
                       <CardDescription className="mt-1">{tool.description}</CardDescription>
                     </div>
                   </CardHeader>

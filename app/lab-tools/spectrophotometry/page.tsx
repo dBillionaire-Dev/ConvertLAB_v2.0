@@ -1,4 +1,5 @@
 import { PageContainer } from "@/components/page-container"
+import { PremiumGate } from "@/components/account/premium-gate"
 import { BeerLambertCalculator } from "@/components/spectrophotometry/beer-lambert-calculator"
 import { TransmittanceConverter } from "@/components/spectrophotometry/transmittance-converter"
 import { CalibrationCurveLazy } from "@/components/spectrophotometry/calibration-curve-lazy"
@@ -14,6 +15,7 @@ export default function SpectrophotometryPage() {
       title="Spectrophotometry"
       description="Beer-Lambert law, transmittance, and calibration curves."
     >
+      <PremiumGate category="spectrophotometry">
       <div className="space-y-8">
         <BeerLambertCalculator />
 
@@ -25,6 +27,7 @@ export default function SpectrophotometryPage() {
 
         <CalibrationCurveLazy />
       </div>
+      </PremiumGate>
     </PageContainer>
   )
 }

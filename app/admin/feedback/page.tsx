@@ -65,7 +65,8 @@ function Bars({ title, items }: { title: string; items: Tally[] }) {
   )
 }
 
-const ngn = (n: number | null) => (n === null ? "0" : `₦${n.toFixed(n < 10 ? 2 : 0)}`)
+// Amounts are in Naira (the price bands in lib/feedback/questions.ts). Averages are estimates from band midpoints.
+const ngn = (n: number | null) => (n === null ? "–" : `₦${Math.round(n).toLocaleString("en-NG")}`)
 
 export default async function FeedbackAdminPage({ searchParams }: { searchParams: Promise<{ version?: string }> }) {
   await requireAdmin()
@@ -154,7 +155,7 @@ export default async function FeedbackAdminPage({ searchParams }: { searchParams
         <Section title="At a glance">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Card label="Responses" value={num(s.count)} />
-            <Card label="Average rating" value={s.averageRating === null ? "0" : `${s.averageRating.toFixed(1)} / 5`} />
+            <Card label="Average rating" value={s.averageRating === null ? "–" : `${s.averageRating.toFixed(1)} / 5`} />
             <Card label="Would pay (yes or maybe)" value={pct(s.willingShare)} />
             <Card label="Typical price, per person / month" value={ngn(s.individualAverageUsd)} hint="Estimate from price-band midpoints, among people who would pay" />
             <Card label="Typical team price, 10 seats / month" value={ngn(s.teamAverageUsd)} hint="Same estimate, only those who answered it" />
@@ -190,7 +191,7 @@ export default async function FeedbackAdminPage({ searchParams }: { searchParams
                     <span>{new Date(r.created_at).toLocaleDateString()}</span>
                     <span>{labelOf([...MED_ROLES, ...NON_MED_ROLES], r.role)}</span>
                     <span>{labelOf(USE_CONTEXT, r.use_context)}{r.office_type ? `, ${labelOf(OFFICE_TYPES, r.office_type)}` : ""}</span>
-                    <span>Pay: {labelOf(PAY_INTEREST, r.pay_interest)}{r.price_individual ? `, ₦{labelOf(PRICE_INDIVIDUAL, r.price_individual)}/mo` : ""}{r.price_team ? `, team ₦{labelOf(PRICE_TEAM, r.price_team)}/yr` : ""}{r.pay_who ? `, ₦{labelOf(PAY_WHO, r.pay_who).toLowerCase()}` : ""}</span>
+                    <span>Pay: {labelOf(PAY_INTEREST, r.pay_interest)}{r.price_individual ? `, ${labelOf(PRICE_INDIVIDUAL, r.price_individual)}/mo` : ""}{r.price_team ? `, team ${labelOf(PRICE_TEAM, r.price_team)}/mo` : ""}{r.pay_who ? `, ${labelOf(PAY_WHO, r.pay_who).toLowerCase()}` : ""}</span>
                     <span>{r.platform} · {r.app_version}</span>
                   </div>
                   {r.improve ? <p><span className="text-muted-foreground">Improve: </span>{r.improve}</p> : null}

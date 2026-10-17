@@ -4,6 +4,7 @@ import { getAnonymousId } from "./client-id"
 import { queueCalculationEvent } from "./outbox"
 import { syncAnalytics } from "./sync"
 import { getPlatform } from "@/lib/platform"
+import { noteGuestCalculation } from "@/lib/billing/guest"
 
 const APP_VERSION = "2.0.0"
 const APP_ENVIRONMENT = process.env.NEXT_PUBLIC_APP_ENV ?? "production"
@@ -25,6 +26,14 @@ export async function trackCalculation({
   try {
     // Landing-page demo frames are marketing, not usage.
     if (typeof window !== "undefined" && window.self !== window.top) return
+
+    // Guest allowance: counts only while premium locking is on and nobody is signed in.
+    try {
+      const guest = noteGuestCalculation(window.localStorage)
+      if (guest.counted) window.dispatchEvent(new CustomEvent("clinexia:guest-calc", { detail: guest }))
+    } catch {
+      /* the allowance must never break calculating */
+    }
 
     await queueCalculationEvent(
       {

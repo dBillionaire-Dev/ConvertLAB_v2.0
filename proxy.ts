@@ -51,6 +51,9 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(`${pathname}${search}`, APP_URL), 308)
   }
 
+  // API calls (the Android app reports to the website address) must never be redirected: a redirected POST is not followed.
+  if (pathname.startsWith("/api/") && (host === LANDING_HOST || host === `www.${LANDING_HOST}`)) return NextResponse.next()
+
   if (host === `www.${LANDING_HOST}`) {
     // One hop: the home page belongs to the landing site, every other page to the app.
     return NextResponse.redirect(new URL(`${pathname}${search}`, pathname === "/" ? LANDING_URL : APP_URL), 308)
