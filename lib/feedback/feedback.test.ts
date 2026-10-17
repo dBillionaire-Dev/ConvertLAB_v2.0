@@ -4,6 +4,7 @@ import { PRICE_INDIVIDUAL, TEXT_LIMIT, validateAnswers, type FeedbackAnswers } f
 import {
   DAY_MS,
   DEFAULT_CONFIG,
+  HOUR_MS,
   MIN_PAGE_AGE_MS,
   decidePrompt,
   excludedRoute,
@@ -29,8 +30,8 @@ const valid = {
   officeType: "laboratory",
   payInterest: "yes",
   payWho: "workplace",
-  priceIndividual: "3_5",
-  priceTeam: "150_400",
+  priceIndividual: "3.5_5",
+  priceTeam: "35_50",
   improve: " faster loading ",
 }
 
@@ -114,11 +115,11 @@ describe("when the popup shows", () => {
 })
 
 describe("later, done and never again", () => {
-  it("Later hides it and brings it back after the configured days", () => {
+  it("Later hides it and brings it back after the configured hours", () => {
     const later = snooze(freshState(1), config, NOW)
     expect(decidePrompt(ctx({ state: later })).show).toBe(false)
-    expect(decidePrompt(ctx({ state: later, now: NOW + 6 * DAY_MS })).show).toBe(false)
-    expect(decidePrompt(ctx({ state: later, now: NOW + 7 * DAY_MS })).show).toBe(true)
+    expect(decidePrompt(ctx({ state: later, now: NOW + 6 * HOUR_MS })).show).toBe(false)
+    expect(decidePrompt(ctx({ state: later, now: NOW + 7 * HOUR_MS })).show).toBe(true)
   })
   it("stops for good after the maximum number of Laters", () => {
     let s = freshState(1)
@@ -155,14 +156,14 @@ describe("later, done and never again", () => {
 
 const row = (over: Partial<FeedbackRow>): FeedbackRow => ({
   rating: 5, background: "medical", role: "laboratory", devices: ["phone_browser"], use_context: "office", office_type: "laboratory",
-  pay_interest: "yes", pay_who: "workplace", price_individual: "3_5", price_team: "150_400", ...over,
+  pay_interest: "yes", pay_who: "workplace", price_individual: "3.5_5", price_team: "35_50", ...over,
 })
 
 describe("summary", () => {
   const rows = [
     row({}),
     row({ rating: 3, background: "non_medical", role: "student", use_context: "personal", office_type: null, devices: ["android_app", "phone_browser"], pay_interest: "no", price_individual: null, price_team: null }),
-    row({ rating: 4, pay_interest: "maybe", price_individual: "1_2", price_team: null }),
+    row({ rating: 4, pay_interest: "maybe", price_individual: "1.5_3", price_team: null }),
   ]
   const s = summarize(rows)
   it("averages the rating and tallies stars", () => {
@@ -177,8 +178,8 @@ describe("summary", () => {
   })
   it("counts willingness to pay and estimates price from band midpoints among those who would pay", () => {
     expect(s.willingShare).toBeCloseTo(2 / 3)
-    expect(s.individualAverageUsd).toBeCloseTo((4 + 1.5) / 2)
-    expect(s.teamAverageUsd).toBeCloseTo(275)
+    expect(s.individualAverageUsd).toBeCloseTo((5000 + 2500) / 2)
+    expect(s.teamAverageUsd).toBeCloseTo(45000)
   })
   it("handles no data", () => {
     const empty = summarize([])
@@ -187,7 +188,7 @@ describe("summary", () => {
     expect(empty.individualAverageUsd).toBeNull()
   })
   it("every price band has a value the form can submit", () => {
-    expect(PRICE_INDIVIDUAL.map((p) => p.value)).toContain("3_5")
+    expect(PRICE_INDIVIDUAL.map((p) => p.value)).toContain("3.5_5")
   })
 })
 
@@ -208,7 +209,7 @@ describe("submission", () => {
     expect(r.ok).toBe(true)
     if (r.ok) {
       const row = toRow(r.value)
-      expect(row).toMatchObject({ survey_version: 2, anonymous_id: "abc", platform: "pwa", rating: 5, use_context: "office", price_individual: "3_5" })
+      expect(row).toMatchObject({ survey_version: 2, anonymous_id: "abc", platform: "pwa", rating: 5, use_context: "office", price_individual: "3.5_5" })
       expect(Object.keys(row)).not.toContain("ip")
     }
   })
