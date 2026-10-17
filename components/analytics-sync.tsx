@@ -1,4 +1,5 @@
 "use client"
+import { FeedbackPrompt } from "@/components/feedback-prompt"
 import { DiagnosticsShortcut } from "@/components/diagnostics-shortcut"
 
 import { useEffect } from "react"
@@ -76,5 +77,10 @@ export function AnalyticsSync() {
     }
   }, [pathname])
 
-  return <DiagnosticsShortcut />
+  return (
+    <>
+      <DiagnosticsShortcut />
+      <FeedbackPrompt />
+    </>
+  )
 }

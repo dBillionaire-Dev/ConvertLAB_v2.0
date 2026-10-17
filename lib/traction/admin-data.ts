@@ -49,6 +49,7 @@ export async function loadDashboard(range: Range) {
     db.selectAll("traction_activity_days", "select=day,anonymous_id,platform&order=day,anonymous_id,platform"),
   ])
 
+  const totalUsers = Number((await db.rpc("traction_distinct_active", { p_from: "2000-01-01", p_to: today })) ?? 0)
   const activity = activityRows.map((r: Row) => ({ day: r.day, anonymousId: r.anonymous_id, platform: r.platform }))
   const windows = computeActiveWindows(activity, today)
   const returningPct = computeReturningPercent(activity, addDays(today, -29), today)
@@ -148,6 +149,7 @@ export async function loadDashboard(range: Range) {
   return {
     today,
     cards: {
+      totalUsers,
       dau: windows.dau, wau: windows.wau, mau: windows.mau, returningPct,
       totalToolUses: sum(allRollups, "tool_uses"),
       apk,

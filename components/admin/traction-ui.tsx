@@ -14,7 +14,7 @@ export function Card({ label, value, hint }: { label: string; value: ReactNode; 
   )
 }
 
-export function AdminNav({ current }: { current: "overview" | "report" | "revenue" }) {
+export function AdminNav({ current }: { current: "overview" | "report" | "revenue" | "feedback" }) {
   const item = (href: string, label: string, key: string) => (
     <Link href={href} className={`rounded-md border px-3 py-2 text-sm font-medium hover:bg-muted ${current === key ? "bg-muted" : "bg-background"}`}>
       {label}
@@ -26,6 +26,7 @@ export function AdminNav({ current }: { current: "overview" | "report" | "revenu
       {item("/admin/traction", "Traction metrics", "overview")}
       {item("/admin/traction/report", "Buyer report", "report")}
       {item("/admin/traction/revenue", "Revenue", "revenue")}
+      {item("/admin/feedback", "Feedback", "feedback")}
     </nav>
   )
 }
