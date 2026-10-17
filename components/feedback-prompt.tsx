@@ -15,7 +15,6 @@ import {
   pauseForHours,
   recordVisit,
   snooze,
-  stopAsking,
   type FeedbackConfig,
   type FeedbackState,
 } from "@/lib/feedback/schedule"

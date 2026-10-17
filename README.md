@@ -6,8 +6,8 @@ Clinexia is a complete clinical toolkit and progressive web app: medical calcula
 
 ## Live Demo
 
-[Clinexia v2.0 Live](https://convertlab-nex.vercel.app/)
-![](image.png)
+[Clinexia v2.0 Live](https://www.clinexia.app/)
+![](public/og-image.png)
 
 ---
 
@@ -52,8 +52,8 @@ tsconfig.json          ─ TypeScript configuration
 ## Installation & Setup
 
 ```bash
-git clone https://github.com/dBillionaire-Dev/ConvertLAB_v2.0.git
-cd ConvertLAB_v2.0
+git clone https://github.com/dBillionaire-Dev/Clinexia_v2.0.git
+cd Clinexia_v2.0
 # Use npm or your preferred package manager
 npm install
 # or
@@ -297,22 +297,22 @@ If GitHub cannot be reached, the page falls back to `NEXT_PUBLIC_APK_URL`. Set t
 
 ### What users see
 - After someone has really used Clinexia (3 or more calculations, or 3 or more different days), a small popup asks **How is Clinexia working for you?** with five stars. It never appears in the first minute, offline, on the landing site, on `/admin`, `/feedback` or `/diagnostics`.
-- Tapping a star opens **`/feedback`** with that rating filled in: four short steps (about a minute). About you (healthcare or not, which area), how you use it (devices, personal or work, kind of workplace), premium (would you pay, a reasonable monthly price, who pays, an optional 10-seat team price per year) and up to three optional open questions (improve, what is missing, anything else).
-- **Later** hides it and brings it back after the configured number of days (default 7), at most the configured number of times (default 3), then it stops. **Don't ask again** ends it at once. Sending feedback ends it for good, exactly like the install prompt. A draft is saved on the device, so nothing is lost if someone leaves halfway.
+- Tapping a star opens **`/feedback`** with that rating filled in: four short steps (about a minute). About you (healthcare or not, which area), how you use it (devices, personal or work, kind of workplace), premium (would you pay, a reasonable monthly price in naira, who pays, an optional monthly price for a 10-seat team) and up to three optional open questions (improve, what is missing, anything else).
+- **Later** hides it and brings it back after the configured number of hours, at most the configured number of times, then it stops. Sending feedback ends it for good, exactly like the install prompt. A draft is saved on the device, so nothing is lost if someone leaves halfway.
 - Someone who rated 4 or 5 stars gets a **Share Clinexia** button on the thank-you screen.
 
 ### Admin: `/admin/feedback`
-Turn the popup on or off, set the reminder days and the maximum number of "Later" taps, and **Ask everyone again** (starts a new round, so people who already answered, or said never, are asked once more; earlier answers are kept and can be viewed by round). It shows the averages, who is answering, premium interest and price bands, every written answer, a **Delete** button for each response (use it if someone typed personal details) and a CSV export. `/admin/traction` also has a **Road to 1,000 users** bar.
+Turn the popup on or off, set how many hours "Later" waits and the maximum number of "Later" taps, and **Ask everyone again** (starts a new round, so people who already answered, or said never, are asked once more; earlier answers are kept and can be viewed by round). It shows the averages, who is answering, premium interest and price bands, every written answer, a **Delete** button for each response (use it if someone typed personal details) and a CSV export. `/admin/traction` also has a **Road to 1,000 users** bar.
 
 ### Setup
-1. Run `supabase/feedback.sql` once in the Supabase SQL editor. The popup is **on** from the moment it runs; to prepare first, pause it in `/admin/feedback`.
+1. Run `supabase/feedback.sql` in the Supabase SQL editor. It is safe to re-run, and it upgrades a table made by an earlier version (days are converted to hours). The popup is **on** from the moment it runs; to prepare first, pause it in `/admin/feedback`.
 2. Deploy. Nothing else to configure (it uses the same Supabase variables as the traction metrics).
 
 ### Privacy
 Answers are anonymous: no name, email, phone or IP address. The only identifier is the random anonymous id the usage statistics already use, kept so one device cannot send twice in a round; it is never shown or exported. The form warns people not to type patient or personal details. **Add one line to the privacy page**, for example: *"If you choose to send feedback, your answers are stored with your anonymous ID. We never ask for your name, email or any patient information."*
 
 ### How the numbers are read
-Typical prices are estimates from the midpoints of the price bands people picked, only among those who answered "yes" or "maybe", and the page says so. Device counts add up to more than 100% because people can pick several.
+Prices are in Nigerian naira. Typical prices are estimates from the midpoints of the price bands people picked, only among those who answered "yes" or "maybe", and the page says so. Device counts add up to more than 100% because people can pick several.
 
 ### Tests
 `lib/feedback/feedback.test.ts` covers the answer rules, when the popup shows, Later, done, never and new rounds, the submission and rate-limit checks and the admin summary.

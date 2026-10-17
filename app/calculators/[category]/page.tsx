@@ -6,6 +6,7 @@ import { CALCULATOR_SUBCATEGORY_LABELS, type CalculatorGroup } from "@/lib/calcu
 import { calculatorCatalog, getCalculatorsByCategory } from "@/lib/calculators/registry"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { AccessBadge } from "@/components/account/access-badge"
 
 export function generateStaticParams() {
   return calculatorCatalog.map((c) => ({ category: c.id }))
@@ -48,7 +49,7 @@ export default async function CalculatorCategoryPage({ params }: { params: Promi
                       <CardTitle className="text-base">{tool.name}</CardTitle>
                       <CardDescription className="mt-1">{tool.description}</CardDescription>
                     </div>
-                    {tool.isEstimator ? <Badge variant="secondary">Estimator</Badge> : null}
+                    <div className="flex shrink-0 items-center gap-2">{tool.isEstimator ? <Badge variant="secondary">Estimator</Badge> : null}<AccessBadge id={tool.id} category={tool.category} className="ml-0" /></div>
                   </CardHeader>
                 </Card>
               </Link>
@@ -113,7 +114,7 @@ export default async function CalculatorCategoryPage({ params }: { params: Promi
                           <CardTitle className="text-base">{tool.name}</CardTitle>
                           <CardDescription className="mt-1">{tool.description}</CardDescription>
                         </div>
-                        {tool.isEstimator ? <Badge variant="secondary">Estimator</Badge> : null}
+                        <div className="flex shrink-0 items-center gap-2">{tool.isEstimator ? <Badge variant="secondary">Estimator</Badge> : null}<AccessBadge id={tool.id} category={tool.category} className="ml-0" /></div>
                       </CardHeader>
                     </Card>
                   </Link>

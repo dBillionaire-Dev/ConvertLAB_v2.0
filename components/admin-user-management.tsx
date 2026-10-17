@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Pencil, Save, Trash2, X } from "lucide-react"
+import { confirmDialog } from "@/components/ui/app-dialogs"
 import type { AnalyticsSnapshot } from "@/lib/analytics/types"
 
 type User = AnalyticsSnapshot["allUsersList"][number]
@@ -83,9 +84,12 @@ export function AdminUserManagementTable({ users }: { users: User[] }) {
   }
 
   async function deleteUser(user: User) {
-    const confirmed = window.confirm(
-      `Delete ${user.displayName}? This removes the user's anonymous device record and all calculation history from analytics. This cannot be undone.`,
-    )
+    const confirmed = await confirmDialog({
+      title: `Delete ${user.displayName}?`,
+      description: "This removes the user's anonymous device record and all calculation history from analytics. This cannot be undone.",
+      confirmLabel: "Delete",
+      destructive: true,
+    })
     if (!confirmed) return
 
     setBusyId(user.anonymousId)

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Activity, Search, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { AccountMenu } from "@/components/account/account-menu"
 import { SiteNav, siteNavLinks } from "@/components/site-nav"
 
 export function Header({ onOpenSearch }: { onOpenSearch?: () => void }) {
@@ -44,6 +45,7 @@ export function Header({ onOpenSearch }: { onOpenSearch?: () => void }) {
               <Search className="h-5 w-5" />
             </Button>
             <ThemeToggle />
+            <AccountMenu />
             <Button
               variant="ghost"
               size="icon"

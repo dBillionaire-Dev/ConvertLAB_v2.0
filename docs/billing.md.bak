@@ -1,0 +1,48 @@
+# Accounts, subscriptions and account administration
+
+## What is where
+- Sign-in and sign-up for testing: `/login` and `/register` (not linked from the home page, not in the sitemap). After signing in, people land on `/account`.
+- Organisation dashboard: `/account/organisation?org=<id>`. Staff invitation links: `/account/join?token=...`. Payment return: `/account/payment`.
+- Administrator screen: `/admin/accounts` (uses the existing admin login). Tabs: Users, Organisations, Pricing, Audit.
+- The home page and every existing calculator are untouched. Premium locking is OFF until `BILLING_ENFORCE_PREMIUM=true`.
+- To switch the whole feature off: set `BILLING_ENABLED=false` (every page and API then answers 404).
+
+## Set up
+1. Supabase SQL editor: run `supabase/billing.sql`, then `supabase/billing-admin.sql` (both safe to re-run).
+2. Supabase: Authentication > Providers > Email on (decide whether email confirmation is required).
+3. Env vars (Vercel): `SUPABASE_ANON_KEY` (new), `PAYSTACK_SECRET_KEY` (new, use the TEST key while testing).
+   Optional, for emailed notices: `RESEND_API_KEY` and `BILLING_FROM_EMAIL` (new). Without them the admin screen says no email was sent.
+   Already present: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_SESSION_SECRET`.
+4. Paystack dashboard: webhook URL `https://<your app domain>/api/billing/webhook`.
+
+## Pricing (admin > Pricing)
+- Two independent price lists: Nigeria (NGN, kobo) and International (USD, cents). Individual and organisation prices, the
+  organisation all-access cap and seat block, the managed-organisation discount, and grace days are all editable.
+- Which list applies: set at sign-up from the visitor's country (Nigeria = naira, anywhere else = dollars), stored on the profile
+  and, for organisations, on the organisation (it inherits its owner's). Only an administrator can change it afterwards.
+- USD checkout only works if your Paystack account has international payments enabled. The dollar defaults are placeholders.
+- A payment already started keeps the price it showed. New prices apply to the next checkout.
+
+## Suspending and deleting (admin > Users / Organisations)
+- A reason is required. Suspended people cannot sign in and are shown the notice when they try. Restoring lifts it.
+- Deleting a person removes their sign-in account, profile, memberships and subscription. You must type their email to confirm.
+  Payment records are kept with their links cleared. Someone who owns an organisation cannot be deleted until it is deleted or reassigned.
+- Deleting an organisation removes its members' membership, invitations and subscription; you must type its name to confirm.
+- Notices are emailed only when `RESEND_API_KEY` and `BILLING_FROM_EMAIL` are set. Deletion notices are sent before deleting.
+- Every action is written to the audit trail.
+
+## Rules
+- Enterprise all-access: capped (default N45,000) for the first block of seats (default 10), then a flat price per extra seat (default N2,500).
+- Pending invitations reserve a seat. Each payment buys one month; there is no auto-renewal. Same-plan renewal extends the period;
+  a different plan starts fresh from today with no credit for unused time (no proration).
+- The managed-organisation discount (default 10%, customer pays 90%) applies only when an administrator marks the organisation `verified`.
+
+## Premium lock (local testing)
+- Set `BILLING_ENFORCE_PREMIUM=true` in `.env.local` (repo root) and restart `pnpm dev`. On Vercel: Project > Settings > Environment Variables, then redeploy.
+- With it on, specialty calculators show an upgrade screen unless the person's plan or organisation seat covers that specialty. The
+  "general" category stays free. Edit `FREE_CATEGORIES` / `FREE_CALCULATOR_IDS` / `PREMIUM_CALCULATOR_IDS` in `lib/billing/config.ts` to change that.
+- Check: `GET /api/billing/access?id=<calculator id>` returns what the page is told. Offline or unreachable = the calculator stays usable.
+- This is a front-end lock; the calculations still run in the browser. Real protection needs premium calculations moved behind a server endpoint.
+
+## Dialogs
+- Use `confirmDialog` / `promptDialog` from `components/ui/app-dialogs.tsx` instead of `window.confirm` / `window.prompt`. They need no provider and follow the app theme.

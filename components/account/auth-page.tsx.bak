@@ -1,0 +1,8 @@
+"use client"
+
+import { AuthForm } from "./auth-form"
+
+/** Standalone /login and /register screens. After signing in, people land on /account. */
+export function AuthPage({ mode }: { mode: "login" | "signup" }) {
+  return <AuthForm initialMode={mode} onDone={() => { window.location.href = "/account" }} />
+}

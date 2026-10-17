@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { PageContainer } from "@/components/page-container"
+import { AccessBadge } from "@/components/account/access-badge"
 import { calculators } from "@/lib/calculators/registry"
 import type { CalculatorGroup } from "@/lib/calculators/types"
 import { CALCULATOR_CATEGORY_LABELS } from "@/lib/calculators/types"
@@ -41,7 +42,7 @@ export default function EstimatorsPage() {
                 <Link key={tool.id} href={`/calculators/${tool.category}/${tool.id}`}>
                   <Card className="hover:border-primary/50 transition-colors">
                     <CardHeader className="py-4">
-                      <CardTitle className="text-base">{tool.name}</CardTitle>
+                      <CardTitle className="text-base">{tool.name}<AccessBadge id={tool.id} category={tool.category} /></CardTitle>
                       <CardDescription className="mt-1">{tool.description}</CardDescription>
                     </CardHeader>
                   </Card>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { AccessBadge } from "@/components/account/access-badge"
 import { Calculator, ArrowLeftRight, FlaskConical, TrendingUp, Star, Clock, Search, Sparkles } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -97,7 +98,7 @@ export default function HomePage() {
             {popularTools.map((tool) => (
               <Link key={tool.id} href={`/calculators/${tool.category}/${tool.id}`}>
                 <Badge variant="outline" className="cursor-pointer hover:bg-accent px-3 py-1.5 text-sm font-normal">
-                  {tool.shortName ?? tool.name}
+                  {tool.shortName ?? tool.name}<AccessBadge id={tool.id} category={tool.category} />
                 </Badge>
               </Link>
             ))}
@@ -121,7 +122,7 @@ export default function HomePage() {
                 {favoriteTools.slice(0, 5).map((tool) => (
                   <Link key={tool.id} href={`/calculators/${tool.category}/${tool.id}`}>
                     <Card className="hover:border-primary/50 transition-colors">
-                      <CardContent className="py-3 px-4 text-sm font-medium">{tool.name}</CardContent>
+                      <CardContent className="py-3 px-4 text-sm font-medium">{tool.name}<AccessBadge id={tool.id} category={tool.category} /></CardContent>
                     </Card>
                   </Link>
                 ))}
@@ -138,7 +139,7 @@ export default function HomePage() {
                 {recentTools.slice(0, 5).map((tool) => (
                   <Link key={tool.id} href={`/calculators/${tool.category}/${tool.id}`}>
                     <Card className="hover:border-primary/50 transition-colors">
-                      <CardContent className="py-3 px-4 text-sm font-medium">{tool.name}</CardContent>
+                      <CardContent className="py-3 px-4 text-sm font-medium">{tool.name}<AccessBadge id={tool.id} category={tool.category} /></CardContent>
                     </Card>
                   </Link>
                 ))}

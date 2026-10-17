@@ -132,7 +132,8 @@ export function parseConfig(raw: unknown): FeedbackConfig | null {
 
   const c = raw as Record<string, unknown>
   const version = Number(c.version)
-  const remindAfterHours = Number(c.remindAfterHours)
+  // An older server sent days; convert so a cached or older response still works.
+  const remindAfterHours = c.remindAfterHours !== undefined ? Number(c.remindAfterHours) : Number(c.remindAfterDays) * 24
   const maxReminders = Number(c.maxReminders)
 
   if (![version, remindAfterHours, maxReminders].every(Number.isFinite)) {

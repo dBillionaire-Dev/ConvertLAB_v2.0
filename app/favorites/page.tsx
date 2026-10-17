@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { PageContainer } from "@/components/page-container"
+import { AccessBadge } from "@/components/account/access-badge"
 import { getFavorites, subscribeFavorites, toggleFavorite } from "@/lib/favorites"
 import { getCalculatorById } from "@/lib/calculators/registry"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -31,7 +32,7 @@ export default function FavoritesPage() {
             <Card key={tool.id} className="hover:border-primary/50 transition-colors">
               <CardHeader className="flex flex-row items-center justify-between gap-4 py-4">
                 <Link href={`/calculators/${tool.category}/${tool.id}`} className="min-w-0">
-                  <CardTitle className="text-base">{tool.name}</CardTitle>
+                  <CardTitle className="text-base">{tool.name}<AccessBadge id={tool.id} category={tool.category} /></CardTitle>
                   <CardDescription className="mt-1">{tool.description}</CardDescription>
                 </Link>
                 <Button

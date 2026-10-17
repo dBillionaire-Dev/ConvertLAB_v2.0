@@ -1,10 +1,10 @@
 import { readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
-import { PRICE_INDIVIDUAL, TEXT_LIMIT, validateAnswers, type FeedbackAnswers } from "./questions"
+import { PRICE_INDIVIDUAL, PRICE_TEAM, TEXT_LIMIT, validateAnswers, type FeedbackAnswers } from "./questions"
 import {
   DAY_MS,
-  DEFAULT_CONFIG,
   HOUR_MS,
+  DEFAULT_CONFIG,
   MIN_PAGE_AGE_MS,
   decidePrompt,
   excludedRoute,
@@ -12,6 +12,7 @@ import {
   isEngaged,
   markDone,
   normalizeState,
+  parseConfig,
   pauseForHours,
   recordVisit,
   snooze,
@@ -77,7 +78,7 @@ describe("validateAnswers", () => {
   })
 })
 
-const config: FeedbackConfig = { enabled: true, version: 1, remindAfterHours: 7, maxReminders: 3 }
+const config: FeedbackConfig = { enabled: true, version: 1, remindAfterHours: 8, maxReminders: 3 }
 const NOW = 1_800_000_000_000
 const ctx = (over: Partial<PromptContext> = {}): PromptContext => ({
   config,
@@ -118,8 +119,22 @@ describe("later, done and never again", () => {
   it("Later hides it and brings it back after the configured hours", () => {
     const later = snooze(freshState(1), config, NOW)
     expect(decidePrompt(ctx({ state: later })).show).toBe(false)
-    expect(decidePrompt(ctx({ state: later, now: NOW + 6 * HOUR_MS })).show).toBe(false)
-    expect(decidePrompt(ctx({ state: later, now: NOW + 7 * HOUR_MS })).show).toBe(true)
+    expect(decidePrompt(ctx({ state: later, now: NOW + 7 * HOUR_MS })).show).toBe(false)
+    expect(decidePrompt(ctx({ state: later, now: NOW + 8 * HOUR_MS })).show).toBe(true)
+  })
+  it("the wait follows the setting, so 1 hour and 72 hours both work", () => {
+    expect(decidePrompt(ctx({ state: snooze(freshState(1), { ...config, remindAfterHours: 1 }, NOW), now: NOW + HOUR_MS })).show).toBe(true)
+    const long = snooze(freshState(1), { ...config, remindAfterHours: 72 }, NOW)
+    expect(decidePrompt(ctx({ state: long, now: NOW + 71 * HOUR_MS })).show).toBe(false)
+    expect(decidePrompt(ctx({ state: long, now: NOW + 72 * HOUR_MS })).show).toBe(true)
+  })
+  it("a high maximum keeps asking through many Laters, and the limit still ends it", () => {
+    const many = { ...config, maxReminders: 50 }
+    let s = freshState(1)
+    for (let i = 0; i < 49; i++) s = snooze(s, many, NOW + i * 10 * HOUR_MS)
+    expect(s.stoppedAt).toBeNull()
+    s = snooze(s, many, NOW + 500 * HOUR_MS)
+    expect(s.stoppedAt).not.toBeNull()
   })
   it("stops for good after the maximum number of Laters", () => {
     let s = freshState(1)
@@ -134,7 +149,8 @@ describe("later, done and never again", () => {
   it("a short pause after starting the form does not use up a reminder", () => {
     const paused = pauseForHours(freshState(1), NOW, 1)
     expect(paused.laterCount).toBe(0)
-    expect(decidePrompt(ctx({ state: paused, now: NOW + DAY_MS })).show).toBe(true)
+    expect(decidePrompt(ctx({ state: paused, now: NOW + HOUR_MS - 1 })).show).toBe(false)
+    expect(decidePrompt(ctx({ state: paused, now: NOW + HOUR_MS })).show).toBe(true)
   })
   it("a new round (higher version) asks everyone again but keeps their visit history", () => {
     const answered = recordVisit(markDone(freshState(1), NOW), "2026-10-01")
@@ -178,7 +194,7 @@ describe("summary", () => {
   })
   it("counts willingness to pay and estimates price from band midpoints among those who would pay", () => {
     expect(s.willingShare).toBeCloseTo(2 / 3)
-    expect(s.individualAverageUsd).toBeCloseTo((5000 + 2500) / 2)
+    expect(s.individualAverageUsd).toBeCloseTo((5000 + 2500) / 2) // the property keeps its old name; the values are naira now
     expect(s.teamAverageUsd).toBeCloseTo(45000)
   })
   it("handles no data", () => {
@@ -237,5 +253,31 @@ describe("rate limit", () => {
     expect(allowSubmission("c1", t + 10)).toBe(false)
     expect(allowSubmission("c2", t + 10)).toBe(true)
     expect(allowSubmission("c1", t + 16 * 60_000)).toBe(true)
+  })
+})
+
+describe("config and price bands (hours, naira)", () => {
+  it("reads the server config in hours and keeps it in range", () => {
+    expect(parseConfig({ enabled: true, version: 2, remindAfterHours: 8, maxReminders: 50 })).toEqual({ enabled: true, version: 2, remindAfterHours: 8, maxReminders: 50 })
+    expect(parseConfig({ enabled: true, version: 1, remindAfterHours: 0, maxReminders: 99 })).toMatchObject({ remindAfterHours: 1, maxReminders: 50 })
+    expect(parseConfig({ enabled: true, version: 1, remindAfterHours: 99999, maxReminders: -2 })).toMatchObject({ remindAfterHours: 8760, maxReminders: 0 })
+  })
+  it("still understands an older server that sent days", () => {
+    expect(parseConfig({ enabled: true, version: 1, remindAfterDays: 7, maxReminders: 3 })).toMatchObject({ remindAfterHours: 168 })
+  })
+  it("rejects a config with no usable wait", () => {
+    expect(parseConfig({ enabled: true, version: 1, maxReminders: 3 })).toBeNull()
+    expect(parseConfig(null)).toBeNull()
+  })
+  it("price bands are in naira, every value is unique, and each list is ordered low to high", () => {
+    for (const bands of [PRICE_INDIVIDUAL, PRICE_TEAM]) {
+      expect(new Set(bands.map((b) => b.value)).size).toBe(bands.length)
+      expect(bands.map((b) => b.mid)).toEqual([...bands.map((b) => b.mid)].sort((a, b) => a - b))
+      for (const b of bands.slice(1)) expect(b.label).toContain("₦")
+    }
+  })
+  it("the form accepts the naira band values", () => {
+    expect(validateAnswers({ ...valid, priceIndividual: "6_10", priceTeam: "over_100" }).ok).toBe(true)
+    expect(validateAnswers({ ...valid, priceIndividual: "3_5" }).ok).toBe(false) // an old dollar band is no longer valid
   })
 })

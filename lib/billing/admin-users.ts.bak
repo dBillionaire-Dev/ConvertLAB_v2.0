@@ -1,0 +1,44 @@
+// Administrator access to the sign-in accounts held by Supabase Auth (service role). Server only.
+import { uuid } from "./db"
+
+export interface AuthUser { id: string; email: string; createdAt: string | null; lastSignInAt: string | null; confirmed: boolean }
+
+function conn() {
+  const url = process.env.SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.")
+  return { base: `${url.replace(/\/$/, "")}/auth/v1/admin`, headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" } }
+}
+
+const shape = (u: any): AuthUser => ({ id: String(u.id), email: String(u.email ?? ""), createdAt: u.created_at ?? null, lastSignInAt: u.last_sign_in_at ?? null, confirmed: Boolean(u.email_confirmed_at || u.confirmed_at) })
+
+/** Up to 1,000 accounts (5 pages of 200). `truncated` tells the admin screen when there are more. */
+export async function listAuthUsers(): Promise<{ users: AuthUser[]; truncated: boolean }> {
+  const { base, headers } = conn()
+  const out: AuthUser[] = []
+  let truncated = false
+  for (let page = 1; page <= 5; page++) {
+    const res = await fetch(`${base}/users?page=${page}&per_page=200`, { headers, cache: "no-store" })
+    if (!res.ok) throw new Error(`Supabase list users failed (${res.status})`)
+    const json = (await res.json()) as any
+    const batch: any[] = Array.isArray(json) ? json : json?.users ?? []
+    out.push(...batch.map(shape))
+    if (batch.length < 200) return { users: out, truncated }
+    if (page === 5) truncated = true
+  }
+  return { users: out, truncated }
+}
+
+export async function getAuthUser(id: string): Promise<AuthUser | null> {
+  const { base, headers } = conn()
+  const res = await fetch(`${base}/users/${uuid(id)}`, { headers, cache: "no-store" })
+  if (res.status === 404) return null
+  if (!res.ok) throw new Error(`Supabase get user failed (${res.status})`)
+  return shape(await res.json())
+}
+
+export async function deleteAuthUser(id: string): Promise<void> {
+  const { base, headers } = conn()
+  const res = await fetch(`${base}/users/${uuid(id)}`, { method: "DELETE", headers })
+  if (!res.ok && res.status !== 404) throw new Error(`Supabase delete user failed (${res.status}): ${(await res.text()).slice(0, 150)}`)
+}
