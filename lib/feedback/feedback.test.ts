@@ -11,7 +11,7 @@ import {
   isEngaged,
   markDone,
   normalizeState,
-  pauseForDays,
+  pauseForHours,
   recordVisit,
   snooze,
   stopAsking,
@@ -76,7 +76,7 @@ describe("validateAnswers", () => {
   })
 })
 
-const config: FeedbackConfig = { enabled: true, version: 1, remindAfterDays: 7, maxReminders: 3 }
+const config: FeedbackConfig = { enabled: true, version: 1, remindAfterHours: 7, maxReminders: 3 }
 const NOW = 1_800_000_000_000
 const ctx = (over: Partial<PromptContext> = {}): PromptContext => ({
   config,
@@ -131,7 +131,7 @@ describe("later, done and never again", () => {
     expect(decidePrompt(ctx({ state: stopAsking(freshState(1), NOW), now: NOW + 365 * DAY_MS })).show).toBe(false)
   })
   it("a short pause after starting the form does not use up a reminder", () => {
-    const paused = pauseForDays(freshState(1), NOW, 1)
+    const paused = pauseForHours(freshState(1), NOW, 1)
     expect(paused.laterCount).toBe(0)
     expect(decidePrompt(ctx({ state: paused, now: NOW + DAY_MS })).show).toBe(true)
   })
